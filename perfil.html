@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>MyLifeQR — Perfil de Emergencia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;900&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --red:#E8152A; --red-dark:#B01020; --orange:#FF6B00;
+            --black:#0A0A0A; --dark:#f5f5f5; --card:#ffffff;
+            --border:#e0e0e0; --text:#1a1a1a; --muted:#666; --green:#22C55E;
+        }
+        body {
+            background: white;
+            font-family:'Barlow',sans-serif; font-size:15px;
+            max-width:430px; margin:0 auto; min-height:100vh;
+        }
+        
+        #gate {
+            position:fixed; inset:0; background:var(--black); z-index:999;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            padding:28px 24px; max-width:430px; margin:0 auto;
+        }
+        .gate-icon { width:64px; height:64px; background:rgba(232,21,42,0.1); border:2px solid rgba(232,21,42,0.35); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:30px; }
+        .gate-title { font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:3px; color:white; text-align:center; }
+        .gate-subtitle { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:3px; color:var(--red); text-align:center; margin-bottom:24px; }
+        .gate-box { background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:20px; margin-bottom:8px; width:100%; }
+        .gate-box-text { font-size:13px; color:#AAA; line-height:1.8; text-align:justify; }
+        .gate-box-text strong { color:white; }
+        @keyframes pulse-btn { 0%,100%{box-shadow:0 0 0 0 rgba(232,21,42,0.45)} 60%{box-shadow:0 0 0 10px rgba(232,21,42,0)} }
+        .btn-accept { width:100%; background:var(--red); color:white; border:none; border-radius:12px; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; padding:16px; cursor:pointer; animation:pulse-btn 2.2s ease-in-out infinite; }
+        
+        #profile { display:none; opacity:0; transition:opacity 0.4s ease; background: white; }
+        #profile.visible { display:block; opacity:1; }
+        
+        .scan-notification {
+            background: #E8152A;
+            color: white;
+            padding: 16px;
+            text-align: center;
+            margin: 0;
+            font-weight: bold;
+        }
+        .folio-number {
+            font-family: monospace;
+            font-size: 18px;
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+        
+        .emergency-banner { background:var(--red); padding:10px 16px; display:flex; align-items:center; gap:8px; position:sticky; top:0; z-index:100; animation:pulse-bar 2s ease-in-out infinite; color:white; }
+        @keyframes pulse-bar { 0%,100%{opacity:1} 50%{opacity:0.85} }
+        
+        .casco-banner { background: #E8152A; padding: 24px 20px; text-align: center; }
+        .casco-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: white; line-height: 1.2; margin-bottom: 8px; }
+        .casco-desc { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.95); line-height: 1.4; }
+        
+        .hero { background: white; padding: 32px 16px; border-bottom: 1px solid #eee; text-align: center; }
+        .avatar-large { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 16px auto; background: #f0f0f0; border: 4px solid var(--red); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
+        .avatar-large:hover { transform: scale(1.02); }
+        .avatar-large img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-large-placeholder { font-size: 64px; color: #ccc; }
+        .hero-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #1a1a1a; letter-spacing: 1px; margin-bottom: 8px; }
+        .hero-age { font-size: 18px; font-weight: 600; color: #666; }
+        
+        .location-section {
+            background: #f0f0f0;
+            padding: 16px;
+            margin: 16px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .map-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .map-btn {
+            background: #E8152A;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .map-btn.waze { background: #33CCFF; }
+        
+        .call-911-wrap { padding:14px 16px; background:white; border-bottom:1px solid #eee; }
+        .btn-911 { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; background:var(--red); color:white; text-decoration:none; border-radius:12px; padding:16px; animation:pulse-btn 2s ease-in-out infinite; }
+        .btn-911-main { font-family:'Bebas Neue',sans-serif; font-size:26px; }
+        
+        .accordion {
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin: 16px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            background: #E8152A;
+            color: white;
+            padding: 14px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        }
+        .accordion-header span {
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+        .accordion-header.active span {
+            transform: rotate(180deg);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: white;
+        }
+        .accordion-content-inner {
+            padding: 16px;
+        }
+        .firstaid-card { background:#fafafa; border-radius:14px; border:1px solid #eee; overflow:hidden; margin-bottom:16px; }
+        .step { display:flex; align-items:flex-start; gap:12px; padding:13px 16px; border-bottom:1px solid #eee; }
+        .step-num { width:24px; height:24px; border-radius:50%; background:#f0f0f0; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; color:#888; }
+        .step-title { font-weight:700; font-size:14px; color:#333; }
+        .step-desc { font-size:13px; color:#888; }
+        
+        .section { padding:0 16px; margin-top:20px; }
+        .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 2px; color: #000000; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #E8152A; }
+        
+        .vitals-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+        .vital-card { background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px; }
+        .vital-card.blood { border-color:rgba(232,21,42,0.3); background:rgba(232,21,42,0.05); }
+        .vital-label { font-size:10px; font-weight:700; letter-spacing:2px; color:#888; margin-bottom:8px; }
+        .vital-value { font-family:'Bebas Neue',sans-serif; font-size:38px; line-height:1; color:#333; }
+        .vital-value.blood { color:var(--red); }
+        
+        .donor-badge-small { display: inline-block; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #22C55E; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; margin-top: 6px; }
+        
+        .info-card { background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px 16px; margin-bottom:10px; }
+        .info-card-label { font-size:10px; font-weight:700; letter-spacing:2.5px; color:#888; margin-bottom:8px; }
+        .info-card-value { font-size:15px; font-weight:600; color:#333; }
+        .tag { display:inline-block; background:rgba(232,21,42,0.1); border:1px solid rgba(232,21,42,0.2); color:#E8152A; font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px; margin:2px 3px; }
+        
+        .contact-card { background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; }
+        .contact-avatar { width:44px; height:44px; border-radius:50%; background:#e0e0e0; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px; color:#666; }
+        .contact-name { font-weight:700; font-size:15px; color:#333; }
+        .contact-rel { font-size:12px; color:#888; }
+        .btn-call { background:var(--green); color:white; text-decoration:none; border-radius:8px; padding:9px 14px; font-weight:900; font-size:13px; margin-left:auto; cursor:pointer; }
+        
+        .notes-card { background:rgba(255,107,0,0.05); border:1px solid rgba(255,107,0,0.15); border-radius:12px; padding:14px 16px; margin-bottom:10px; }
+        .notes-text { font-size:14px; color:#CC7722; font-style:italic; }
+        
+        .footer { margin-top: 28px; padding: 24px 16px 20px; border-top: 1px solid #eee; text-align: center; }
+        .footer-logo { margin-bottom: 16px; }
+        .footer-logo img { height: 32px; width: auto; opacity: 0.7; }
+        .disclaimer-text { font-size: 10px; color: #999; line-height: 1.6; text-align: center; }
+        .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; margin: 0 8px; font-size: 12px; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; cursor: pointer; }
+        .modal img { max-width: 90%; max-height: 90%; border-radius: 20px; }
+        .modal-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; }
+        
+        .modal-legal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-legal-content {
+            background: white;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85%;
+            border-radius: 24px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-legal-header {
+            background: #E8152A;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-legal-header h3 { color: white; font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin: 0; }
+        .modal-legal-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+        .modal-legal-body { padding: 20px; overflow-y: auto; max-height: 60vh; font-size: 13px; color: #333; line-height: 1.6; }
+        .modal-legal-body h4 { color: #E8152A; margin: 16px 0 8px 0; }
+        .modal-legal-footer { padding: 16px 20px; border-top: 1px solid #eee; text-align: center; }
+        .modal-legal-footer button { background: #E8152A; color: white; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 600; cursor: pointer; }
+        
+        @media (max-width: 768px) {
+            .map-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="gate">
+    <div class="gate-icon">⚠️</div>
+    <div class="gate-title">Acceso Restringido</div>
+    <div class="gate-subtitle">Aviso de privacidad — LFPDPPP</div>
+    <div class="gate-box">
+        <p class="gate-box-text">
+            La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (<strong>LFPDPPP</strong>).
+            <br><br>
+            Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación mexicana vigente, con <strong>penas de 3 a 5 años de prisión</strong>.
+            <br><br>
+            Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
+        </p>
+    </div>
+    <p style="font-size:11px; color:#555; margin:12px 0 20px;">Al aceptar confirmas que accedes con fines de atención médica de emergencia.</p>
+    <button class="btn-accept" onclick="acceptGate()">Entiendo — Ver perfil de emergencia</button>
+</div>
+
+<div id="profile">
+    <div id="photoModal" class="modal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="" alt="Foto ampliada">
+    </div>
+    
+    <div id="modalLegal" class="modal-legal">
+        <div class="modal-legal-content">
+            <div class="modal-legal-header">
+                <h3 id="modalLegalTitle">Términos y Condiciones</h3>
+                <button class="modal-legal-close" onclick="closeModalLegal()">&times;</button>
+            </div>
+            <div class="modal-legal-body" id="modalLegalBody"></div>
+            <div class="modal-legal-footer">
+                <button onclick="closeModalLegal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="scanNotification" class="scan-notification" style="display: none;">
+        🔴 AVISO: PERFIL ESCANEADO<br>
+        <span id="scanDateTime"></span><br>
+        <span id="scanFolio" class="folio-number"></span>
+    </div>
+    
+    <div class="emergency-banner">
+        <span>🚨 PERFIL DE EMERGENCIA ACTIVO</span>
+        <span style="margin-left:auto;">MyLifeQR</span>
+    </div>
+
+    <div class="casco-banner">
+        <div class="casco-title">¡NO RETIRAR EL CASCO!</div>
+        <div class="casco-desc">Posible lesión cervical. Solo personal capacitado puede retirarlo.</div>
+    </div>
+
+    <div class="hero">
+        <div class="avatar-large" id="avatarLargeContainer" onclick="openModal()">
+            <div class="avatar-large-placeholder" id="avatarLargePlaceholder">👤</div>
+            <img id="avatarLargeImg" style="display:none; width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="hero-name" id="perfilNombre">Cargando...</div>
+        <div class="hero-age" id="perfilEdad"></div>
+    </div>
+
+    <div class="location-section" id="locationSection">
+        <div style="font-weight: bold; margin-bottom: 8px;">📍 UBICACIÓN APROXIMADA</div>
+        <div id="locationStatus">Obteniendo ubicación...</div>
+        <div class="map-buttons" id="mapButtons" style="display: none;">
+            <a href="#" id="googleMapsLink" class="map-btn" target="_blank">🗺️ Google Maps</a>
+            <a href="#" id="wazeLink" class="map-btn waze" target="_blank">🧭 Waze</a>
+        </div>
+    </div>
+
+    <div class="call-911-wrap">
+        <a href="tel:911" class="btn-911">
+            <span style="font-size:28px;">📞</span>
+            <span class="btn-911-main">LLAMAR AL 911</span>
+        </a>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion()">
+            🚑 SI NO ERES PARAMÉDICO - TOCA PARA VER INSTRUCCIONES
+            <span>▼</span>
+        </div>
+        <div class="accordion-content" id="accordionContent">
+            <div class="accordion-content-inner">
+                <div class="step"><div class="step-num">1</div><div><div class="step-title">Llama al 911</div><div class="step-desc">Informa ubicación exacta. No muevas al motociclista.</div></div></div>
+                <div class="step"><div class="step-num">2</div><div><div class="step-title">No retires el casco</div><div class="step-desc">Solo personal capacitado. Posible lesión cervical.</div></div></div>
+                <div class="step"><div class="step-num">3</div><div><div class="step-title">Controla hemorragias</div><div class="step-desc">Presiona con trapo limpio sin soltar.</div></div></div>
+                <div class="step"><div class="step-num">4</div><div><div class="step-title">Muestra este perfil al paramédico</div><div class="step-desc">Contiene sangre, alergias y contactos.</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">🩸 DATOS VITALES</div>
+        <div class="vitals-grid">
+            <div class="vital-card blood"><div class="vital-label">TIPO DE SANGRE</div><div class="vital-value blood" id="perfilSangre">---</div></div>
+            <div class="vital-card"><div class="vital-label">DONADOR DE ÓRGANOS</div><div class="vital-value" id="perfilDonadorGrande">---</div><div id="perfilDonadorBadge" class="donor-badge-small"></div></div>
+        </div>
+        <div class="info-card"><div class="info-card-label">⚠️ ALERGIAS</div><div class="info-card-value" id="perfilAlergias">---</div></div>
+        <div class="info-card"><div class="info-card-label">🏥 CONDICIONES MÉDICAS</div><div class="info-card-value" id="perfilCondiciones">---</div></div>
+        <div class="info-card"><div class="info-card-label">💊 MEDICAMENTOS</div><div class="info-card-value" id="perfilMedicamentos">---</div></div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">📞 CONTACTOS DE EMERGENCIA</div>
+        <div id="contactosContainer"></div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">📋 INFORMACIÓN ADICIONAL</div>
+        <div class="info-card"><div class="info-card-label">🏥 SEGURO / HOSPITAL PREFERIDO</div><div class="info-card-value" id="perfilHospital">---</div></div>
+        <div class="notes-card"><div class="notes-text" id="perfilNotas">---</div></div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.style.display='none'"></div>
+        <div class="disclaimer">
+            <p class="disclaimer-text">
+                <strong>⚠️ AVISO LEGAL IMPORTANTE ⚠️</strong><br><br>
+                MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.<br><br>
+                La información médica contenida en este perfil es <strong>proporcionada voluntariamente por el usuario</strong> y puede no estar actualizada, ser incompleta o inexacta. En caso de emergencia, la prioridad siempre debe ser llamar al 911 y seguir las indicaciones del personal médico.<br><br>
+                Al utilizar este sistema, el usuario acepta que es su <strong>única responsabilidad</strong> mantener sus datos actualizados y verificar su exactitud. En caso de emergencia, siempre prevalece el criterio del personal médico capacitado.<br><br>
+                <strong>📞 En caso de emergencia, llame inmediatamente al 911.</strong>
+            </p>
+        </div>
+        <div style="margin-top: 20px;">
+            <span class="legal-link" onclick="showTerminos()">📜 Términos y Condiciones</span>
+            <span style="color: #ccc; margin: 0 8px;">|</span>
+            <span class="legal-link" onclick="showPrivacidad()">🔒 Política de Privacidad</span>
+        </div>
+    </div>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getFirestore, doc, getDoc, collection, addDoc } from "firebase/firestore";
+    
+    const firebaseConfig = {
+        apiKey: "AIzaSyA6ZN6SVnCx2DriW72R67_5OVgF68NhmR4",
+        authDomain: "mylifeqr-cff5b.firebaseapp.com",
+        projectId: "mylifeqr-cff5b",
+        storageBucket: "mylifeqr-cff5b.firebasestorage.app",
+        messagingSenderId: "1067050300854",
+        appId: "1:1067050300854:web:b1c686bf5f23801bfe7d17",
+        measurementId: "G-DKR6WB9JJM"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    let currentPhotoUrl = "";
+    let scanRegistered = false;
+    let currentUserLocation = null;
+    let currentPerfilData = null;
+    
+    // CONFIGURACIÓN DE EMAILJS
+    const EMAILJS_CONFIG = {
+        PUBLIC_KEY: "6uXAgtCdN40jsNSgd",
+        SERVICE_ID: "service_76kehki",
+        TEMPLATE_ID: "template_b71jlbn"
+    };
+    
+    // Inicializar EmailJS
+    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+    console.log("✅ EmailJS inicializado correctamente");
+    
+    window.toggleAccordion = () => {
+        const header = document.querySelector('.accordion-header');
+        const content = document.getElementById('accordionContent');
+        header.classList.toggle('active');
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    };
+    
+    window.acceptGate = () => {
+        const gate = document.getElementById('gate');
+        const profile = document.getElementById('profile');
+        gate.style.transition = 'opacity 0.35s ease';
+        gate.style.opacity = '0';
+        setTimeout(() => {
+            gate.style.display = 'none';
+            profile.style.display = 'block';
+            setTimeout(() => profile.classList.add('visible'), 10);
+            registrarEscaneo();
+        }, 350);
+    };
+    
+    async function enviarCorreoEmergencia(email, nombreContacto, perfil, folio, ubicacion) {
+        console.log(`📧 Intentando enviar correo a: ${email} (${nombreContacto})`);
+        
+        if (!email) {
+            console.log(`⚠️ No hay email, no se enviará correo`);
+            return { success: false, error: "No email provided" };
+        }
+        
+        const templateParams = {
+            email: email,
+            to_name: nombreContacto,
+            nombre: perfil.nombre || 'Usuario',
+            fecha: new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' }),
+            folio: folio,
+            latitud: ubicacion?.lat || 'No disponible',
+            longitud: ubicacion?.lng || 'No disponible',
+            sangre: perfil.sangre || 'No registrado',
+            alergias: perfil.alergias || 'Ninguna',
+            condiciones: perfil.condiciones || 'Ninguna',
+            medicamentos: perfil.medicamentos || 'Ninguno'
+        };
+        
+        console.log("📧 Parámetros a enviar:", templateParams);
+        
+        try {
+            const result = await emailjs.send(
+                EMAILJS_CONFIG.SERVICE_ID,
+                EMAILJS_CONFIG.TEMPLATE_ID,
+                templateParams
+            );
+            console.log(`✅ Correo enviado a ${email}:`, result);
+            return { success: true, email: email };
+        } catch (error) {
+            console.error(`❌ Error al enviar correo a ${email}:`, error);
+            return { success: false, error: error };
+        }
+    }
+    
+    async function registrarEscaneo() {
+        if (scanRegistered) return;
+        scanRegistered = true;
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const profileId = urlParams.get('id');
+        
+        if (!profileId) {
+            console.error("No se encontró ID de perfil");
+            return;
+        }
+        
+        console.log("🔍 Cargando perfil:", profileId);
+        
+        const docRef = doc(db, "perfiles", profileId);
+        const docSnap = await getDoc(docRef);
+        
+        if (!docSnap.exists()) {
+            console.error("Perfil no encontrado");
+            return;
+        }
+        
+        currentPerfilData = docSnap.data();
+        const perfil = currentPerfilData;
+        
+        console.log("📋 Perfil cargado:", perfil.nombre);
+        
+        // Generar folio único
+        const folio = 'MLQR-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        const fechaHora = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' });
+        
+        // Mostrar notificación
+        const notif = document.getElementById('scanNotification');
+        document.getElementById('scanDateTime').innerHTML = `📅 ${fechaHora}`;
+        document.getElementById('scanFolio').innerHTML = `Folio: ${folio}`;
+        notif.style.display = 'block';
+        
+        // Obtener ubicación
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                currentUserLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                
+                console.log("📍 Ubicación obtenida:", currentUserLocation);
+                
+                document.getElementById('locationStatus').innerHTML = `📍 Lat: ${currentUserLocation.lat.toFixed(4)}, Lng: ${currentUserLocation.lng.toFixed(4)}`;
+                document.getElementById('mapButtons').style.display = 'flex';
+                
+                const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${currentUserLocation.lat},${currentUserLocation.lng}`;
+                const wazeUrl = `https://www.waze.com/ul?ll=${currentUserLocation.lat},${currentUserLocation.lng}&navigate=yes`;
+                document.getElementById('googleMapsLink').href = mapsUrl;
+                document.getElementById('wazeLink').href = wazeUrl;
+                
+                // Guardar evento en Firestore
+                await addDoc(collection(db, "eventos_escaneo"), {
+                    perfil_id: profileId,
+                    perfil_nombre: perfil.nombre || 'Usuario',
+                    folio: folio,
+                    fecha: new Date().toISOString(),
+                    ubicacion: currentUserLocation,
+                    dispositivo: navigator.userAgent
+                });
+                
+                // Enviar correos a contactos con email y notificar activado
+                const contactosParaEnviar = [];
+                
+                // Revisar contacto 1
+                if (perfil.contacto1_email && perfil.contacto1_notificar === true) {
+                    contactosParaEnviar.push({
+                        email: perfil.contacto1_email,
+                        nombre: perfil.contacto1_nombre || "Contacto 1"
+                    });
+                    console.log(`✅ Contacto 1 agregado: ${perfil.contacto1_email}`);
+                } else {
+                    console.log(`❌ Contacto 1 no agregado: email=${perfil.contacto1_email}, notificar=${perfil.contacto1_notificar}`);
+                }
+                
+                // Revisar contacto 2
+                if (perfil.contacto2_email && perfil.contacto2_notificar === true) {
+                    contactosParaEnviar.push({
+                        email: perfil.contacto2_email,
+                        nombre: perfil.contacto2_nombre || "Contacto 2"
+                    });
+                    console.log(`✅ Contacto 2 agregado: ${perfil.contacto2_email}`);
+                } else {
+                    console.log(`❌ Contacto 2 no agregado: email=${perfil.contacto2_email}, notificar=${perfil.contacto2_notificar}`);
+                }
+                
+                // Revisar contacto 3
+                if (perfil.contacto3_email && perfil.contacto3_notificar === true) {
+                    contactosParaEnviar.push({
+                        email: perfil.contacto3_email,
+                        nombre: perfil.contacto3_nombre || "Contacto 3"
+                    });
+                    console.log(`✅ Contacto 3 agregado: ${perfil.contacto3_email}`);
+                }
+                
+                // Revisar contacto 4
+                if (perfil.contacto4_email && perfil.contacto4_notificar === true) {
+                    contactosParaEnviar.push({
+                        email: perfil.contacto4_email,
+                        nombre: perfil.contacto4_nombre || "Contacto 4"
+                    });
+                    console.log(`✅ Contacto 4 agregado: ${perfil.contacto4_email}`);
+                }
+                
+                // Revisar contacto 5
+                if (perfil.contacto5_email && perfil.contacto5_notificar === true) {
+                    contactosParaEnviar.push({
+                        email: perfil.contacto5_email,
+                        nombre: perfil.contacto5_nombre || "Contacto 5"
+                    });
+                    console.log(`✅ Contacto 5 agregado: ${perfil.contacto5_email}`);
+                }
+                
+                console.log(`📧 Total contactos a notificar: ${contactosParaEnviar.length}`);
+                
+                if (contactosParaEnviar.length > 0) {
+                    for (const contacto of contactosParaEnviar) {
+                        await enviarCorreoEmergencia(contacto.email, contacto.nombre, perfil, folio, currentUserLocation);
+                    }
+                } else {
+                    console.log("⚠️ No hay contactos con email y notificación activada");
+                }
+                
+            }, (error) => {
+                console.error("Error de geolocalización:", error);
+                document.getElementById('locationStatus').innerHTML = '📍 No se pudo obtener la ubicación. Activa los servicios de ubicación.';
+            });
+        } else {
+            document.getElementById('locationStatus').innerHTML = '📍 Tu navegador no soporta geolocalización.';
+        }
+    }
+    
+    function openModal() {
+        if (currentPhotoUrl) {
+            const modal = document.getElementById('photoModal');
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = currentPhotoUrl;
+            modal.style.display = 'flex';
+        }
+    }
+    
+    window.openModal = openModal;
+    window.closeModal = () => {
+        document.getElementById('photoModal').style.display = 'none';
+    };
+    
+    window.showTerminos = () => {
+        const modal = document.getElementById('modalLegal');
+        const title = document.getElementById('modalLegalTitle');
+        const body = document.getElementById('modalLegalBody');
+        title.innerText = '📜 Términos y Condiciones';
+        body.innerHTML = `
+            <h4>1. Aceptación de los Términos</h4>
+            <p>Al utilizar MyLifeQR, aceptas estos Términos y Condiciones.</p>
+            <h4>2. Descripción del Servicio</h4>
+            <p>MyLifeQR es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p>
+            <h4>3. Responsabilidad del Usuario</h4>
+            <p>Eres el único responsable de la veracidad y actualización de tus datos.</p>
+            <h4>4. Ley Aplicable</h4>
+            <p>Estos términos se rigen por las leyes de los Estados Unidos Mexicanos.</p>
+        `;
+        modal.style.display = 'flex';
+    };
+    
+    window.showPrivacidad = () => {
+        const modal = document.getElementById('modalLegal');
+        const title = document.getElementById('modalLegalTitle');
+        const body = document.getElementById('modalLegalBody');
+        title.innerText = '🔒 Política de Privacidad';
+        body.innerHTML = `
+            <h4>1. Datos que Recopilamos</h4>
+            <p>Recopilamos nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia y foto (opcional).</p>
+            <h4>2. Uso de la Información</h4>
+            <p>La información se usa exclusivamente para tu perfil médico de emergencia.</p>
+            <h4>3. Protección de Datos</h4>
+            <p>Tus datos están protegidos por la LFPDPPP. El acceso queda registrado.</p>
+            <h4>4. Derechos ARCO</h4>
+            <p>Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos.</p>
+        `;
+        modal.style.display = 'flex';
+    };
+    
+    window.closeModalLegal = () => {
+        document.getElementById('modalLegal').style.display = 'none';
+    };
+    
+    document.getElementById('modalLegal')?.addEventListener('click', function(e) {
+        if (e.target === this) window.closeModalLegal();
+    });
+    
+    async function cargarPerfil() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const profileId = urlParams.get('id');
+        
+        if (!profileId) {
+            document.getElementById('perfilNombre').innerText = 'ERROR';
+            document.getElementById('perfilEdad').innerText = 'ID no encontrado';
+            return;
+        }
+        
+        const docRef = doc(db, "perfiles", profileId);
+        const docSnap = await getDoc(docRef);
+        
+        if (!docSnap.exists()) {
+            document.getElementById('perfilNombre').innerText = 'PERFIL NO ENCONTRADO';
+            document.getElementById('perfilEdad').innerText = 'ID inválido';
+            return;
+        }
+        
+        const perfil = docSnap.data();
+        
+        document.getElementById('perfilNombre').innerText = perfil.nombre || 'Usuario';
+        document.getElementById('perfilEdad').innerText = perfil.edad ? `${perfil.edad} años` : 'Edad no registrada';
+        document.getElementById('perfilSangre').innerText = perfil.sangre || 'No registrado';
+        
+        const donadorValor = perfil.donador || 'No especificado';
+        let donadorMostrar = '', donadorBadge = '';
+        if (donadorValor === 'Sí') {
+            donadorMostrar = '✅';
+            donadorBadge = '✅ SÍ, donador de órganos';
+        } else if (donadorValor === 'No') {
+            donadorMostrar = '❌';
+            donadorBadge = '❌ NO donador';
+        } else {
+            donadorMostrar = '?';
+            donadorBadge = 'No especificado';
+        }
+        document.getElementById('perfilDonadorGrande').innerText = donadorMostrar;
+        document.getElementById('perfilDonadorBadge').innerText = donadorBadge;
+        
+        const avatarImg = document.getElementById('avatarLargeImg');
+        const avatarPlaceholder = document.getElementById('avatarLargePlaceholder');
+        if (perfil.foto && perfil.foto.startsWith('data:image')) {
+            currentPhotoUrl = perfil.foto;
+            avatarImg.src = perfil.foto;
+            avatarImg.style.display = 'block';
+            avatarPlaceholder.style.display = 'none';
+        } else {
+            currentPhotoUrl = "";
+            avatarImg.style.display = 'none';
+            avatarPlaceholder.style.display = 'flex';
+        }
+        
+        const alergias = perfil.alergias ? perfil.alergias.split(',').map(a => `<span class="tag">${a.trim()}</span>`).join(' ') : 'Ninguna registrada';
+        document.getElementById('perfilAlergias').innerHTML = alergias;
+        document.getElementById('perfilCondiciones').innerText = perfil.condiciones || 'Ninguna registrada';
+        document.getElementById('perfilMedicamentos').innerText = perfil.medicamentos || 'Ninguno registrado';
+        document.getElementById('perfilHospital').innerText = perfil.hospital || 'No especificado';
+        document.getElementById('perfilNotas').innerText = perfil.notas || 'Sin notas adicionales';
+        
+        const contactosDiv = document.getElementById('contactosContainer');
+        contactosDiv.innerHTML = '';
+        
+        const contactos = [
+            { nombre: perfil.contacto1_nombre, telefono: perfil.contacto1_tel, relacion: perfil.contacto1_relacion, num: 1 },
+            { nombre: perfil.contacto2_nombre, telefono: perfil.contacto2_tel, relacion: perfil.contacto2_relacion, num: 2 },
+            { nombre: perfil.contacto3_nombre, telefono: perfil.contacto3_tel, relacion: perfil.contacto3_relacion, num: 3 },
+            { nombre: perfil.contacto4_nombre, telefono: perfil.contacto4_tel, relacion: perfil.contacto4_relacion, num: 4 },
+            { nombre: perfil.contacto5_nombre, telefono: perfil.contacto5_tel, relacion: perfil.contacto5_relacion, num: 5 }
+        ];
+        
+        contactos.forEach(contacto => {
+            if (contacto.nombre && contacto.telefono) {
+                const relacionMostrar = contacto.relacion ? ` (${contacto.relacion})` : '';
+                contactosDiv.innerHTML += `
+                    <div class="contact-card">
+                        <div class="contact-avatar">${contacto.nombre.charAt(0)}</div>
+                        <div><div class="contact-name">${contacto.nombre}${relacionMostrar}</div><div class="contact-rel">Contacto ${contacto.num}</div></div>
+                        <a href="tel:+52${contacto.telefono}" class="btn-call">📞 Llamar</a>
+                    </div>
+                `;
+            }
+        });
+        
+        if (contactosDiv.innerHTML === '') {
+            contactosDiv.innerHTML = '<div class="info-card"><div class="info-card-value">No hay contactos registrados</div></div>';
+        }
+    }
+    
+    cargarPerfil();
+</script>
+</body>
+</html>
