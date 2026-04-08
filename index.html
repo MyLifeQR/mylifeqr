@@ -89,6 +89,23 @@
         .btn-logout { background: transparent; border: 1px solid #E8152A; color: #E8152A; padding: 6px 16px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
         .btn-logout:hover { background: #E8152A; color: white; }
         
+        .btn-danger {
+            background: transparent;
+            border: 1px solid #E8152A;
+            color: #E8152A;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .btn-danger:hover {
+            background: #E8152A;
+            color: white;
+        }
+        
         .tabs { display: flex; gap: 16px; margin: 24px 0; border-bottom: 2px solid #eee; }
         .tab-btn { background: none; border: none; font-size: 16px; font-weight: 600; padding: 12px 0; cursor: pointer; color: #666; font-family: 'Inter', sans-serif; transition: color 0.2s; }
         .tab-btn.active { color: #E8152A; border-bottom: 2px solid #E8152A; }
@@ -96,11 +113,57 @@
         .tab-pane.active { display: block; }
         .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px 0; }
         
-        .sticker-selector { display: flex; gap: 16px; justify-content: center; margin-bottom: 20px; }
-        .sticker-option { cursor: pointer; padding: 8px 16px; border-radius: 40px; font-weight: 600; transition: all 0.2s; }
-        .sticker-option.negro { background: #1a1a1a; color: white; border: 2px solid #1a1a1a; }
-        .sticker-option.rojo { background: #E8152A; color: white; border: 2px solid #E8152A; }
-        .sticker-option.active { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        /* Selector de formato y color */
+        .sticker-selectors {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .selector-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .selector-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-right: 8px;
+        }
+        .format-option, .color-option {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        .format-option {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+        .format-option.active {
+            background: #E8152A;
+            color: white;
+            border-color: #E8152A;
+        }
+        .color-option.negro {
+            background: #1a1a1a;
+            color: white;
+            border: 2px solid #1a1a1a;
+        }
+        .color-option.rojo {
+            background: #E8152A;
+            color: white;
+            border: 2px solid #E8152A;
+        }
+        .color-option.active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
         
         .sticker-preview { background: #f8f8f8; border-radius: 24px; padding: 24px; text-align: center; position: sticky; top: 20px; }
         .sticker-container { position: relative; width: 100%; max-width: 400px; margin: 0 auto; }
@@ -179,6 +242,14 @@
             text-align: center;
         }
         .legal-footer-text { font-size: 11px; color: #999; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+        .legal-links-footer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; font-size: 12px; }
         
         @media (max-width: 768px) {
             .hero, .sticker-showcase, .two-columns { grid-template-columns: 1fr; }
@@ -243,7 +314,7 @@
             
             <div class="sticker-showcase">
                 <div class="sticker-preview-card"><img src="Casco.jpg" alt="Casco con sticker" onerror="this.src='https://placehold.co/300x200/E8152A/white?text=Casco+MyLifeQR'"></div>
-                <div class="sticker-info"><h2>Tu sticker personalizado</h2><p>Imprime y pega en tu casco. Resistente al agua y al sol. Dos diseños disponibles.</p><ul><li>✅ QR único con tu perfil médico</li><li>✅ Tipo de sangre visible</li><li>✅ Contactos de emergencia</li><li>✅ Alergias y condiciones médicas</li><li>✅ Donador de órganos (Sí/No)</li></ul><button class="btn-primary" id="stickerRegisterBtn">Generar mi sticker ahora</button></div>
+                <div class="sticker-info"><h2>Tu sticker personalizado</h2><p>Imprime y pega en tu casco. Resistente al agua y al sol. Dos formatos disponibles.</p><ul><li>✅ QR único con tu perfil médico</li><li>✅ Tipo de sangre visible</li><li>✅ Contactos de emergencia</li><li>✅ Alergias y condiciones médicas</li><li>✅ Donador de órganos (Sí/No)</li></ul><button class="btn-primary" id="stickerRegisterBtn">Generar mi sticker ahora</button></div>
             </div>
             
             <div class="features" style="background: #E8152A0D;">
@@ -274,8 +345,9 @@
                     <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px;">
                         <input type="checkbox" id="aceptaTerminos" style="width: 20px; margin-top: 3px;">
                         <label for="aceptaTerminos" style="font-size: 12px; text-transform: none; letter-spacing: normal; color: #666; line-height: 1.4;">
-                            He leído y acepto los <span class="legal-link-inline" onclick="showTerminosRegistro()">Términos y Condiciones</span> y la 
-                            <span class="legal-link-inline" onclick="showPrivacidadRegistro()">Política de Privacidad</span>.
+                            He leído y acepto los <span class="legal-link-inline" onclick="showTerminosRegistro()">Términos y Condiciones</span>, la 
+                            <span class="legal-link-inline" onclick="showPrivacidadRegistro()">Política de Privacidad</span> y el
+                            <span class="legal-link-inline" onclick="showAvisoPrivacidad()">Aviso de Privacidad (LFPDPPP)</span>.
                         </label>
                     </div>
                     
@@ -291,6 +363,11 @@
                     MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.<br>
                     <strong>📞 En caso de emergencia, llame al 911 inmediatamente.</strong>
                 </p>
+                <div class="legal-links-footer">
+                    <span class="legal-link" onclick="showTerminosRegistro()">📜 Términos y Condiciones</span>
+                    <span class="legal-link" onclick="showPrivacidadRegistro()">🔒 Política de Privacidad</span>
+                    <span class="legal-link" onclick="showAvisoPrivacidad()">🔐 Aviso de Privacidad (LFPDPPP)</span>
+                </div>
             </div>
         </div>
     </div>
@@ -489,22 +566,73 @@
                     <div class="form-group"><label>Notas adicionales</label><textarea id="notas" placeholder="Información adicional para emergencias" rows="3"></textarea></div>
                     
                     <button class="btn-primary" id="saveProfileBtn" style="width: 100%;">💾 Guardar mis datos</button>
+                    
+                    <button class="btn-danger" id="deleteAccountBtn">🗑️ Eliminar mi cuenta (borrar todos mis datos)</button>
+                    
                     <div id="saveMessage" class="success-msg" style="text-align: center; margin-top: 12px;"></div>
                 </div></div></div>
                 <div><div class="sticker-preview">
                     <h2 style="font-family: 'Bebas Neue'; font-size: 22px; color: #E8152A;">🔲 Tu sticker personalizado</h2>
-                    <div class="sticker-selector">
-                        <div class="sticker-option negro active" data-sticker="negro">⚫ Fondo Negro</div>
-                        <div class="sticker-option rojo" data-sticker="rojo">🔴 Fondo Rojo</div>
+                    
+                    <div class="sticker-selectors">
+                        <div class="selector-group">
+                            <span class="selector-label">Formato:</span>
+                            <div class="format-option active" data-format="horizontal">📏 Horizontal (6×3cm)</div>
+                            <div class="format-option" data-format="cuadrado">⬛ Cuadrado (3×3cm)</div>
+                        </div>
+                        <div class="selector-group">
+                            <span class="selector-label">Color:</span>
+                            <div class="color-option negro active" data-color="negro">⚫ Fondo Negro</div>
+                            <div class="color-option rojo" data-color="rojo">🔴 Fondo Rojo</div>
+                        </div>
                     </div>
+                    
                     <div id="stickerContainer" class="sticker-container">
                         <img id="stickerBgImg" class="sticker-bg" src="TemplateNegroMyLifeQR.png" alt="Template" onerror="this.style.display='none'">
                         <div id="qrOverlay" class="sticker-qr-overlay"></div>
                     </div>
-                    <button class="btn-download" id="downloadPngBtn">📥 Descargar PNG (6cm x 3cm)</button>
-                    <button class="btn-download" id="downloadPdfBtn">📄 Descargar PDF (6cm x 3cm)</button>
-                    <p style="font-size: 11px; color: #888; margin-top: 12px;">QR de 7cm | Elige el color que mejor combine con tu casco</p>
+                    <button class="btn-download" id="downloadPngBtn">📥 Descargar PNG</button>
+                    <button class="btn-download" id="downloadPdfBtn">📄 Descargar PDF</button>
+                    <p style="font-size: 11px; color: #888; margin-top: 12px;">QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color</p>
                 </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Aviso de Privacidad LFPDPPP -->
+    <div id="modalAvisoPrivacidad" class="modal-legal" style="display:none;">
+        <div class="modal-legal-content">
+            <div class="modal-legal-header">
+                <h3>🔐 Aviso de Privacidad (LFPDPPP)</h3>
+                <button class="modal-legal-close" onclick="closeModalAvisoPrivacidad()">&times;</button>
+            </div>
+            <div class="modal-legal-body">
+                <h4>MyLifeQR - Aviso de Privacidad Integral</h4>
+                <p>En cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), ponemos a tu disposición el presente aviso.</p>
+                
+                <h4>Responsable</h4>
+                <p>MyLifeQR es un proyecto independiente sin fines de lucro. El responsable del tratamiento de tus datos es el usuario que crea el perfil.</p>
+                
+                <h4>Datos recabados</h4>
+                <p>Recopilamos: nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional).</p>
+                
+                <h4>Finalidad del tratamiento</h4>
+                <p>Tus datos se utilizan EXCLUSIVAMENTE para generar tu perfil médico de emergencia, accesible mediante código QR en situaciones de emergencia.</p>
+                
+                <h4>Transferencia de datos</h4>
+                <p>No transferimos tus datos a terceros. Los contactos de emergencia reciben notificaciones automáticas SOLO si activas la opción correspondiente.</p>
+                
+                <h4>Medios para ejercer derechos ARCO</h4>
+                <p>Puedes acceder, rectificar, cancelar u oponerte al uso de tus datos ingresando a tu perfil o contactando a: <strong>privacidad@mylifeqr.com</strong></p>
+                
+                <h4>Consentimiento</h4>
+                <p>Al registrarte y aceptar este aviso, otorgas tu consentimiento para el tratamiento de tus datos personales, incluyendo datos sensibles de salud, con los fines aquí descritos.</p>
+                
+                <h4>Última actualización</h4>
+                <p>Abril 2026</p>
+            </div>
+            <div class="modal-legal-footer">
+                <button onclick="closeModalAvisoPrivacidad()">Cerrar</button>
             </div>
         </div>
     </div>
@@ -534,8 +662,8 @@
 
     <script type="module">
         import { initializeApp } from "firebase/app";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-        import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from "firebase/auth";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
         
         const firebaseConfig = {
             apiKey: "AIzaSyA6ZN6SVnCx2DriW72R67_5OVgF68NhmR4",
@@ -553,23 +681,112 @@
         
         let currentUser = null;
         let fotoBase64 = "";
-        let currentSticker = "negro";
+        let currentFormato = "horizontal"; // horizontal o cuadrado
+        let currentColor = "negro"; // negro o rojo
         
-        const QR_CONFIG = {
-            leftPercent: 56.5,
-            topPercent: 6,
-            widthPercent: 37.4,
-            heightPercent: 74.6
-        };
+
+const QR_CONFIG = {
+    horizontal: {
+        leftPercent: 56.5,
+        topPercent: 6,
+        widthPercent: 37.4,
+        heightPercent: 74.6,
+        targetWidth: 709,
+        targetHeight: 355
+    },
+    cuadrado: {
+        leftPercent: 50,      // Centrado horizontal
+        topPercent: 12,       // Centrado vertical
+        widthPercent: 76,     // 271px ≈ 2.3cm (con margen)
+        heightPercent: 76,
+        targetWidth: 355,
+        targetHeight: 356
+    }
+};
         
-        function cambiarSticker(tipo) {
-            currentSticker = tipo;
+        function obtenerImagenSticker() {
+            if (currentFormato === "horizontal") {
+                return currentColor === "negro" ? 'TemplateNegroMyLifeQR.png' : 'TemplateRojoMyLifeQR.png';
+            } else {
+                return currentColor === "negro" ? 'TemplateNegroMyLifeQRCuadrado.png' : 'TemplateRojoMyLifeQRCuadrado.png';
+            }
+        }
+        
+        function cambiarFormato(formato) {
+            currentFormato = formato;
+            actualizarImagenSticker();
+        }
+        
+        function cambiarColor(color) {
+            currentColor = color;
+            actualizarImagenSticker();
+        }
+        
+        function actualizarImagenSticker() {
             const imgElement = document.getElementById('stickerBgImg');
-            imgElement.src = tipo === 'negro' ? 'TemplateNegroMyLifeQR.png' : 'TemplateRojoMyLifeQR.png';
+            const nuevaImagen = obtenerImagenSticker();
+            imgElement.src = nuevaImagen;
             imgElement.onload = () => { posicionarQR(); actualizarQR(); };
             posicionarQR();
             actualizarQR();
         }
+        
+        // Eventos de los selectores
+        document.querySelectorAll('.format-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.format-option').forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                cambiarFormato(opt.getAttribute('data-format'));
+            });
+        });
+        
+        document.querySelectorAll('.color-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                cambiarColor(opt.getAttribute('data-color'));
+            });
+        });
+        
+        async function obtenerIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.log("No se pudo obtener IP:", error);
+                return null;
+            }
+        }
+        
+        window.eliminarCuenta = async () => {
+            if (!currentUser) return;
+            
+            const confirmacion = confirm("⚠️ ¿ESTÁS SEGURO?\n\nEsta acción ELIMINARÁ PERMANENTEMENTE todos tus datos:\n- Tu perfil médico\n- Tus contactos de emergencia\n- Tu foto\n- Tu cuenta de usuario\n\nEsta acción NO se puede deshacer.\n\n¿Deseas continuar?");
+            
+            if (!confirmacion) return;
+            
+            const segundaConfirmacion = confirm("Última advertencia: Todos tus datos serán borrados para siempre. ¿Confirmas?");
+            
+            if (!segundaConfirmacion) return;
+            
+            try {
+                await deleteDoc(doc(db, "perfiles", currentUser.uid));
+                console.log("✅ Documento de Firestore eliminado");
+                await deleteUser(currentUser);
+                console.log("✅ Usuario de Authentication eliminado");
+                alert("✅ Tu cuenta y todos tus datos han sido eliminados permanentemente.");
+                await signOut(auth);
+                window.location.reload();
+            } catch (error) {
+                console.error("Error al eliminar cuenta:", error);
+                if (error.code === 'auth/requires-recent-login') {
+                    alert("⚠️ Por seguridad, necesitas volver a iniciar sesión antes de eliminar tu cuenta. Por favor, cierra sesión y vuelve a entrar.");
+                } else {
+                    alert("❌ Error al eliminar la cuenta: " + error.message);
+                }
+            }
+        };
         
         const fotoInput = document.getElementById('fotoInput');
         const fotoPreview = document.getElementById('fotoPreview');
@@ -609,10 +826,17 @@
             if (!container || !overlay || !img || !img.complete) return;
             const imgRect = img.getBoundingClientRect();
             if (imgRect.width === 0) return;
-            overlay.style.left = `${(QR_CONFIG.leftPercent / 100) * imgRect.width}px`;
-            overlay.style.top = `${(QR_CONFIG.topPercent / 100) * imgRect.height}px`;
-            overlay.style.width = `${(QR_CONFIG.widthPercent / 100) * imgRect.width}px`;
-            overlay.style.height = `${(QR_CONFIG.heightPercent / 100) * imgRect.height}px`;
+            
+            const config = QR_CONFIG[currentFormato];
+            const left = (config.leftPercent / 100) * imgRect.width;
+            const top = (config.topPercent / 100) * imgRect.height;
+            const qrWidth = (config.widthPercent / 100) * imgRect.width;
+            const qrHeight = (config.heightPercent / 100) * imgRect.height;
+            
+            overlay.style.left = `${left}px`;
+            overlay.style.top = `${top}px`;
+            overlay.style.width = `${qrWidth}px`;
+            overlay.style.height = `${qrHeight}px`;
         }
         
         function actualizarQR() {
@@ -629,14 +853,6 @@
             }
         }
         
-        document.querySelectorAll('.sticker-option').forEach(option => {
-            option.addEventListener('click', () => {
-                document.querySelectorAll('.sticker-option').forEach(opt => opt.classList.remove('active'));
-                option.classList.add('active');
-                cambiarSticker(option.getAttribute('data-sticker'));
-            });
-        });
-        
         window.addEventListener('resize', () => { setTimeout(() => { posicionarQR(); actualizarQR(); }, 100); });
         
         const landingScreen = document.getElementById('landingScreen');
@@ -650,6 +866,13 @@
         
         function showLoginForm() { loginFormContainer.style.display = 'block'; registerFormContainer.style.display = 'none'; loginFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         function showRegisterForm() { registerFormContainer.style.display = 'block'; loginFormContainer.style.display = 'none'; registerFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        
+        window.showAvisoPrivacidad = () => {
+            document.getElementById('modalAvisoPrivacidad').style.display = 'flex';
+        };
+        window.closeModalAvisoPrivacidad = () => {
+            document.getElementById('modalAvisoPrivacidad').style.display = 'none';
+        };
         
         window.showTerminosRegistro = () => {
             const modal = document.getElementById('modalLegalRegistro');
@@ -682,14 +905,20 @@
             }
         });
         
+        document.getElementById('deleteAccountBtn')?.addEventListener('click', window.eliminarCuenta);
+        
         async function handleRegister() {
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
             const aceptaTerminos = document.getElementById('aceptaTerminos').checked;
+            
             if (!email || !password) { registerError.innerText = 'Completa todos los campos'; return; }
             if (password.length < 6) { registerError.innerText = 'La contraseña debe tener al menos 6 caracteres'; return; }
             if (!aceptaTerminos) { registerError.innerText = 'Debes aceptar los Términos y Condiciones'; return; }
+            
             registerError.innerText = '';
+            const ip = await obtenerIP();
+            
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await setDoc(doc(db, "perfiles", userCredential.user.uid), {
@@ -699,7 +928,12 @@
                     contacto3_nombre: "", contacto3_relacion: "", contacto3_tel: "", contacto3_email: "", contacto3_notificar: false,
                     contacto4_nombre: "", contacto4_relacion: "", contacto4_tel: "", contacto4_email: "", contacto4_notificar: false,
                     contacto5_nombre: "", contacto5_relacion: "", contacto5_tel: "", contacto5_email: "", contacto5_notificar: false,
-                    hospital: "", notas: "", email: email, foto: "", acepta_terminos: true, fecha_creacion: new Date().toISOString()
+                    hospital: "", notas: "", email: email, foto: "", 
+                    acepta_terminos: true, acepta_privacidad: true,
+                    fecha_aceptacion_terminos: new Date().toISOString(),
+                    fecha_aceptacion_privacidad: new Date().toISOString(),
+                    ip_registro: ip,
+                    fecha_creacion: new Date().toISOString()
                 });
                 registerError.style.color = '#22C55E';
                 registerError.innerText = '✅ Cuenta creada. ¡Bienvenido!';
@@ -708,6 +942,7 @@
                 let mensaje = 'Error al registrar';
                 if (error.code === 'auth/email-already-in-use') mensaje = 'Este correo ya está registrado';
                 registerError.innerText = mensaje;
+                registerError.style.color = '#E8152A';
             }
         }
         
@@ -832,13 +1067,19 @@
                 await new Promise(resolve => setTimeout(resolve, 300));
                 if (typeof html2canvas === 'undefined') throw new Error('html2canvas no está cargado');
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
-                const targetWidth = 709, targetHeight = 355;
+                
+                const config = QR_CONFIG[currentFormato];
+                const targetWidth = config.targetWidth;
+                const targetHeight = config.targetHeight;
+                
                 const finalCanvas = document.createElement('canvas');
                 finalCanvas.width = targetWidth; finalCanvas.height = targetHeight;
                 const ctx = finalCanvas.getContext('2d');
                 ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, targetWidth, targetHeight);
+                
                 const link = document.createElement('a');
-                link.download = `mylifeqr_sticker_${currentSticker}_${currentUser?.uid || 'usuario'}.png`;
+                const formatoNombre = currentFormato === "horizontal" ? "horizontal" : "cuadrado";
+                link.download = `mylifeqr_sticker_${formatoNombre}_${currentColor}_${currentUser?.uid || 'usuario'}.png`;
                 link.href = finalCanvas.toDataURL('image/png');
                 link.click();
             } catch (error) { alert('Error al generar la imagen. Intenta de nuevo.'); }
@@ -856,7 +1097,11 @@
                 await new Promise(resolve => setTimeout(resolve, 300));
                 if (typeof html2canvas === 'undefined') throw new Error('html2canvas no está cargado');
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
-                const targetWidth = 709, targetHeight = 355;
+                
+                const config = QR_CONFIG[currentFormato];
+                const targetWidth = config.targetWidth;
+                const targetHeight = config.targetHeight;
+                
                 const finalCanvas = document.createElement('canvas');
                 finalCanvas.width = targetWidth; finalCanvas.height = targetHeight;
                 const ctx = finalCanvas.getContext('2d');
@@ -873,9 +1118,13 @@
                 });
                 
                 const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [60, 30] });
-                pdf.addImage(imgData, 'PNG', 0, 0, 60, 30, undefined, 'FAST');
-                pdf.save(`mylifeqr_sticker_${currentSticker}_${currentUser?.uid || 'usuario'}.pdf`);
+                const formatoNombre = currentFormato === "horizontal" ? "horizontal" : "cuadrado";
+                const anchoMM = currentFormato === "horizontal" ? 60 : 30;
+                const altoMM = currentFormato === "horizontal" ? 30 : 30;
+                
+                const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [anchoMM, altoMM] });
+                pdf.addImage(imgData, 'PNG', 0, 0, anchoMM, altoMM, undefined, 'FAST');
+                pdf.save(`mylifeqr_sticker_${formatoNombre}_${currentColor}_${currentUser?.uid || 'usuario'}.pdf`);
             } catch (error) { alert('Error al generar el PDF. Intenta de nuevo o usa PNG.'); }
             finally { btn.innerText = originalText; btn.disabled = false; }
         }
