@@ -150,6 +150,7 @@
             color: white;
             border-color: #E8152A;
         }
+        /* Colores para stickers (sin cambios) */
         .color-option.negro {
             background: #1a1a1a;
             color: white;
@@ -166,10 +167,47 @@
         }
         
         .sticker-preview { background: #f8f8f8; border-radius: 24px; padding: 24px; text-align: center; position: sticky; top: 20px; }
-        .sticker-container { position: relative; width: 100%; max-width: 400px; margin: 0 auto; }
+        
+        /* Contenedor del sticker - tamaños según formato */
+        .sticker-container { 
+            position: relative; 
+            width: 100%; 
+            margin: 0 auto; 
+        }
+        .sticker-container.horizontal { 
+            max-width: 400px;
+        }
+        .sticker-container.cuadrado { 
+            max-width: 200px;
+        }
+        .sticker-container.tarjeta { 
+            max-width: 500px;
+        }
+        
         .sticker-bg { width: 100%; height: auto; display: block; border-radius: 12px; }
         .sticker-qr-overlay { position: absolute; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 12px; }
         .sticker-qr-overlay canvas { width: 100% !important; height: 100% !important; border-radius: 12px; }
+        
+        /* Botones para voltear tarjeta */
+        .flip-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 12px 0;
+        }
+        .btn-flip {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-flip:hover {
+            background: #E8152A;
+        }
         
         .btn-download { background: #E8152A; color: white; border: none; padding: 12px 20px; border-radius: 40px; font-weight: 600; cursor: pointer; margin: 6px; transition: background 0.2s; }
         .btn-download:hover { background: #B01020; }
@@ -314,7 +352,7 @@
             
             <div class="sticker-showcase">
                 <div class="sticker-preview-card"><img src="Casco.jpg" alt="Casco con sticker" onerror="this.src='https://placehold.co/300x200/E8152A/white?text=Casco+MyLifeQR'"></div>
-                <div class="sticker-info"><h2>Tu sticker personalizado</h2><p>Imprime y pega en tu casco. Resistente al agua y al sol. Dos formatos disponibles.</p><ul><li>✅ QR único con tu perfil médico</li><li>✅ Tipo de sangre visible</li><li>✅ Contactos de emergencia</li><li>✅ Alergias y condiciones médicas</li><li>✅ Donador de órganos (Sí/No)</li></ul><button class="btn-primary" id="stickerRegisterBtn">Generar mi sticker ahora</button></div>
+                <div class="sticker-info"><h2>Tu sticker personalizado</h2><p>Imprime y pega en tu casco. Resistente al agua y al sol. Tres formatos disponibles.</p><ul><li>✅ QR único con tu perfil médico</li><li>✅ Tipo de sangre visible</li><li>✅ Contactos de emergencia</li><li>✅ Alergias y condiciones médicas</li><li>✅ Donador de órganos (Sí/No)</li></ul><button class="btn-primary" id="stickerRegisterBtn">Generar mi sticker ahora</button></div>
             </div>
             
             <div class="features" style="background: #E8152A0D;">
@@ -579,21 +617,28 @@
                             <span class="selector-label">Formato:</span>
                             <div class="format-option active" data-format="horizontal">📏 Horizontal (6×3cm)</div>
                             <div class="format-option" data-format="cuadrado">⬛ Cuadrado (3×3cm)</div>
+                            <div class="format-option" data-format="tarjeta">🃏 Tarjeta (9×5cm)</div>
                         </div>
-                        <div class="selector-group">
+                        <div class="selector-group" id="colorSelectorGroup">
                             <span class="selector-label">Color:</span>
                             <div class="color-option negro active" data-color="negro">⚫ Fondo Negro</div>
                             <div class="color-option rojo" data-color="rojo">🔴 Fondo Rojo</div>
                         </div>
                     </div>
                     
-                    <div id="stickerContainer" class="sticker-container">
+                    <!-- Botones para voltear tarjeta (solo visible en modo tarjeta) -->
+                    <div id="flipButtons" class="flip-buttons" style="display: none;">
+                        <button class="btn-flip" id="flipFrontBtn">📇 Ver Frente</button>
+                        <button class="btn-flip" id="flipBackBtn">🔄 Ver Reverso</button>
+                    </div>
+                    
+                    <div id="stickerContainer" class="sticker-container horizontal">
                         <img id="stickerBgImg" class="sticker-bg" src="TemplateNegroMyLifeQR.png" alt="Template" onerror="this.style.display='none'">
                         <div id="qrOverlay" class="sticker-qr-overlay"></div>
                     </div>
                     <button class="btn-download" id="downloadPngBtn">📥 Descargar PNG</button>
                     <button class="btn-download" id="downloadPdfBtn">📄 Descargar PDF</button>
-                    <p style="font-size: 11px; color: #888; margin-top: 12px;">QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color</p>
+                    <p style="font-size: 11px; color: #888; margin-top: 12px;">Elige formato y color</p>
                 </div></div>
             </div>
         </div>
@@ -614,7 +659,7 @@
                 <p>MyLifeQR es un proyecto independiente sin fines de lucro. El responsable del tratamiento de tus datos es el usuario que crea el perfil.</p>
                 
                 <h4>Datos recabados</h4>
-                <p>Recopilamos: nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional).</p>
+                <p>Recopilamos: nombre, edad, tipo de sangue, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional).</p>
                 
                 <h4>Finalidad del tratamiento</h4>
                 <p>Tus datos se utilizan EXCLUSIVAMENTE para generar tu perfil médico de emergencia, accesible mediante código QR en situaciones de emergencia.</p>
@@ -681,44 +726,83 @@
         
         let currentUser = null;
         let fotoBase64 = "";
-        let currentFormato = "horizontal"; // horizontal o cuadrado
-        let currentColor = "negro"; // negro o rojo
+        let currentFormato = "horizontal";
+        let currentColor = "negro";
+        let mostrarReverso = false; // Para la tarjeta
         
-
-const QR_CONFIG = {
-    horizontal: {
-        leftPercent: 56.5,
-        topPercent: 6,
-        widthPercent: 37.4,
-        heightPercent: 74.6,
-        targetWidth: 709,
-        targetHeight: 355
-    },
-    cuadrado: {
-        leftPercent: 50,      // Centrado horizontal
-        topPercent: 12,       // Centrado vertical
-        widthPercent: 76,     // 271px ≈ 2.3cm (con margen)
-        heightPercent: 76,
-        targetWidth: 355,
-        targetHeight: 356
-    }
-};
+        // Configuración QR según formato
+        const QR_CONFIG = {
+            horizontal: {
+                leftPercent: 56.5,
+                topPercent: 6,
+                widthPercent: 37.4,
+                heightPercent: 74.6,
+                targetWidth: 709,
+                targetHeight: 355
+            },
+            cuadrado: {
+                leftPercent: 13,
+                topPercent: 6,
+                widthPercent: 75,
+                heightPercent: 75,
+                targetWidth: 355,
+                targetHeight: 356
+            },
+            tarjeta: {
+                leftPercent: 41,
+                topPercent: 24,
+                widthPercent: 47,
+                heightPercent: 47,
+                targetWidth: 1063,
+                targetHeight: 591
+            }
+        };
         
         function obtenerImagenSticker() {
-            if (currentFormato === "horizontal") {
+            if (currentFormato === "tarjeta") {
+                return mostrarReverso ? 'TarjetaBack.png' : 'TarjetaFrente.png';
+            } else if (currentFormato === "horizontal") {
                 return currentColor === "negro" ? 'TemplateNegroMyLifeQR.png' : 'TemplateRojoMyLifeQR.png';
             } else {
                 return currentColor === "negro" ? 'TemplateNegroMyLifeQRCuadrado.png' : 'TemplateRojoMyLifeQRCuadrado.png';
             }
         }
         
+        function actualizarVisibilidadColorSelector() {
+            const colorSelector = document.getElementById('colorSelectorGroup');
+            const flipButtons = document.getElementById('flipButtons');
+            if (currentFormato === "tarjeta") {
+                colorSelector.style.display = 'none';
+                flipButtons.style.display = 'flex';
+            } else {
+                colorSelector.style.display = 'flex';
+                flipButtons.style.display = 'none';
+                mostrarReverso = false;
+            }
+        }
+        
         function cambiarFormato(formato) {
             currentFormato = formato;
+            const container = document.getElementById('stickerContainer');
+            container.classList.remove('horizontal', 'cuadrado', 'tarjeta');
+            container.classList.add(formato);
+            mostrarReverso = false;
+            actualizarVisibilidadColorSelector();
             actualizarImagenSticker();
         }
         
         function cambiarColor(color) {
             currentColor = color;
+            actualizarImagenSticker();
+        }
+        
+        function mostrarFrente() {
+            mostrarReverso = false;
+            actualizarImagenSticker();
+        }
+        
+        function mostrarBack() {
+            mostrarReverso = true;
             actualizarImagenSticker();
         }
         
@@ -747,6 +831,9 @@ const QR_CONFIG = {
                 cambiarColor(opt.getAttribute('data-color'));
             });
         });
+        
+        document.getElementById('flipFrontBtn')?.addEventListener('click', mostrarFrente);
+        document.getElementById('flipBackBtn')?.addEventListener('click', mostrarBack);
         
         async function obtenerIP() {
             try {
@@ -839,19 +926,31 @@ const QR_CONFIG = {
             overlay.style.height = `${qrHeight}px`;
         }
         
-        function actualizarQR() {
-            if (!currentUser) return;
-            const urlPerfil = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
-            const overlay = document.getElementById('qrOverlay');
-            if (overlay && window.QRCode) {
-                overlay.innerHTML = '';
-                const qrSize = Math.min(overlay.clientWidth, overlay.clientHeight) || 100;
-                new QRCode(overlay, { text: urlPerfil, width: qrSize, height: qrSize, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
-                const img = document.getElementById('stickerBgImg');
-                if (img.complete) posicionarQR();
-                else img.onload = posicionarQR;
-            }
+function actualizarQR() {
+    if (!currentUser) return;
+    
+    // NO mostrar QR en el reverso de la tarjeta
+    if (currentFormato === "tarjeta" && mostrarReverso) {
+        const overlay = document.getElementById('qrOverlay');
+        if (overlay) {
+            overlay.innerHTML = '';
+            overlay.style.display = 'none';
         }
+        return;
+    }
+    
+    const urlPerfil = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
+    const overlay = document.getElementById('qrOverlay');
+    if (overlay && window.QRCode) {
+        overlay.style.display = 'flex';
+        overlay.innerHTML = '';
+        const qrSize = Math.min(overlay.clientWidth, overlay.clientHeight) || 100;
+        new QRCode(overlay, { text: urlPerfil, width: qrSize, height: qrSize, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+        const img = document.getElementById('stickerBgImg');
+        if (img.complete) posicionarQR();
+        else img.onload = posicionarQR;
+    }
+}
         
         window.addEventListener('resize', () => { setTimeout(() => { posicionarQR(); actualizarQR(); }, 100); });
         
@@ -1078,8 +1177,11 @@ const QR_CONFIG = {
                 ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, targetWidth, targetHeight);
                 
                 const link = document.createElement('a');
-                const formatoNombre = currentFormato === "horizontal" ? "horizontal" : "cuadrado";
-                link.download = `mylifeqr_sticker_${formatoNombre}_${currentColor}_${currentUser?.uid || 'usuario'}.png`;
+                let formatoNombre = currentFormato === "horizontal" ? "horizontal" : (currentFormato === "cuadrado" ? "cuadrado" : "tarjeta");
+                if (currentFormato === "tarjeta") {
+                    formatoNombre += mostrarReverso ? "_back" : "_front";
+                }
+                link.download = `mylifeqr_sticker_${formatoNombre}_${currentFormato !== "tarjeta" ? currentColor + "_" : ""}${currentUser?.uid || 'usuario'}.png`;
                 link.href = finalCanvas.toDataURL('image/png');
                 link.click();
             } catch (error) { alert('Error al generar la imagen. Intenta de nuevo.'); }
@@ -1118,13 +1220,23 @@ const QR_CONFIG = {
                 });
                 
                 const { jsPDF } = window.jspdf;
-                const formatoNombre = currentFormato === "horizontal" ? "horizontal" : "cuadrado";
-                const anchoMM = currentFormato === "horizontal" ? 60 : 30;
-                const altoMM = currentFormato === "horizontal" ? 30 : 30;
+                let anchoMM, altoMM;
+                if (currentFormato === "horizontal") {
+                    anchoMM = 60; altoMM = 30;
+                } else if (currentFormato === "cuadrado") {
+                    anchoMM = 30; altoMM = 30;
+                } else {
+                    anchoMM = 90; altoMM = 50;
+                }
                 
-                const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [anchoMM, altoMM] });
+                const pdf = new jsPDF({ orientation: anchoMM > altoMM ? 'landscape' : 'portrait', unit: 'mm', format: [anchoMM, altoMM] });
                 pdf.addImage(imgData, 'PNG', 0, 0, anchoMM, altoMM, undefined, 'FAST');
-                pdf.save(`mylifeqr_sticker_${formatoNombre}_${currentColor}_${currentUser?.uid || 'usuario'}.pdf`);
+                
+                let formatoNombre = currentFormato === "horizontal" ? "horizontal" : (currentFormato === "cuadrado" ? "cuadrado" : "tarjeta");
+                if (currentFormato === "tarjeta") {
+                    formatoNombre += mostrarReverso ? "_back" : "_front";
+                }
+                pdf.save(`mylifeqr_sticker_${formatoNombre}_${currentFormato !== "tarjeta" ? currentColor + "_" : ""}${currentUser?.uid || 'usuario'}.pdf`);
             } catch (error) { alert('Error al generar el PDF. Intenta de nuevo o usa PNG.'); }
             finally { btn.innerText = originalText; btn.disabled = false; }
         }
@@ -1162,6 +1274,7 @@ const QR_CONFIG = {
                 await cargarPerfil(user.uid);
                 await cargarFoto(user.uid);
                 actualizarQR();
+                actualizarVisibilidadColorSelector();
             } else {
                 currentUser = null;
                 landingScreen.style.display = 'block';
