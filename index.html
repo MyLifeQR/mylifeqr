@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MyLifeQR — Identificación médica de emergencia para motociclistas</title>
     
-    <!-- SEO -->
     <meta name="description" content="MyLifeQR es un sticker con QR para tu casco que permite a paramédicos acceder a tu tipo de sangre, alergias y contactos de emergencia al instante. Gratuito y protegido por la LFPDPPP.">
     <meta name="keywords" content="identificación médica, QR emergencia, motociclista seguro, sticker casco, datos médicos emergencia, MyLifeQR">
     <meta name="author" content="MyLifeQR">
@@ -13,20 +12,17 @@
     <meta name="language" content="Spanish">
     <meta name="revisit-after" content="7 days">
     
-    <!-- Open Graph / Redes Sociales -->
     <meta property="og:title" content="MyLifeQR — Tu ángel guardián en el asfalto">
     <meta property="og:description" content="Sticker QR para tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos al instante.">
     <meta property="og:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
     <meta property="og:url" content="https://MyLifeQR.github.io/mylifeqr/">
     <meta property="og:type" content="website">
     
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MyLifeQR — Identificación médica para motociclistas">
     <meta name="twitter:description" content="Protege tu vida con un sticker QR en tu casco. Gratuito.">
     <meta name="twitter:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="shortcut icon" href="favicon.ico">
     
@@ -45,6 +41,30 @@
         .nav-link:hover { color: #E8152A; }
         .btn-outline { border: 2px solid #E8152A; background: transparent; padding: 8px 24px; border-radius: 40px; font-weight: 600; color: #E8152A; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; transition: all 0.2s; }
         .btn-outline:hover { background: #E8152A; color: white; }
+        
+        .language-selector {
+            display: flex;
+            gap: 4px;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 40px;
+            margin-left: auto;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .lang-btn.active {
+            background: #E8152A;
+            color: white;
+        }
         
         .donation-bar { background: linear-gradient(135deg, #E8152A 0%, #B01020 100%); border-radius: 60px; padding: 12px 24px; margin: 20px 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .donation-text { color: white; font-weight: 500; display: flex; align-items: center; gap: 12px; }
@@ -197,15 +217,9 @@
             width: 100%; 
             margin: 0 auto; 
         }
-        .sticker-container.horizontal { 
-            max-width: 400px;
-        }
-        .sticker-container.cuadrado { 
-            max-width: 200px;
-        }
-        .sticker-container.tarjeta { 
-            max-width: 500px;
-        }
+        .sticker-container.horizontal { max-width: 400px; }
+        .sticker-container.cuadrado { max-width: 200px; }
+        .sticker-container.tarjeta { max-width: 500px; }
         
         .sticker-bg { width: 100%; height: auto; display: block; border-radius: 12px; }
         .sticker-qr-overlay { position: absolute; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 12px; }
@@ -227,9 +241,7 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .btn-flip:hover {
-            background: #E8152A;
-        }
+        .btn-flip:hover { background: #E8152A; }
         
         .btn-download { background: #E8152A; color: white; border: none; padding: 12px 20px; border-radius: 40px; font-weight: 600; cursor: pointer; margin: 6px; transition: background 0.2s; }
         .btn-download:hover { background: #B01020; }
@@ -311,7 +323,6 @@
         }
         .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; font-size: 12px; }
         
-        /* Suscripción */
         .suscripcion-box {
             background: #f8f8f8;
             padding: 32px;
@@ -334,7 +345,6 @@
             width: 280px;
         }
         
-        /* Cookie consent */
         #cookieConsent {
             position: fixed;
             bottom: 0;
@@ -357,7 +367,6 @@
             cursor: pointer;
         }
         
-        /* Aviso correos */
         .email-tip {
             background: #f0f0f0;
             padding: 12px;
@@ -371,6 +380,13 @@
             margin: 0;
         }
         
+        .copyright {
+            margin-top: 20px;
+            font-size: 10px;
+            color: #aaa;
+            text-align: center;
+        }
+        
         @media (max-width: 768px) {
             .hero, .sticker-showcase, .two-columns { grid-template-columns: 1fr; }
             .hero-content h1 { font-size: 48px; }
@@ -378,6 +394,8 @@
             .sticker-preview-card img { max-width: 80%; }
             .donation-bar { flex-direction: column; text-align: center; }
             .creator-contact { flex-direction: column; align-items: center; gap: 12px; }
+            .language-selector { margin-left: 0; }
+            .header { flex-direction: column; }
         }
     </style>
 </head>
@@ -386,53 +404,56 @@
         <div class="container">
             <div class="header">
                 <div class="logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.src='https://placehold.co/200x64/E8152A/white?text=MyLifeQR'"></div>
+                <div class="language-selector">
+                    <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
+                    <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+                </div>
                 <div class="nav-links">
-                    <button class="nav-link" id="navLoginBtn">Iniciar sesión</button>
-                    <button class="btn-outline" id="navRegisterBtn">Registrarme</button>
+                    <button class="nav-link" id="navLoginBtn" data-i18n="navLogin">Iniciar sesión</button>
+                    <button class="btn-outline" id="navRegisterBtn" data-i18n="navRegister">Registrarme</button>
                 </div>
             </div>
             
             <div class="donation-bar">
-                <div class="donation-text"><span>💙</span><span>MyLifeQR es gratuito. Si te sirve, ayúdanos a seguir salvando vidas</span></div>
-                <a href="https://link.mercadopago.com.mx/mylifeqr" target="_blank" rel="noopener noreferrer" class="btn-donate">❤️ Hacer donativo</a>
+                <div class="donation-text"><span>💙</span><span data-i18n="donationText">MyLifeQR es gratuito. Si te sirve, ayúdanos a seguir salvando vidas</span></div>
+                <a href="https://link.mercadopago.com.mx/mylifeqr" target="_blank" rel="noopener noreferrer" class="btn-donate" data-i18n="donateBtn">❤️ Hacer donativo</a>
             </div>
             
             <div class="hero">
                 <div class="hero-content">
-                    <h1>Tu vida<br>merece un guardián</h1>
-                    <div class="slogan">En la carretera, cada segundo cuenta. MyLifeQR es tu voz cuando no puedes hablar.</div>
-                    <p>Un sticker con QR en tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos — toda la información que los paramédicos necesitan al instante.</p>
+                    <h1 data-i18n="heroTitle">Tu vida<br>merece un guardián</h1>
+                    <div class="slogan" data-i18n="heroSlogan">En la carretera, cada segundo cuenta. MyLifeQR es tu voz cuando no puedes hablar.</div>
+                    <p data-i18n="heroDesc">Un sticker con QR en tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos — toda la información que los paramédicos necesitan al instante.</p>
                     <div class="hero-badges">
-                        <span class="badge">⚡ Gratuito</span>
-                        <span class="badge">🔒 Datos protegidos</span>
-                        <span class="badge">🏍️ Para motociclistas</span>
+                        <span class="badge" data-i18n="badgeFree">⚡ Gratuito</span>
+                        <span class="badge" data-i18n="badgePrivacy">🔒 Datos protegidos</span>
+                        <span class="badge" data-i18n="badgeMoto">🏍️ Para motociclistas</span>
                         <span class="badge" id="vidasCounter">❤️ 0+ vidas protegidas</span>
                     </div>
-                    <button class="btn-primary" id="heroRegisterBtn">Protege tu vida ahora</button>
+                    <button class="btn-primary" id="heroRegisterBtn" data-i18n="heroBtn">Protege tu vida ahora</button>
                 </div>
                 <div class="hero-image"><img src="Motoindex.png" alt="Motociclista" onerror="this.src='https://placehold.co/600x400/E8152A/white?text=MyLifeQR'"></div>
             </div>
             
-            <!-- Aviso para mejorar entregabilidad de correos -->
             <div class="email-tip">
-                <p>📧 <strong>¿Tus contactos no reciben las alertas?</strong> Pídeles que agreguen <strong style="color:#E8152A;">aimaginalabs@gmail.com</strong> a su libreta de direcciones y marquen el correo como "No es spam".</p>
+                <p data-i18n="emailTip">📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen aimaginalabs@gmail.com a su libreta de direcciones y marquen el correo como "No es spam".</p>
             </div>
             
             <div class="features">
-                <h2 class="section-title">¿Por qué MyLifeQR?</h2>
-                <p class="section-subtitle">Porque los héroes también necesitan un ángel guardián</p>
+                <h2 class="section-title" data-i18n="featuresTitle">¿Por qué MyLifeQR?</h2>
+                <p class="section-subtitle" data-i18n="featuresSubtitle">Porque los héroes también necesitan un ángel guardián</p>
                 <div class="features-grid">
-                    <div class="feature-card"><div class="feature-icon">🚑</div><h3>Respuesta inmediata</h3><p>En un accidente, cada segundo cuenta. Tu información médica disponible al instante.</p></div>
-                    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Privacidad garantizada</h3><p>Datos protegidos por la LFPDPPP. Solo visible en emergencias con aviso de privacidad.</p></div>
-                    <div class="feature-card"><div class="feature-icon">🔄</div><h3>Actualiza cuando quieras</h3><p>Cambia tus datos, contactos o medicamentos desde cualquier dispositivo.</p></div>
-                    <div class="feature-card"><div class="feature-icon">📱</div><h3>Sin app necesaria</h3><p>El paramédico solo escanea el QR con su celular. No necesita instalar nada.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🚑</div><h3 data-i18n="feature1Title">Respuesta inmediata</h3><p data-i18n="feature1Desc">En un accidente, cada segundo cuenta. Tu información médica disponible al instante.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🔒</div><h3 data-i18n="feature2Title">Privacidad garantizada</h3><p data-i18n="feature2Desc">Datos protegidos por la LFPDPPP. Solo visible en emergencias con aviso de privacidad.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🔄</div><h3 data-i18n="feature3Title">Actualiza cuando quieras</h3><p data-i18n="feature3Desc">Cambia tus datos, contactos o medicamentos desde cualquier dispositivo.</p></div>
+                    <div class="feature-card"><div class="feature-icon">📱</div><h3 data-i18n="feature4Title">Sin app necesaria</h3><p data-i18n="feature4Desc">El paramédico solo escanea el QR con su celular. No necesita instalar nada.</p></div>
                 </div>
             </div>
             
             <div class="creator-section">
                 <div class="creator-avatar">🏍️</div>
                 <div class="creator-name">Marcos Esparza</div>
-                <div class="creator-bio">
+                <div class="creator-bio" data-i18n="creatorBio">
                     Motociclista desde hace más de 10 años, he recorrido carreteras de día y de noche. Sé lo que se siente ver a un compañero caer y no poder ayudar porque no sabes ni su nombre, ni si es alérgico, ni a quién llamar.<br><br>
                     <strong>MyLifeQR nació de esa impotencia.</strong> Este proyecto es gratuito porque creo que la seguridad no debería costar. Es mi forma de decir: <strong>"Yo te cuido, como quiero que me cuiden a mí".</strong>
                 </div>
@@ -444,42 +465,52 @@
             
             <div class="sticker-showcase">
                 <div class="sticker-preview-card"><img src="Casco.jpg" alt="Casco con sticker" onerror="this.src='https://placehold.co/300x200/E8152A/white?text=Casco+MyLifeQR'"></div>
-                <div class="sticker-info"><h2>Tu sticker personalizado</h2><p>Imprime y pega en tu casco. Resistente al agua y al sol. Tres formatos disponibles.</p><ul><li>✅ QR único con tu perfil médico</li><li>✅ Tipo de sangre visible</li><li>✅ Contactos de emergencia</li><li>✅ Alergias y condiciones médicas</li><li>✅ Donador de órganos (Sí/No)</li></ul><button class="btn-primary" id="stickerRegisterBtn">Generar mi sticker ahora</button></div>
-            </div>
-            
-            <div class="features" style="background: #E8152A0D;">
-                <h2 class="section-title">Lo que dicen nuestros usuarios</h2>
-                <div class="features-grid">
-                    <div class="feature-card"><p style="font-style: italic;">"Tranquilidad al saber que si algo pasa, los paramédicos sabrán mi tipo de sangre y alergias. Es como tener un ángel en mi casco."</p><p style="margin-top: 16px; font-weight: 600;">— Carlos M.</p></div>
-                    <div class="feature-card"><p style="font-style: italic;">"Lo mejor es que puedo actualizar mis datos cuando cambio de medicamento. Mi esposa está tranquila."</p><p style="margin-top: 16px; font-weight: 600;">— Ana G.</p></div>
+                <div class="sticker-info">
+                    <h2 data-i18n="stickerTitle">Tu sticker personalizado</h2>
+                    <p data-i18n="stickerDesc">Imprime y pega en tu casco. Resistente al agua y al sol. Tres formatos disponibles.</p>
+                    <ul>
+                        <li data-i18n="stickerList1">✅ QR único con tu perfil médico</li>
+                        <li data-i18n="stickerList2">✅ Tipo de sangre visible</li>
+                        <li data-i18n="stickerList3">✅ Contactos de emergencia</li>
+                        <li data-i18n="stickerList4">✅ Alergias y condiciones médicas</li>
+                        <li data-i18n="stickerList5">✅ Donador de órganos (Sí/No)</li>
+                    </ul>
+                    <button class="btn-primary" id="stickerRegisterBtn" data-i18n="stickerBtn">Generar mi sticker ahora</button>
                 </div>
             </div>
             
-            <!-- Suscripción a noticias -->
+            <div class="features" style="background: #E8152A0D;">
+                <h2 class="section-title" data-i18n="featuresTitle">Lo que dicen nuestros usuarios</h2>
+                <div class="features-grid">
+                    <div class="feature-card"><p style="font-style: italic;" data-i18n="testimonial1">"Tranquilidad al saber que si algo pasa, los paramédicos sabrán mi tipo de sangre y alergias. Es como tener un ángel en mi casco."</p><p style="margin-top: 16px; font-weight: 600;" data-i18n="testimonial1Author">— Carlos M.</p></div>
+                    <div class="feature-card"><p style="font-style: italic;" data-i18n="testimonial2">"Lo mejor es que puedo actualizar mis datos cuando cambio de medicamento. Mi esposa está tranquila."</p><p style="margin-top: 16px; font-weight: 600;" data-i18n="testimonial2Author">— Ana G.</p></div>
+                </div>
+            </div>
+            
             <div class="suscripcion-box">
-                <h3>📧 Recibe consejos de seguridad</h3>
-                <p>Suscríbete y recibe información útil para motociclistas.</p>
+                <h3 data-i18n="newsletterTitle">📧 Recibe consejos de seguridad</h3>
+                <p data-i18n="newsletterDesc">Suscríbete y recibe información útil para motociclistas.</p>
                 <div class="suscripcion-input-group">
                     <input type="email" id="suscripcionEmail" placeholder="Tu correo electrónico">
-                    <button id="btnSuscripcion" style="background: #E8152A; color: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer;">Suscribirme</button>
+                    <button id="btnSuscripcion" style="background: #E8152A; color: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer;" data-i18n="newsletterBtn">Suscribirme</button>
                 </div>
                 <div id="suscripcionMsg" style="margin-top: 12px; font-size: 12px;"></div>
             </div>
             
             <div id="loginFormContainer" style="display: none;">
                 <div class="login-card form-card">
-                    <h2 style="color: #E8152A; margin-bottom: 24px;">Iniciar sesión</h2>
+                    <h2 style="color: #E8152A; margin-bottom: 24px;" data-i18n="loginTitle">Iniciar sesión</h2>
                     <div class="form-group"><input type="email" id="loginEmail" placeholder="Correo electrónico"></div>
                     <div class="form-group"><input type="password" id="loginPassword" placeholder="Contraseña"></div>
-                    <button class="btn-primary" id="btnLogin" style="width: 100%;">Iniciar sesión</button>
-                    <button class="link-text" id="switchToRegisterBtn">¿No tienes cuenta? Regístrate gratis</button>
+                    <button class="btn-primary" id="btnLogin" style="width: 100%;" data-i18n="loginBtn">Iniciar sesión</button>
+                    <button class="link-text" id="switchToRegisterBtn" data-i18n="registerLink">¿No tienes cuenta? Regístrate gratis</button>
                     <div id="loginError" class="error-msg"></div>
                 </div>
             </div>
             
             <div id="registerFormContainer" style="display: none;">
                 <div class="login-card form-card">
-                    <h2 style="color: #E8152A; margin-bottom: 24px;">Crear cuenta gratis</h2>
+                    <h2 style="color: #E8152A; margin-bottom: 24px;" data-i18n="registerTitle">Crear cuenta gratis</h2>
                     <div class="form-group"><input type="email" id="registerEmail" placeholder="Correo electrónico"></div>
                     <div class="form-group"><input type="password" id="registerPassword" placeholder="Contraseña (mínimo 6 caracteres)"></div>
                     
@@ -492,23 +523,24 @@
                         </label>
                     </div>
                     
-                    <button class="btn-primary" id="btnRegister" style="width: 100%;">Registrarme</button>
-                    <button class="link-text" id="switchToLoginBtn">Ya tengo cuenta — Iniciar sesión</button>
+                    <button class="btn-primary" id="btnRegister" style="width: 100%;" data-i18n="registerBtn">Registrarme</button>
+                    <button class="link-text" id="switchToLoginBtn" data-i18n="loginLink">Ya tengo cuenta — Iniciar sesión</button>
                     <div id="registerError" class="error-msg"></div>
                 </div>
             </div>
             
             <div class="legal-footer">
                 <p class="legal-footer-text">
-                    <strong>⚠️ AVISO LEGAL ⚠️</strong><br>
-                    MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.<br>
-                    <strong>📞 En caso de emergencia, llame al 911 inmediatamente.</strong>
+                    <strong data-i18n="legalWarning">⚠️ AVISO LEGAL ⚠️</strong><br>
+                    <span data-i18n="legalText">MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.</span><br>
+                    <strong data-i18n="legalEmergency">📞 En caso de emergencia, llame al 911 inmediatamente.</strong>
                 </p>
                 <div class="legal-links-footer">
-                    <span class="legal-link" onclick="showTerminosRegistro()">📜 Términos y Condiciones</span>
-                    <span class="legal-link" onclick="showPrivacidadRegistro()">🔒 Política de Privacidad</span>
-                    <span class="legal-link" onclick="showAvisoPrivacidad()">🔐 Aviso de Privacidad (LFPDPPP)</span>
+                    <span class="legal-link" onclick="showTerminosRegistro()" data-i18n="termsLink">📜 Términos y Condiciones</span>
+                    <span class="legal-link" onclick="showPrivacidadRegistro()" data-i18n="privacyLink">🔒 Política de Privacidad</span>
+                    <span class="legal-link" onclick="showAvisoPrivacidad()" data-i18n="avisoLink">🔐 Aviso de Privacidad (LFPDPPP)</span>
                 </div>
+                <div class="copyright">MyLifeQR © AImaginalabs 2026</div>
             </div>
         </div>
     </div>
@@ -522,37 +554,43 @@
             </div>
         </div>
         <div class="container">
-            <div class="tabs"><button class="tab-btn active" id="tabFormBtn">📝 Mis datos</button><button class="tab-btn" id="tabStickerBtn">🔲 Mi sticker</button></div>
+            <div class="tabs"><button class="tab-btn active" id="tabFormBtn" data-i18n="dashboardPersonal">📝 Mis datos</button><button class="tab-btn" id="tabStickerBtn" data-i18n="dashboardSticker">🔲 Mi sticker</button></div>
             <div class="two-columns">
-                <div><div id="tabForm" class="tab-pane active"><div class="form-card"><h2 style="font-family: 'Bebas Neue'; font-size: 28px; color: #E8152A;">📝 Datos personales</h2>
+                <div><div id="tabForm" class="tab-pane active"><div class="form-card"><h2 style="font-family: 'Bebas Neue'; font-size: 28px; color: #E8152A;" data-i18n="personalTitle">📝 Datos personales</h2>
                     <div class="photo-upload">
                         <img id="fotoPreview" class="photo-preview" src="" alt="Tu foto" style="display: none;">
                         <div style="margin-top: 8px;">
-                            <label for="fotoInput" style="background: #f0f0f0; padding: 8px 16px; border-radius: 30px; cursor: pointer; display: inline-block; font-size: 12px;">📸 Subir foto</label>
+                            <label for="fotoInput" style="background: #f0f0f0; padding: 8px 16px; border-radius: 30px; cursor: pointer; display: inline-block; font-size: 12px;" data-i18n="subir_foto">📸 Subir foto</label>
                             <input type="file" id="fotoInput" accept="image/*" style="display: none;">
                         </div>
                     </div>
-                    <div class="form-group"><label>Nombre completo</label><input type="text" id="nombre" placeholder="Nombre completo"></div>
+                    <div class="form-group"><label data-i18n="nameLabel">Nombre completo</label><input type="text" id="nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
                     <div class="row-2">
-                        <div class="form-group"><label>Edad</label><input type="number" id="edad" placeholder="Edad"></div>
-                        <div class="form-group"><label>Tipo de sangre</label><select id="sangre"><option value="">Selecciona</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+                        <div class="form-group"><label data-i18n="ageLabel">Edad</label><input type="number" id="edad" data-i18n-placeholder="edad_placeholder" placeholder="Edad"></div>
+                        <div class="form-group"><label data-i18n="bloodLabel">Tipo de sangre</label>
+                            <select id="sangre">
+                                <option value="" data-i18n="sangre_selecciona">Selecciona</option>
+                                <option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option>
+                                <option value="AB+">AB+</option><option value="AB-">AB-</option><option value="O+">O+</option><option value="O-">O-</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group"><label>Donador de órganos</label>
+                    <div class="form-group"><label data-i18n="donorLabel">Donador de órganos</label>
                         <select id="donador">
-                            <option value="">Selecciona</option>
-                            <option value="Sí">✅ Sí, soy donador</option>
-                            <option value="No">❌ No, no soy donador</option>
+                            <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                            <option value="Sí" data-i18n="donador_si">✅ Sí, soy donador</option>
+                            <option value="No" data-i18n="donador_no">❌ No, no soy donador</option>
                         </select>
                     </div>
                     
-                    <div class="section-subtitle-form">🏥 Datos médicos</div>
-                    <div class="form-group"><label>Alergias</label><input type="text" id="alergias" placeholder="Alergias (ej: penicilina, mariscos)"></div>
-                    <div class="form-group"><label>Condiciones médicas</label><input type="text" id="condiciones" placeholder="Condiciones médicas (ej: diabetes, hipertensión)"></div>
-                    <div class="form-group"><label>Medicamentos actuales</label><input type="text" id="medicamentos" placeholder="Medicamentos (ej: metformina, losartán)"></div>
+                    <div class="section-subtitle-form" data-i18n="medicalTitle">🏥 Datos médicos</div>
+                    <div class="form-group"><label data-i18n="allergiesLabel">Alergias</label><input type="text" id="alergias" data-i18n-placeholder="alergias_placeholder" placeholder="Alergias (ej: penicilina, mariscos)"></div>
+                    <div class="form-group"><label data-i18n="conditionsLabel">Condiciones médicas</label><input type="text" id="condiciones" data-i18n-placeholder="condiciones_placeholder" placeholder="Condiciones médicas (ej: diabetes, hipertensión)"></div>
+                    <div class="form-group"><label data-i18n="medicationsLabel">Medicamentos actuales</label><input type="text" id="medicamentos" data-i18n-placeholder="medicamentos_placeholder" placeholder="Medicamentos (ej: metformina, losartán)"></div>
                     
-                    <div class="section-subtitle-form">📞 Contactos de emergencia</div>
+                    <div class="section-subtitle-form" data-i18n="emergencyTitle">📞 Contactos de emergencia</div>
                     <div style="background: #f0f0f0; padding: 12px; border-radius: 12px; margin-bottom: 16px;">
-                        <p style="font-size: 12px; color: #666; margin: 0;">
+                        <p style="font-size: 12px; color: #666; margin: 0;" data-i18n="emergencyNote">
                             💡 <strong>Nota:</strong> Los contactos con <strong>correo electrónico</strong> y la opción <strong>"Activar notificación"</strong> activada recibirán una alerta automática por correo cuando se escanee tu código QR en una emergencia.
                         </p>
                     </div>
@@ -560,193 +598,191 @@
                     <!-- Contacto 1 -->
                     <div class="contact-group">
                         <div class="row-2">
-                            <div class="form-group"><label>Nombre completo</label><input type="text" id="contacto1_nombre" placeholder="Nombre completo"></div>
-                            <div class="form-group"><label>Relación</label>
-                                <select id="contacto1_relacion">
-                                    <option value="">Selecciona</option>
-                                    <option value="Padre">👨 Padre</option>
-                                    <option value="Madre">👩 Madre</option>
-                                    <option value="Hermano">👦 Hermano(a)</option>
-                                    <option value="Hijo">👶 Hijo(a)</option>
-                                    <option value="Pareja">💑 Pareja</option>
-                                    <option value="Esposo/a">💍 Esposo/a</option>
-                                    <option value="Amigo">👥 Amigo(a)</option>
-                                    <option value="Otro">📌 Otro</option>
+                            <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto1_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
+                            <div class="form-group"><label data-i18n="contactRelation">Relación</label>
+                                <select id="contacto1_relacion" class="relacion-select">
+                                    <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                    <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                    <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                    <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                    <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                    <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                    <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                    <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                    <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row-2">
-                            <div class="form-group"><label>📞 Teléfono</label><input type="tel" id="contacto1_tel" placeholder="5512345678"></div>
-                            <div class="form-group"><label>✉️ Correo electrónico</label><input type="email" id="contacto1_email" placeholder="ejemplo@correo.com"></div>
+                            <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto1_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
+                            <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto1_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                             <input type="checkbox" id="contacto1_notificar" style="width: 18px;">
-                            <label for="contacto1_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;">🔔 Activar notificación de emergencia (recibirá correo si se escanea tu QR)</label>
+                            <label for="contacto1_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia (recibirá correo si se escanea tu QR)</label>
                         </div>
                     </div>
                     
                     <!-- Contacto 2 -->
                     <div class="contact-group">
                         <div class="row-2">
-                            <div class="form-group"><label>Nombre completo</label><input type="text" id="contacto2_nombre" placeholder="Nombre completo"></div>
-                            <div class="form-group"><label>Relación</label>
-                                <select id="contacto2_relacion">
-                                    <option value="">Selecciona</option>
-                                    <option value="Padre">👨 Padre</option>
-                                    <option value="Madre">👩 Madre</option>
-                                    <option value="Hermano">👦 Hermano(a)</option>
-                                    <option value="Hijo">👶 Hijo(a)</option>
-                                    <option value="Pareja">💑 Pareja</option>
-                                    <option value="Esposo/a">💍 Esposo/a</option>
-                                    <option value="Amigo">👥 Amigo(a)</option>
-                                    <option value="Otro">📌 Otro</option>
+                            <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto2_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
+                            <div class="form-group"><label data-i18n="contactRelation">Relación</label>
+                                <select id="contacto2_relacion" class="relacion-select">
+                                    <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                    <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                    <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                    <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                    <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                    <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                    <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                    <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                    <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row-2">
-                            <div class="form-group"><label>📞 Teléfono</label><input type="tel" id="contacto2_tel" placeholder="5512345678"></div>
-                            <div class="form-group"><label>✉️ Correo electrónico</label><input type="email" id="contacto2_email" placeholder="ejemplo@correo.com"></div>
+                            <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto2_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
+                            <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto2_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                             <input type="checkbox" id="contacto2_notificar" style="width: 18px;">
-                            <label for="contacto2_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;">🔔 Activar notificación de emergencia</label>
+                            <label for="contacto2_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
                         </div>
                     </div>
                     
                     <!-- Contacto 3 -->
                     <div class="contact-group">
                         <div class="row-2">
-                            <div class="form-group"><label>Nombre completo</label><input type="text" id="contacto3_nombre" placeholder="Nombre completo"></div>
-                            <div class="form-group"><label>Relación</label>
-                                <select id="contacto3_relacion">
-                                    <option value="">Selecciona</option>
-                                    <option value="Padre">👨 Padre</option>
-                                    <option value="Madre">👩 Madre</option>
-                                    <option value="Hermano">👦 Hermano(a)</option>
-                                    <option value="Hijo">👶 Hijo(a)</option>
-                                    <option value="Pareja">💑 Pareja</option>
-                                    <option value="Esposo/a">💍 Esposo/a</option>
-                                    <option value="Amigo">👥 Amigo(a)</option>
-                                    <option value="Otro">📌 Otro</option>
+                            <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto3_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
+                            <div class="form-group"><label data-i18n="contactRelation">Relación</label>
+                                <select id="contacto3_relacion" class="relacion-select">
+                                    <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                    <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                    <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                    <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                    <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                    <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                    <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                    <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                    <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row-2">
-                            <div class="form-group"><label>📞 Teléfono</label><input type="tel" id="contacto3_tel" placeholder="5512345678"></div>
-                            <div class="form-group"><label>✉️ Correo electrónico</label><input type="email" id="contacto3_email" placeholder="ejemplo@correo.com"></div>
+                            <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto3_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
+                            <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto3_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                             <input type="checkbox" id="contacto3_notificar" style="width: 18px;">
-                            <label for="contacto3_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;">🔔 Activar notificación de emergencia</label>
+                            <label for="contacto3_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
                         </div>
                     </div>
                     
-                    <!-- Contactos extra (ocultos por defecto) -->
                     <div id="contactosExtra" style="display: none;">
                         <!-- Contacto 4 -->
                         <div class="contact-group">
                             <div class="row-2">
-                                <div class="form-group"><label>Nombre completo</label><input type="text" id="contacto4_nombre" placeholder="Nombre completo"></div>
-                                <div class="form-group"><label>Relación</label>
-                                    <select id="contacto4_relacion">
-                                        <option value="">Selecciona</option>
-                                        <option value="Padre">👨 Padre</option>
-                                        <option value="Madre">👩 Madre</option>
-                                        <option value="Hermano">👦 Hermano(a)</option>
-                                        <option value="Hijo">👶 Hijo(a)</option>
-                                        <option value="Pareja">💑 Pareja</option>
-                                        <option value="Esposo/a">💍 Esposo/a</option>
-                                        <option value="Amigo">👥 Amigo(a)</option>
-                                        <option value="Otro">📌 Otro</option>
+                                <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto4_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
+                                <div class="form-group"><label data-i18n="contactRelation">Relación</label>
+                                    <select id="contacto4_relacion" class="relacion-select">
+                                        <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                        <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                        <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                        <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                        <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                        <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                        <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                        <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                        <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row-2">
-                                <div class="form-group"><label>📞 Teléfono</label><input type="tel" id="contacto4_tel" placeholder="5512345678"></div>
-                                <div class="form-group"><label>✉️ Correo electrónico</label><input type="email" id="contacto4_email" placeholder="ejemplo@correo.com"></div>
+                                <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto4_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
+                                <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto4_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                                 <input type="checkbox" id="contacto4_notificar" style="width: 18px;">
-                                <label for="contacto4_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;">🔔 Activar notificación de emergencia</label>
+                                <label for="contacto4_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
                             </div>
                         </div>
                         
                         <!-- Contacto 5 -->
                         <div class="contact-group">
                             <div class="row-2">
-                                <div class="form-group"><label>Nombre completo</label><input type="text" id="contacto5_nombre" placeholder="Nombre completo"></div>
-                                <div class="form-group"><label>Relación</label>
-                                    <select id="contacto5_relacion">
-                                        <option value="">Selecciona</option>
-                                        <option value="Padre">👨 Padre</option>
-                                        <option value="Madre">👩 Madre</option>
-                                        <option value="Hermano">👦 Hermano(a)</option>
-                                        <option value="Hijo">👶 Hijo(a)</option>
-                                        <option value="Pareja">💑 Pareja</option>
-                                        <option value="Esposo/a">💍 Esposo/a</option>
-                                        <option value="Amigo">👥 Amigo(a)</option>
-                                        <option value="Otro">📌 Otro</option>
+                                <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto5_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
+                                <div class="form-group"><label data-i18n="contactRelation">Relación</label>
+                                    <select id="contacto5_relacion" class="relacion-select">
+                                        <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                        <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                        <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                        <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                        <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                        <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                        <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                        <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                        <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row-2">
-                                <div class="form-group"><label>📞 Teléfono</label><input type="tel" id="contacto5_tel" placeholder="5512345678"></div>
-                                <div class="form-group"><label>✉️ Correo electrónico</label><input type="email" id="contacto5_email" placeholder="ejemplo@correo.com"></div>
+                                <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto5_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
+                                <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto5_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                                 <input type="checkbox" id="contacto5_notificar" style="width: 18px;">
-                                <label for="contacto5_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;">🔔 Activar notificación de emergencia</label>
+                                <label for="contacto5_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
                             </div>
                         </div>
                     </div>
                     
-                    <button type="button" class="btn-add-contact" id="btnAgregarContacto">+ Agregar otro contacto (máx. 5)</button>
+                    <button type="button" class="btn-add-contact" id="btnAgregarContacto" data-i18n="addContactBtn">+ Agregar otro contacto (máx. 5)</button>
                     
-                    <div class="section-subtitle-form">📋 Información Adicional</div>
-                    <div class="form-group"><label>Seguro / Hospital preferido</label><input type="text" id="hospital" placeholder="Seguro u hospital"></div>
-                    <div class="form-group"><label>Notas adicionales</label><textarea id="notas" placeholder="Información adicional para emergencias" rows="3"></textarea></div>
+                    <div class="section-subtitle-form" data-i18n="additionalTitle">📋 Información Adicional</div>
+                    <div class="form-group"><label data-i18n="hospitalLabel">Seguro / Hospital preferido</label><input type="text" id="hospital" data-i18n-placeholder="hospital_placeholder" placeholder="Seguro u hospital"></div>
+                    <div class="form-group"><label data-i18n="notesLabel">Notas adicionales</label><textarea id="notas" data-i18n-placeholder="notas_placeholder" placeholder="Información adicional para emergencias" rows="3"></textarea></div>
                     
-                    <button class="btn-primary" id="saveProfileBtn" style="width: 100%;">💾 Guardar mis datos</button>
+                    <button class="btn-primary" id="saveProfileBtn" style="width: 100%;" data-i18n="saveBtn">💾 Guardar mis datos</button>
                     
-                    <button class="btn-danger" id="deleteAccountBtn">🗑️ Eliminar mi cuenta (borrar todos mis datos)</button>
+                    <button class="btn-danger" id="deleteAccountBtn" data-i18n="deleteAccountBtn">🗑️ Eliminar mi cuenta (borrar todos mis datos)</button>
                     
                     <div id="saveMessage" class="success-msg" style="text-align: center; margin-top: 12px;"></div>
                 </div></div></div>
                 <div><div class="sticker-preview">
-                    <h2 style="font-family: 'Bebas Neue'; font-size: 22px; color: #E8152A;">🔲 Tu sticker personalizado</h2>
+                    <h2 style="font-family: 'Bebas Neue'; font-size: 22px; color: #E8152A;" data-i18n="stickerPreviewTitle">🔲 Tu sticker personalizado</h2>
                     
                     <div class="sticker-selectors">
                         <div class="selector-group">
-                            <span class="selector-label">Formato:</span>
-                            <div class="format-option active" data-format="horizontal">📏 Horizontal (6×3cm)</div>
-                            <div class="format-option" data-format="cuadrado">⬛ Cuadrado (3×3cm)</div>
-                            <div class="format-option" data-format="tarjeta">🃏 Tarjeta (9×5cm)</div>
+                            <span class="selector-label" data-i18n="formatLabel">Formato:</span>
+                            <div class="format-option active" data-format="horizontal" data-i18n="formatHorizontal">📏 Horizontal (6×3cm)</div>
+                            <div class="format-option" data-format="cuadrado" data-i18n="formatCuadrado">⬛ Cuadrado (3×3cm)</div>
+                            <div class="format-option" data-format="tarjeta" data-i18n="formatTarjeta">🃏 Tarjeta (9×5cm)</div>
                         </div>
                         <div class="selector-group" id="colorSelectorGroup">
-                            <span class="selector-label">Color:</span>
-                            <div class="color-option negro active" data-color="negro">⚫ Fondo Negro</div>
-                            <div class="color-option rojo" data-color="rojo">🔴 Fondo Rojo</div>
+                            <span class="selector-label" data-i18n="colorLabel">Color:</span>
+                            <div class="color-option negro active" data-color="negro" data-i18n="colorNegro">⚫ Fondo Negro</div>
+                            <div class="color-option rojo" data-color="rojo" data-i18n="colorRojo">🔴 Fondo Rojo</div>
                         </div>
                     </div>
                     
                     <div id="flipButtons" class="flip-buttons" style="display: none;">
-                        <button class="btn-flip" id="flipFrontBtn">📇 Ver Frente</button>
-                        <button class="btn-flip" id="flipBackBtn">🔄 Ver Reverso</button>
+                        <button class="btn-flip" id="flipFrontBtn" data-i18n="flipFront">📇 Ver Frente</button>
+                        <button class="btn-flip" id="flipBackBtn" data-i18n="flipBack">🔄 Ver Reverso</button>
                     </div>
                     
                     <div id="stickerContainer" class="sticker-container horizontal">
                         <img id="stickerBgImg" class="sticker-bg" src="TemplateNegroMyLifeQR.png" alt="Template" onerror="this.style.display='none'">
                         <div id="qrOverlay" class="sticker-qr-overlay"></div>
                     </div>
-                    <button class="btn-download" id="downloadPngBtn">📥 Descargar PNG</button>
-                    <button class="btn-download" id="downloadPdfBtn">📄 Descargar PDF</button>
-                    <p style="font-size: 11px; color: #888; margin-top: 12px;">QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color</p>
+                    <button class="btn-download" id="downloadPngBtn" data-i18n="downloadPNG">📥 Descargar PNG</button>
+                    <button class="btn-download" id="downloadPdfBtn" data-i18n="downloadPDF">📄 Descargar PDF</button>
+                    <p style="font-size: 11px; color: #888; margin-top: 12px;" data-i18n="qrInfo">QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color</p>
                 </div></div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Aviso de Privacidad LFPDPPP -->
     <div id="modalAvisoPrivacidad" class="modal-legal" style="display:none;">
         <div class="modal-legal-content">
             <div class="modal-legal-header">
@@ -756,25 +792,18 @@
             <div class="modal-legal-body">
                 <h4>MyLifeQR - Aviso de Privacidad Integral</h4>
                 <p>En cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), ponemos a tu disposición el presente aviso.</p>
-                
                 <h4>Responsable</h4>
                 <p>MyLifeQR es un proyecto independiente sin fines de lucro. El responsable del tratamiento de tus datos es el usuario que crea el perfil.</p>
-                
                 <h4>Datos recabados</h4>
                 <p>Recopilamos: nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional).</p>
-                
                 <h4>Finalidad del tratamiento</h4>
                 <p>Tus datos se utilizan EXCLUSIVAMENTE para generar tu perfil médico de emergencia, accesible mediante código QR en situaciones de emergencia.</p>
-                
                 <h4>Transferencia de datos</h4>
                 <p>No transferimos tus datos a terceros. Los contactos de emergencia reciben notificaciones automáticas SOLO si activas la opción correspondiente.</p>
-                
                 <h4>Medios para ejercer derechos ARCO</h4>
                 <p>Puedes acceder, rectificar, cancelar u oponerte al uso de tus datos ingresando a tu perfil o contactando a: <strong>privacidad@mylifeqr.com</strong></p>
-                
                 <h4>Consentimiento</h4>
                 <p>Al registrarte y aceptar este aviso, otorgas tu consentimiento para el tratamiento de tus datos personales, incluyendo datos sensibles de salud, con los fines aquí descritos.</p>
-                
                 <h4>Última actualización</h4>
                 <p>Abril 2026</p>
             </div>
@@ -797,7 +826,6 @@
         </div>
     </div>
 
-    <!-- Cookie Consent -->
     <div id="cookieConsent">
         <p style="margin: 0; font-size: 13px;">🍪 MyLifeQR utiliza cookies para mejorar tu experiencia. Al continuar, aceptas su uso.</p>
         <button onclick="aceptarCookies()">Aceptar</button>
@@ -837,120 +865,200 @@
         let currentFormato = "horizontal";
         let currentColor = "negro";
         let mostrarReverso = false;
+        let currentLang = "es";
         
-        // Configuración QR según formato
-        const QR_CONFIG = {
-            horizontal: {
-                leftPercent: 56.5,
-                topPercent: 6,
-                widthPercent: 37.4,
-                heightPercent: 74.6,
-                targetWidth: 709,
-                targetHeight: 355
+        const traducciones = {
+            es: {
+                "navLogin": "Iniciar sesión", "navRegister": "Registrarme",
+                "donationText": "MyLifeQR es gratuito. Si te sirve, ayúdanos a seguir salvando vidas", "donateBtn": "Hacer donativo",
+                "heroTitle": "Tu vida<br>merece un guardián", "heroSlogan": "En la carretera, cada segundo cuenta. MyLifeQR es tu voz cuando no puedes hablar.",
+                "heroDesc": "Un sticker con QR en tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos — toda la información que los paramédicos necesitan al instante.",
+                "heroBtn": "Protege tu vida ahora", "badgeFree": "Gratuito", "badgePrivacy": "Datos protegidos", "badgeMoto": "Para motociclistas",
+                "featuresTitle": "¿Por qué MyLifeQR?", "featuresSubtitle": "Porque los héroes también necesitan un ángel guardián",
+                "feature1Title": "Respuesta inmediata", "feature1Desc": "En un accidente, cada segundo cuenta. Tu información médica disponible al instante.",
+                "feature2Title": "Privacidad garantizada", "feature2Desc": "Datos protegidos por la LFPDPPP. Solo visible en emergencias con aviso de privacidad.",
+                "feature3Title": "Actualiza cuando quieras", "feature3Desc": "Cambia tus datos, contactos o medicamentos desde cualquier dispositivo.",
+                "feature4Title": "Sin app necesaria", "feature4Desc": "El paramédico solo escanea el QR con su celular. No necesita instalar nada.",
+                "creatorBio": "Motociclista desde hace más de 10 años, he recorrido carreteras de día y de noche. Sé lo que se siente ver a un compañero caer y no poder ayudar porque no sabes ni su nombre, ni si es alérgico, ni a quién llamar.<br><br><strong>MyLifeQR nació de esa impotencia.</strong> Este proyecto es gratuito porque creo que la seguridad no debería costar. Es mi forma de decir: <strong>\"Yo te cuido, como quiero que me cuiden a mí\"</strong>.",
+                "stickerTitle": "Tu sticker personalizado", "stickerDesc": "Imprime y pega en tu casco. Resistente al agua y al sol. Tres formatos disponibles.",
+                "stickerList1": "✅ QR único con tu perfil médico", "stickerList2": "✅ Tipo de sangre visible", "stickerList3": "✅ Contactos de emergencia",
+                "stickerList4": "✅ Alergias y condiciones médicas", "stickerList5": "✅ Donador de órganos (Sí/No)", "stickerBtn": "Generar mi sticker ahora",
+                "testimonial1": "\"Tranquilidad al saber que si algo pasa, los paramédicos sabrán mi tipo de sangre y alergias. Es como tener un ángel en mi casco.\"",
+                "testimonial1Author": "— Carlos M.", "testimonial2": "\"Lo mejor es que puedo actualizar mis datos cuando cambio de medicamento. Mi esposa está tranquila.\"",
+                "testimonial2Author": "— Ana G.",
+                "loginTitle": "Iniciar sesión", "loginEmail": "Correo electrónico", "loginPassword": "Contraseña", "loginBtn": "Iniciar sesión",
+                "registerLink": "¿No tienes cuenta? Regístrate gratis", "registerTitle": "Crear cuenta gratis", "registerPasswordPlaceholder": "Contraseña (mínimo 6 caracteres)",
+                "registerBtn": "Registrarme", "loginLink": "Ya tengo cuenta — Iniciar sesión",
+                "dashboardPersonal": "📝 Mis datos", "dashboardSticker": "🔲 Mi sticker", "personalTitle": "📝 Datos personales",
+                "nameLabel": "Nombre completo", "ageLabel": "Edad", "bloodLabel": "Tipo de sangre", "donorLabel": "Donador de órganos",
+                "medicalTitle": "🏥 Datos médicos", "allergiesLabel": "Alergias", "conditionsLabel": "Condiciones médicas", "medicationsLabel": "Medicamentos actuales",
+                "emergencyTitle": "📞 Contactos de emergencia", "emergencyNote": "💡 <strong>Nota:</strong> Los contactos con <strong>correo electrónico</strong> y la opción <strong>\"Activar notificación\"</strong> activada recibirán una alerta automática por correo cuando se escanee tu código QR en una emergencia.",
+                "contactName": "Nombre completo", "contactRelation": "Relación", "contactPhone": "Teléfono", "contactEmail": "Correo electrónico",
+                "contactNotify": "🔔 Activar notificación de emergencia (recibirá correo si se escanea tu QR)",
+                "addContactBtn": "+ Agregar otro contacto (máx. 5)", "additionalTitle": "📋 Información Adicional", "hospitalLabel": "Seguro / Hospital preferido",
+                "notesLabel": "Notas adicionales", "saveBtn": "💾 Guardar mis datos", "deleteAccountBtn": "🗑️ Eliminar mi cuenta (borrar todos mis datos)",
+                "stickerPreviewTitle": "🔲 Tu sticker personalizado", "formatLabel": "Formato:", "formatHorizontal": "📏 Horizontal (6×3cm)",
+                "formatCuadrado": "⬛ Cuadrado (3×3cm)", "formatTarjeta": "🃏 Tarjeta (9×5cm)", "colorLabel": "Color:", "colorNegro": "⚫ Fondo Negro",
+                "colorRojo": "🔴 Fondo Rojo", "flipFront": "📇 Ver Frente", "flipBack": "🔄 Ver Reverso", "downloadPNG": "📥 Descargar PNG",
+                "downloadPDF": "📄 Descargar PDF", "qrInfo": "QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color",
+                "legalWarning": "⚠️ AVISO LEGAL ⚠️", "legalText": "MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.",
+                "legalEmergency": "📞 En caso de emergencia, llame al 911 inmediatamente.", "termsLink": "📜 Términos y Condiciones",
+                "privacyLink": "🔒 Política de Privacidad", "avisoLink": "🔐 Aviso de Privacidad (LFPDPPP)",
+                "emailTip": "📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen aimaginalabs@gmail.com a su libreta de direcciones y marquen el correo como \"No es spam\".",
+                "newsletterTitle": "📧 Recibe consejos de seguridad", "newsletterDesc": "Suscríbete y recibe información útil para motociclistas.",
+                "newsletterPlaceholder": "Tu correo electrónico", "newsletterBtn": "Suscribirme",
+                "subir_foto": "📸 Subir foto",
+                "relacion_padre": "Padre", "relacion_madre": "Madre", "relacion_hermano": "Hermano(a)", "relacion_hijo": "Hijo(a)",
+                "relacion_pareja": "Pareja", "relacion_esposo": "Esposo/a", "relacion_amigo": "Amigo(a)", "relacion_otro": "Otro",
+                "donador_si": "✅ Sí, soy donador", "donador_no": "❌ No, no soy donador", "donador_selecciona": "Selecciona",
+                "sangre_selecciona": "Selecciona",
+                "nombre_placeholder": "Nombre completo", "edad_placeholder": "Edad", "alergias_placeholder": "Alergias (ej: penicilina, mariscos)",
+                "condiciones_placeholder": "Condiciones médicas (ej: diabetes, hipertensión)", "medicamentos_placeholder": "Medicamentos (ej: metformina, losartán)",
+                "telefono_placeholder": "5512345678", "email_placeholder": "ejemplo@correo.com",
+                "hospital_placeholder": "Seguro u hospital", "notas_placeholder": "Información adicional para emergencias"
             },
-            cuadrado: {
-                leftPercent: 13,
-                topPercent: 6,
-                widthPercent: 75,
-                heightPercent: 75,
-                targetWidth: 355,
-                targetHeight: 356
-            },
-            tarjeta: {
-                leftPercent: 42,
-                topPercent: 26,
-                widthPercent: 45,
-                heightPercent: 45,
-                targetWidth: 1063,
-                targetHeight: 591
+            en: {
+                "navLogin": "Log in", "navRegister": "Sign up",
+                "donationText": "MyLifeQR is free. If it helps you, help us keep saving lives", "donateBtn": "Donate",
+                "heroTitle": "Your life<br>deserves a guardian", "heroSlogan": "On the road, every second counts. MyLifeQR is your voice when you can't speak.",
+                "heroDesc": "A QR sticker on your helmet that speaks for you in emergencies. Blood type, allergies, contacts — all the information paramedics need instantly.",
+                "heroBtn": "Protect your life now", "badgeFree": "Free", "badgePrivacy": "Protected data", "badgeMoto": "For motorcyclists",
+                "featuresTitle": "Why MyLifeQR?", "featuresSubtitle": "Because heroes also need a guardian angel",
+                "feature1Title": "Immediate response", "feature1Desc": "In an accident, every second counts. Your medical information available instantly.",
+                "feature2Title": "Guaranteed privacy", "feature2Desc": "Data protected by Mexican law. Only visible in emergencies with privacy notice.",
+                "feature3Title": "Update anytime", "feature3Desc": "Change your data, contacts or medications from any device.",
+                "feature4Title": "No app needed", "feature4Desc": "Paramedics just scan the QR with their phone. No installation required.",
+                "creatorBio": "A motorcyclist for over 10 years, I've ridden roads day and night. I know what it's like to see a fellow rider fall and not be able to help because you don't know their name, allergies, or who to call.<br><br><strong>MyLifeQR was born from that helplessness.</strong> This project is free because I believe safety shouldn't cost. It's my way of saying: <strong>\"I take care of you, as I want to be taken care of\"</strong>.",
+                "stickerTitle": "Your personalized sticker", "stickerDesc": "Print and stick on your helmet. Water and sun resistant. Three formats available.",
+                "stickerList1": "✅ Unique QR with your medical profile", "stickerList2": "✅ Visible blood type", "stickerList3": "✅ Emergency contacts",
+                "stickerList4": "✅ Allergies and medical conditions", "stickerList5": "✅ Organ donor (Yes/No)", "stickerBtn": "Generate my sticker now",
+                "testimonial1": "\"Peace of mind knowing that if something happens, paramedics will know my blood type and allergies. It's like having an angel on my helmet.\"",
+                "testimonial1Author": "— Carlos M.", "testimonial2": "\"The best part is I can update my data when I change medication. My wife is at peace.\"",
+                "testimonial2Author": "— Ana G.",
+                "loginTitle": "Log in", "loginEmail": "Email", "loginPassword": "Password", "loginBtn": "Log in",
+                "registerLink": "Don't have an account? Sign up for free", "registerTitle": "Create free account", "registerPasswordPlaceholder": "Password (minimum 6 characters)",
+                "registerBtn": "Sign up", "loginLink": "Already have an account — Log in",
+                "dashboardPersonal": "📝 My data", "dashboardSticker": "🔲 My sticker", "personalTitle": "📝 Personal data",
+                "nameLabel": "Full name", "ageLabel": "Age", "bloodLabel": "Blood type", "donorLabel": "Organ donor",
+                "medicalTitle": "🏥 Medical data", "allergiesLabel": "Allergies", "conditionsLabel": "Medical conditions", "medicationsLabel": "Current medications",
+                "emergencyTitle": "📞 Emergency contacts", "emergencyNote": "💡 <strong>Note:</strong> Contacts with <strong>email</strong> and <strong>\"Enable notification\"</strong> checked will receive an automatic email alert when your QR code is scanned in an emergency.",
+                "contactName": "Full name", "contactRelation": "Relationship", "contactPhone": "Phone", "contactEmail": "Email",
+                "contactNotify": "🔔 Enable emergency notification (will receive email if your QR is scanned)",
+                "addContactBtn": "+ Add another contact (max 5)", "additionalTitle": "📋 Additional Information", "hospitalLabel": "Insurance / Preferred Hospital",
+                "notesLabel": "Additional notes", "saveBtn": "💾 Save my data", "deleteAccountBtn": "🗑️ Delete my account (erase all my data)",
+                "stickerPreviewTitle": "🔲 Your personalized sticker", "formatLabel": "Format:", "formatHorizontal": "📏 Horizontal (6×3cm)",
+                "formatCuadrado": "⬛ Square (3×3cm)", "formatTarjeta": "🃏 Card (9×5cm)", "colorLabel": "Color:", "colorNegro": "⚫ Black Background",
+                "colorRojo": "🔴 Red Background", "flipFront": "📇 View Front", "flipBack": "🔄 View Back", "downloadPNG": "📥 Download PNG",
+                "downloadPDF": "📄 Download PDF", "qrInfo": "QR 7cm (horizontal) or 2.7cm (square) | Choose format and color",
+                "legalWarning": "⚠️ LEGAL NOTICE ⚠️", "legalText": "MyLifeQR is a <strong>medical identification support system</strong>. It is not a medical or emergency service and does not replace professional care.",
+                "legalEmergency": "📞 In case of emergency, call 911 immediately.", "termsLink": "📜 Terms and Conditions",
+                "privacyLink": "🔒 Privacy Policy", "avisoLink": "🔐 Privacy Notice (LFPDPPP)",
+                "emailTip": "📧 Your contacts not receiving alerts? Ask them to add aimaginalabs@gmail.com to their address book and mark the email as \"Not spam\".",
+                "newsletterTitle": "📧 Get safety tips", "newsletterDesc": "Subscribe and receive useful information for motorcyclists.",
+                "newsletterPlaceholder": "Your email address", "newsletterBtn": "Subscribe",
+                "subir_foto": "📸 Upload photo",
+                "relacion_padre": "Father", "relacion_madre": "Mother", "relacion_hermano": "Sibling", "relacion_hijo": "Child",
+                "relacion_pareja": "Partner", "relacion_esposo": "Spouse", "relacion_amigo": "Friend", "relacion_otro": "Other",
+                "donador_si": "✅ Yes, I am a donor", "donador_no": "❌ No, I am not a donor", "donador_selecciona": "Select",
+                "sangre_selecciona": "Select",
+                "nombre_placeholder": "Full name", "edad_placeholder": "Age", "alergias_placeholder": "Allergies (e.g., penicillin, shellfish)",
+                "condiciones_placeholder": "Medical conditions (e.g., diabetes, hypertension)", "medicamentos_placeholder": "Medications (e.g., metformin, losartan)",
+                "telefono_placeholder": "5512345678", "email_placeholder": "example@email.com",
+                "hospital_placeholder": "Insurance or hospital", "notas_placeholder": "Additional emergency information"
             }
         };
         
-        // Función para comprimir imagen
+        const QR_CONFIG = {
+            horizontal: { leftPercent: 56.5, topPercent: 6, widthPercent: 37.4, heightPercent: 74.6, targetWidth: 709, targetHeight: 355 },
+            cuadrado: { leftPercent: 13, topPercent: 6, widthPercent: 75, heightPercent: 75, targetWidth: 355, targetHeight: 356 },
+            tarjeta: { leftPercent: 42, topPercent: 26, widthPercent: 45, heightPercent: 45, targetWidth: 1063, targetHeight: 591 }
+        };
+        
+        function cambiarIdioma(lang) {
+            currentLang = lang;
+            localStorage.setItem('mylifeqr_lang', lang);
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (traducciones[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = traducciones[lang][key];
+                    } else {
+                        el.innerHTML = traducciones[lang][key];
+                    }
+                }
+            });
+            
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (traducciones[lang][key]) {
+                    el.placeholder = traducciones[lang][key];
+                }
+            });
+            
+            document.querySelectorAll('.relacion-select option, #donador option, #sangre option').forEach(opt => {
+                const key = opt.getAttribute('data-i18n');
+                if (key && traducciones[lang][key]) {
+                    opt.textContent = traducciones[lang][key];
+                }
+            });
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+            
+            actualizarImagenSticker();
+        }
+        
         function comprimirImagen(file, callback) {
             const reader = new FileReader();
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
-                    const MAX_WIDTH = 200;
-                    const MAX_HEIGHT = 200;
-                    let width = img.width;
-                    let height = img.height;
-                    
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height = height * (MAX_WIDTH / width);
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width = width * (MAX_HEIGHT / height);
-                            height = MAX_HEIGHT;
-                        }
-                    }
-                    
+                    const MAX_WIDTH = 200, MAX_HEIGHT = 200;
+                    let width = img.width, height = img.height;
+                    if (width > height) { if (width > MAX_WIDTH) { height = height * (MAX_WIDTH / width); width = MAX_WIDTH; } }
+                    else { if (height > MAX_HEIGHT) { width = width * (MAX_HEIGHT / height); height = MAX_HEIGHT; } }
                     const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
+                    canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-                    
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                    callback(dataUrl);
+                    callback(canvas.toDataURL('image/jpeg', 0.7));
                 };
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         }
         
-        // Actualizar contador de vidas
         async function actualizarContador() {
             try {
                 const perfilesSnapshot = await getDocs(collection(db, "perfiles"));
-                const total = perfilesSnapshot.size;
-                const contadorElement = document.getElementById('vidasCounter');
-                if (contadorElement) {
-                    contadorElement.innerHTML = `❤️ ${total}+ vidas protegidas`;
-                }
-            } catch (error) {
-                console.log("Error al actualizar contador:", error);
-            }
+                document.getElementById('vidasCounter').innerHTML = `❤️ ${perfilesSnapshot.size}+ vidas protegidas`;
+            } catch (error) { console.log(error); }
         }
         
-        // Suscripción a noticias
         document.getElementById('btnSuscripcion')?.addEventListener('click', async () => {
             const email = document.getElementById('suscripcionEmail').value;
             const msgDiv = document.getElementById('suscripcionMsg');
-            if (!email) {
-                msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Ingresa un correo válido.</span>';
-                return;
-            }
+            if (!email) { msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Ingresa un correo válido.</span>'; return; }
             try {
-                await addDoc(collection(db, "suscriptores"), { 
-                    email: email, 
-                    fecha: new Date().toISOString(),
-                    origen: "MyLifeQR"
-                });
+                await addDoc(collection(db, "suscriptores"), { email, fecha: new Date().toISOString(), origen: "MyLifeQR" });
                 msgDiv.innerHTML = '<span style="color: #22C55E;">✅ ¡Gracias por suscribirte!</span>';
                 document.getElementById('suscripcionEmail').value = '';
                 setTimeout(() => msgDiv.innerHTML = '', 3000);
-            } catch (error) {
-                msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Error, intenta de nuevo.</span>';
-            }
+            } catch (error) { msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Error, intenta de nuevo.</span>'; }
         });
         
-        // Cookies
-        if (!localStorage.getItem('cookiesAceptadas')) {
-            document.getElementById('cookieConsent').style.display = 'block';
-        }
-        window.aceptarCookies = () => {
-            localStorage.setItem('cookiesAceptadas', 'true');
-            document.getElementById('cookieConsent').style.display = 'none';
-        };
+        if (!localStorage.getItem('cookiesAceptadas')) document.getElementById('cookieConsent').style.display = 'block';
+        window.aceptarCookies = () => { localStorage.setItem('cookiesAceptadas', 'true'); document.getElementById('cookieConsent').style.display = 'none'; };
         
         function obtenerImagenSticker() {
             if (currentFormato === "tarjeta") {
-                return mostrarReverso ? 'TarjetaBack.png' : 'TarjetaFrente.png';
+                if (mostrarReverso) {
+                    return currentLang === 'en' ? 'TarjetaBackEN.png' : 'TarjetaBack.png';
+                } else {
+                    return currentLang === 'en' ? 'TarjetaFrenteEN.png' : 'TarjetaFrente.png';
+                }
             } else if (currentFormato === "horizontal") {
                 return currentColor === "negro" ? 'TemplateNegroMyLifeQR.png' : 'TemplateRojoMyLifeQR.png';
             } else {
@@ -961,14 +1069,8 @@
         function actualizarVisibilidadColorSelector() {
             const colorSelector = document.getElementById('colorSelectorGroup');
             const flipButtons = document.getElementById('flipButtons');
-            if (currentFormato === "tarjeta") {
-                colorSelector.style.display = 'none';
-                flipButtons.style.display = 'flex';
-            } else {
-                colorSelector.style.display = 'flex';
-                flipButtons.style.display = 'none';
-                mostrarReverso = false;
-            }
+            if (currentFormato === "tarjeta") { colorSelector.style.display = 'none'; flipButtons.style.display = 'flex'; }
+            else { colorSelector.style.display = 'flex'; flipButtons.style.display = 'none'; mostrarReverso = false; }
         }
         
         function cambiarFormato(formato) {
@@ -981,31 +1083,17 @@
             actualizarImagenSticker();
         }
         
-        function cambiarColor(color) {
-            currentColor = color;
-            actualizarImagenSticker();
-        }
-        
-        function mostrarFrente() {
-            mostrarReverso = false;
-            actualizarImagenSticker();
-        }
-        
-        function mostrarBack() {
-            mostrarReverso = true;
-            actualizarImagenSticker();
-        }
+        function cambiarColor(color) { currentColor = color; actualizarImagenSticker(); }
+        function mostrarFrente() { mostrarReverso = false; actualizarImagenSticker(); }
+        function mostrarBack() { mostrarReverso = true; actualizarImagenSticker(); }
         
         function actualizarImagenSticker() {
             const imgElement = document.getElementById('stickerBgImg');
-            const nuevaImagen = obtenerImagenSticker();
-            imgElement.src = nuevaImagen;
+            imgElement.src = obtenerImagenSticker();
             imgElement.onload = () => { posicionarQR(); actualizarQR(); };
-            posicionarQR();
-            actualizarQR();
+            posicionarQR(); actualizarQR();
         }
         
-        // Eventos de los selectores
         document.querySelectorAll('.format-option').forEach(opt => {
             opt.addEventListener('click', () => {
                 document.querySelectorAll('.format-option').forEach(o => o.classList.remove('active'));
@@ -1025,43 +1113,35 @@
         document.getElementById('flipFrontBtn')?.addEventListener('click', mostrarFrente);
         document.getElementById('flipBackBtn')?.addEventListener('click', mostrarBack);
         
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => cambiarIdioma(btn.getAttribute('data-lang')));
+        });
+        
+        const savedLang = localStorage.getItem('mylifeqr_lang');
+        if (savedLang && (savedLang === 'es' || savedLang === 'en')) cambiarIdioma(savedLang);
+        else {
+            const browserLang = navigator.language.split('-')[0];
+            cambiarIdioma(browserLang === 'en' ? 'en' : 'es');
+        }
+        
         async function obtenerIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (error) {
-                console.log("No se pudo obtener IP:", error);
-                return null;
-            }
+            try { const response = await fetch('https://api.ipify.org?format=json'); const data = await response.json(); return data.ip; }
+            catch (error) { return null; }
         }
         
         window.eliminarCuenta = async () => {
             if (!currentUser) return;
-            
-            const confirmacion = confirm("⚠️ ¿ESTÁS SEGURO?\n\nEsta acción ELIMINARÁ PERMANENTEMENTE todos tus datos:\n- Tu perfil médico\n- Tus contactos de emergencia\n- Tu foto\n- Tu cuenta de usuario\n\nEsta acción NO se puede deshacer.\n\n¿Deseas continuar?");
-            
-            if (!confirmacion) return;
-            
-            const segundaConfirmacion = confirm("Última advertencia: Todos tus datos serán borrados para siempre. ¿Confirmas?");
-            
-            if (!segundaConfirmacion) return;
-            
+            if (!confirm("⚠️ ¿ESTÁS SEGURO?\n\nEsta acción ELIMINARÁ PERMANENTEMENTE todos tus datos...")) return;
+            if (!confirm("Última advertencia: Todos tus datos serán borrados para siempre. ¿Confirmas?")) return;
             try {
                 await deleteDoc(doc(db, "perfiles", currentUser.uid));
-                console.log("✅ Documento de Firestore eliminado");
                 await deleteUser(currentUser);
-                console.log("✅ Usuario de Authentication eliminado");
                 alert("✅ Tu cuenta y todos tus datos han sido eliminados permanentemente.");
                 await signOut(auth);
                 window.location.reload();
             } catch (error) {
-                console.error("Error al eliminar cuenta:", error);
-                if (error.code === 'auth/requires-recent-login') {
-                    alert("⚠️ Por seguridad, necesitas volver a iniciar sesión antes de eliminar tu cuenta. Por favor, cierra sesión y vuelve a entrar.");
-                } else {
-                    alert("❌ Error al eliminar la cuenta: " + error.message);
-                }
+                if (error.code === 'auth/requires-recent-login') alert("⚠️ Por seguridad, necesitas volver a iniciar sesión antes de eliminar tu cuenta.");
+                else alert("❌ Error al eliminar la cuenta: " + error.message);
             }
         };
         
@@ -1070,29 +1150,11 @@
         
         fotoInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
-            if (file) {
-                comprimirImagen(file, (imagenComprimida) => {
-                    fotoBase64 = imagenComprimida;
-                    fotoPreview.src = fotoBase64;
-                    fotoPreview.style.display = 'block';
-                    guardarFotoEnFirestore();
-                });
-            }
+            if (file) { comprimirImagen(file, (img) => { fotoBase64 = img; fotoPreview.src = fotoBase64; fotoPreview.style.display = 'block'; guardarFotoEnFirestore(); }); }
         });
         
-        async function guardarFotoEnFirestore() {
-            if (!currentUser) return;
-            await setDoc(doc(db, "perfiles", currentUser.uid), { foto: fotoBase64 }, { merge: true });
-        }
-        
-        async function cargarFoto(userId) {
-            const docSnap = await getDoc(doc(db, "perfiles", userId));
-            if (docSnap.exists() && docSnap.data().foto) {
-                fotoBase64 = docSnap.data().foto;
-                fotoPreview.src = fotoBase64;
-                fotoPreview.style.display = 'block';
-            }
-        }
+        async function guardarFotoEnFirestore() { if (!currentUser) return; await setDoc(doc(db, "perfiles", currentUser.uid), { foto: fotoBase64 }, { merge: true }); }
+        async function cargarFoto(userId) { const docSnap = await getDoc(doc(db, "perfiles", userId)); if (docSnap.exists() && docSnap.data().foto) { fotoBase64 = docSnap.data().foto; fotoPreview.src = fotoBase64; fotoPreview.style.display = 'block'; } }
         
         function posicionarQR() {
             const container = document.getElementById('stickerContainer');
@@ -1101,32 +1163,20 @@
             if (!container || !overlay || !img || !img.complete) return;
             const imgRect = img.getBoundingClientRect();
             if (imgRect.width === 0) return;
-            
             const config = QR_CONFIG[currentFormato];
-            const left = (config.leftPercent / 100) * imgRect.width;
-            const top = (config.topPercent / 100) * imgRect.height;
-            const qrWidth = (config.widthPercent / 100) * imgRect.width;
-            const qrHeight = (config.heightPercent / 100) * imgRect.height;
-            
-            overlay.style.left = `${left}px`;
-            overlay.style.top = `${top}px`;
-            overlay.style.width = `${qrWidth}px`;
-            overlay.style.height = `${qrHeight}px`;
+            overlay.style.left = `${(config.leftPercent / 100) * imgRect.width}px`;
+            overlay.style.top = `${(config.topPercent / 100) * imgRect.height}px`;
+            overlay.style.width = `${(config.widthPercent / 100) * imgRect.width}px`;
+            overlay.style.height = `${(config.heightPercent / 100) * imgRect.height}px`;
         }
         
         function actualizarQR() {
             if (!currentUser) return;
-            
-            // No mostrar QR en el reverso de la tarjeta
             if (currentFormato === "tarjeta" && mostrarReverso) {
                 const overlay = document.getElementById('qrOverlay');
-                if (overlay) {
-                    overlay.innerHTML = '';
-                    overlay.style.display = 'none';
-                }
+                if (overlay) { overlay.innerHTML = ''; overlay.style.display = 'none'; }
                 return;
             }
-            
             const urlPerfil = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
             const overlay = document.getElementById('qrOverlay');
             if (overlay && window.QRCode) {
@@ -1154,12 +1204,8 @@
         function showLoginForm() { loginFormContainer.style.display = 'block'; registerFormContainer.style.display = 'none'; loginFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         function showRegisterForm() { registerFormContainer.style.display = 'block'; loginFormContainer.style.display = 'none'; registerFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         
-        window.showAvisoPrivacidad = () => {
-            document.getElementById('modalAvisoPrivacidad').style.display = 'flex';
-        };
-        window.closeModalAvisoPrivacidad = () => {
-            document.getElementById('modalAvisoPrivacidad').style.display = 'none';
-        };
+        window.showAvisoPrivacidad = () => { document.getElementById('modalAvisoPrivacidad').style.display = 'flex'; };
+        window.closeModalAvisoPrivacidad = () => { document.getElementById('modalAvisoPrivacidad').style.display = 'none'; };
         
         window.showTerminosRegistro = () => {
             const modal = document.getElementById('modalLegalRegistro');
@@ -1169,6 +1215,7 @@
             body.innerHTML = `<h4>1. Aceptación</h4><p>Al utilizar MyLifeQR, aceptas estos términos.</p><h4>2. Descripción</h4><p>MyLifeQR es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p><h4>3. Responsabilidad</h4><p>Eres el único responsable de la veracidad de tus datos.</p><h4>4. Ley Aplicable</h4><p>Leyes de México.</p>`;
             modal.style.display = 'flex';
         };
+        
         window.showPrivacidadRegistro = () => {
             const modal = document.getElementById('modalLegalRegistro');
             const title = document.getElementById('modalLegalRegistroTitle');
@@ -1177,19 +1224,15 @@
             body.innerHTML = `<h4>1. Datos</h4><p>Recopilamos nombre, edad, tipo de sangre, alergias, contactos.</p><h4>2. Uso</h4><p>Solo para tu perfil de emergencia.</p><h4>3. Protección</h4><p>Datos protegidos por LFPDPPP.</p>`;
             modal.style.display = 'flex';
         };
+        
         window.closeModalLegalRegistro = () => { document.getElementById('modalLegalRegistro').style.display = 'none'; };
         document.getElementById('modalLegalRegistro')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModalLegalRegistro(); });
         
         document.getElementById('btnAgregarContacto')?.addEventListener('click', () => {
             const extra = document.getElementById('contactosExtra');
             const btn = document.getElementById('btnAgregarContacto');
-            if (extra.style.display === 'none') {
-                extra.style.display = 'block';
-                btn.innerText = '− Ocultar contactos adicionales';
-            } else {
-                extra.style.display = 'none';
-                btn.innerText = '+ Agregar otro contacto (máx. 5)';
-            }
+            if (extra.style.display === 'none') { extra.style.display = 'block'; btn.innerText = '− Ocultar contactos adicionales'; }
+            else { extra.style.display = 'none'; btn.innerText = '+ Agregar otro contacto (máx. 5)'; }
         });
         
         document.getElementById('deleteAccountBtn')?.addEventListener('click', window.eliminarCuenta);
@@ -1198,14 +1241,11 @@
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
             const aceptaTerminos = document.getElementById('aceptaTerminos').checked;
-            
             if (!email || !password) { registerError.innerText = 'Completa todos los campos'; return; }
             if (password.length < 6) { registerError.innerText = 'La contraseña debe tener al menos 6 caracteres'; return; }
             if (!aceptaTerminos) { registerError.innerText = 'Debes aceptar los Términos y Condiciones'; return; }
-            
             registerError.innerText = '';
             const ip = await obtenerIP();
-            
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await setDoc(doc(db, "perfiles", userCredential.user.uid), {
@@ -1303,12 +1343,9 @@
         async function guardarPerfil() {
             if (!currentUser) return;
             const perfil = {
-                nombre: document.getElementById('nombre').value,
-                edad: document.getElementById('edad').value,
-                sangre: document.getElementById('sangre').value,
-                donador: document.getElementById('donador').value,
-                alergias: document.getElementById('alergias').value,
-                condiciones: document.getElementById('condiciones').value,
+                nombre: document.getElementById('nombre').value, edad: document.getElementById('edad').value,
+                sangre: document.getElementById('sangre').value, donador: document.getElementById('donador').value,
+                alergias: document.getElementById('alergias').value, condiciones: document.getElementById('condiciones').value,
                 medicamentos: document.getElementById('medicamentos').value,
                 contacto1_nombre: document.getElementById('contacto1_nombre').value,
                 contacto1_relacion: document.getElementById('contacto1_relacion').value,
@@ -1335,10 +1372,8 @@
                 contacto5_tel: document.getElementById('contacto5_tel').value,
                 contacto5_email: document.getElementById('contacto5_email').value,
                 contacto5_notificar: document.getElementById('contacto5_notificar').checked,
-                hospital: document.getElementById('hospital').value,
-                notas: document.getElementById('notas').value,
-                foto: fotoBase64,
-                fecha_actualizacion: new Date().toISOString()
+                hospital: document.getElementById('hospital').value, notas: document.getElementById('notas').value,
+                foto: fotoBase64, fecha_actualizacion: new Date().toISOString()
             };
             await setDoc(doc(db, "perfiles", currentUser.uid), perfil, { merge: true });
             saveMessage.innerText = '✅ Datos guardados';
@@ -1356,21 +1391,14 @@
                 await new Promise(resolve => setTimeout(resolve, 300));
                 if (typeof html2canvas === 'undefined') throw new Error('html2canvas no está cargado');
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
-                
                 const config = QR_CONFIG[currentFormato];
-                const targetWidth = config.targetWidth;
-                const targetHeight = config.targetHeight;
-                
                 const finalCanvas = document.createElement('canvas');
-                finalCanvas.width = targetWidth; finalCanvas.height = targetHeight;
+                finalCanvas.width = config.targetWidth; finalCanvas.height = config.targetHeight;
                 const ctx = finalCanvas.getContext('2d');
-                ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, targetWidth, targetHeight);
-                
+                ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, config.targetWidth, config.targetHeight);
                 const link = document.createElement('a');
                 let formatoNombre = currentFormato === "horizontal" ? "horizontal" : (currentFormato === "cuadrado" ? "cuadrado" : "tarjeta");
-                if (currentFormato === "tarjeta") {
-                    formatoNombre += mostrarReverso ? "_back" : "_front";
-                }
+                if (currentFormato === "tarjeta") formatoNombre += mostrarReverso ? "_back" : "_front";
                 link.download = `mylifeqr_sticker_${formatoNombre}_${currentFormato !== "tarjeta" ? currentColor + "_" : ""}${currentUser?.uid || 'usuario'}.png`;
                 link.href = finalCanvas.toDataURL('image/png');
                 link.click();
@@ -1389,15 +1417,11 @@
                 await new Promise(resolve => setTimeout(resolve, 300));
                 if (typeof html2canvas === 'undefined') throw new Error('html2canvas no está cargado');
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
-                
                 const config = QR_CONFIG[currentFormato];
-                const targetWidth = config.targetWidth;
-                const targetHeight = config.targetHeight;
-                
                 const finalCanvas = document.createElement('canvas');
-                finalCanvas.width = targetWidth; finalCanvas.height = targetHeight;
+                finalCanvas.width = config.targetWidth; finalCanvas.height = config.targetHeight;
                 const ctx = finalCanvas.getContext('2d');
-                ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, targetWidth, targetHeight);
+                ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, config.targetWidth, config.targetHeight);
                 const imgData = finalCanvas.toDataURL('image/png');
                 
                 await new Promise((resolve, reject) => {
@@ -1411,21 +1435,15 @@
                 
                 const { jsPDF } = window.jspdf;
                 let anchoMM, altoMM;
-                if (currentFormato === "horizontal") {
-                    anchoMM = 60; altoMM = 30;
-                } else if (currentFormato === "cuadrado") {
-                    anchoMM = 30; altoMM = 30;
-                } else {
-                    anchoMM = 90; altoMM = 50;
-                }
+                if (currentFormato === "horizontal") { anchoMM = 60; altoMM = 30; }
+                else if (currentFormato === "cuadrado") { anchoMM = 30; altoMM = 30; }
+                else { anchoMM = 90; altoMM = 50; }
                 
                 const pdf = new jsPDF({ orientation: anchoMM > altoMM ? 'landscape' : 'portrait', unit: 'mm', format: [anchoMM, altoMM] });
                 pdf.addImage(imgData, 'PNG', 0, 0, anchoMM, altoMM, undefined, 'FAST');
                 
                 let formatoNombre = currentFormato === "horizontal" ? "horizontal" : (currentFormato === "cuadrado" ? "cuadrado" : "tarjeta");
-                if (currentFormato === "tarjeta") {
-                    formatoNombre += mostrarReverso ? "_back" : "_front";
-                }
+                if (currentFormato === "tarjeta") formatoNombre += mostrarReverso ? "_back" : "_front";
                 pdf.save(`mylifeqr_sticker_${formatoNombre}_${currentFormato !== "tarjeta" ? currentColor + "_" : ""}${currentUser?.uid || 'usuario'}.pdf`);
             } catch (error) { alert('Error al generar el PDF. Intenta de nuevo o usa PNG.'); }
             finally { btn.innerText = originalText; btn.disabled = false; }
@@ -1478,7 +1496,6 @@
         script.src = 'https://cdn.jsdelivr.net/npm/qrcodejs2-fix/qrcode.min.js';
         document.head.appendChild(script);
         
-        // Inicializar contador
         actualizarContador();
     </script>
 </body>
