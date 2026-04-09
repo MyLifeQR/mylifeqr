@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLifeQR — Panel de Administración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0A0A0A; color: white; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        /* Login Panel */
+        .login-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 100%);
+        }
+        .login-card {
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(232,21,42,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .login-card h1 {
+            color: #E8152A;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .login-card p {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .login-card input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+        .login-card input:focus {
+            outline: none;
+            border-color: #E8152A;
+        }
+        .login-card button {
+            width: 100%;
+            background: #E8152A;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .login-card button:hover {
+            transform: scale(1.02);
+            background: #B01020;
+        }
+        .error-msg {
+            color: #E8152A;
+            font-size: 13px;
+            margin-top: 16px;
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #222;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .admin-header h1 {
+            color: #E8152A;
+            font-size: 28px;
+        }
+        .admin-header h1 span {
+            color: white;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #E8152A;
+            color: #E8152A;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover {
+            background: #E8152A;
+            color: white;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: #E8152A;
+        }
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: #E8152A;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        /* Tables */
+        .card {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 30px;
+            border: 1px solid #2a2a2a;
+        }
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #E8152A;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        th {
+            color: #E8152A;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        td {
+            color: #ccc;
+            font-size: 13px;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        /* Botón refrescar */
+        .refresh-btn {
+            background: #2a2a2a;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 16px;
+        }
+        .refresh-btn:hover {
+            background: #E8152A;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            th, td { padding: 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Panel de Login -->
+<div id="loginPanel" class="login-panel">
+    <div class="login-card">
+        <h1>🔐 MyLifeQR</h1>
+        <p>Panel de Administración</p>
+        <input type="password" id="adminPassword" placeholder="Contraseña">
+        <button onclick="verificarAcceso()">Acceder al panel</button>
+        <div id="errorMsg" class="error-msg"></div>
+    </div>
+</div>
+
+<!-- Panel de Administración -->
+<div id="adminPanel" class="admin-panel">
+    <div class="container">
+        <div class="admin-header">
+            <h1>📊 MyLifeQR <span>Panel de Administración</span></h1>
+            <button class="logout-btn" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">👥 Usuarios registrados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalScans">0</div>
+                <div class="stat-label">📱 Escaneos de QR</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="todayScans">0</div>
+                <div class="stat-label">📅 Escaneos hoy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSuscriptores">0</div>
+                <div class="stat-label">📧 Suscriptores</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📋 Últimos escaneos <button class="refresh-btn" onclick="cargarDatos()">🔄 Refrescar</button></h2>
+            <div class="table-responsive">
+                <table id="scansTable">
+                    <thead>
+                        <tr><th>Fecha</th><th>Usuario</th><th>Folio</th><th>Ubicación</th><th>Dispositivo</th></tr>
+                    </thead>
+                    <tbody id="scansTableBody">
+                        <tr><td colspan="5" class="loading">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>👤 Últimos usuarios registrados</h2>
+            <div class="table-responsive">
+                <table id="usersTable">
+                    <thead>
+                        <tr><th>Fecha</th><th>Email</th><th>Nombre</th><th>Tipo sangre</th><th>Contactos</th></tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="5" class="loading">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📧 Últimos suscriptores</h2>
+            <div class="table-responsive">
+                <table id="suscriptoresTable">
+                    <thead>
+                        <tr><th>Fecha</th><th>Email</th></tr>
+                    </thead>
+                    <tbody id="suscriptoresTableBody">
+                        <tr><td colspan="2" class="loading">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getFirestore, collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+    
+    const firebaseConfig = {
+        apiKey: "AIzaSyA6ZN6SVnCx2DriW72R67_5OVgF68NhmR4",
+        authDomain: "mylifeqr-cff5b.firebaseapp.com",
+        projectId: "mylifeqr-cff5b",
+        storageBucket: "mylifeqr-cff5b.firebasestorage.app",
+        messagingSenderId: "1067050300854",
+        appId: "1:1067050300854:web:b1c686bf5f23801bfe7d17",
+        measurementId: "G-DKR6WB9JJM"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    // Contraseña correcta
+    const CONTRASENA_CORRECTA = "Srdiablo66";
+    
+    // Verificar acceso
+    window.verificarAcceso = () => {
+        const password = document.getElementById('adminPassword').value;
+        const errorDiv = document.getElementById('errorMsg');
+        
+        if (password === CONTRASENA_CORRECTA) {
+            localStorage.setItem('adminAuth', 'true');
+            document.getElementById('loginPanel').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            cargarDatos();
+        } else {
+            errorDiv.innerText = '❌ Contraseña incorrecta';
+            document.getElementById('adminPassword').value = '';
+        }
+    };
+    
+    // Cerrar sesión
+    window.cerrarSesion = () => {
+        localStorage.removeItem('adminAuth');
+        document.getElementById('loginPanel').style.display = 'flex';
+        document.getElementById('adminPanel').style.display = 'none';
+        document.getElementById('adminPassword').value = '';
+    };
+    
+    // Cargar todos los datos
+    window.cargarDatos = async () => {
+        await Promise.all([
+            cargarEstadisticas(),
+            cargarUltimosEscaneos(),
+            cargarUltimosUsuarios(),
+            cargarSuscriptores()
+        ]);
+    };
+    
+    async function cargarEstadisticas() {
+        try {
+            // Total usuarios
+            const perfilesSnapshot = await getDocs(collection(db, "perfiles"));
+            const totalUsers = perfilesSnapshot.size;
+            document.getElementById('totalUsers').innerText = totalUsers;
+            
+            // Total escaneos
+            const escaneosSnapshot = await getDocs(collection(db, "eventos_escaneo"));
+            const totalScans = escaneosSnapshot.size;
+            document.getElementById('totalScans').innerText = totalScans;
+            
+            // Escaneos de hoy
+            const hoy = new Date().toISOString().split('T')[0];
+            let hoyCount = 0;
+            escaneosSnapshot.forEach(doc => {
+                const fecha = doc.data().fecha?.split('T')[0];
+                if (fecha === hoy) hoyCount++;
+            });
+            document.getElementById('todayScans').innerText = hoyCount;
+            
+            // Total suscriptores
+            const suscriptoresSnapshot = await getDocs(collection(db, "suscriptores"));
+            document.getElementById('totalSuscriptores').innerText = suscriptoresSnapshot.size;
+            
+        } catch (error) {
+            console.error("Error al cargar estadísticas:", error);
+        }
+    }
+    
+    async function cargarUltimosEscaneos() {
+        const tbody = document.getElementById('scansTableBody');
+        tbody.innerHTML = '<tr><td colspan="5" class="loading">Cargando...</td></tr>';
+        
+        try {
+            const q = query(collection(db, "eventos_escaneo"), orderBy("fecha", "desc"), limit(20));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="5">No hay escaneos registrados</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const fecha = data.fecha ? new Date(data.fecha).toLocaleString('es-MX') : 'N/A';
+                const usuario = data.perfil_nombre || 'N/A';
+                const folio = data.folio || 'N/A';
+                const ubicacion = data.ubicacion ? `${data.ubicacion.lat}, ${data.ubicacion.lng}` : 'No disponible';
+                const dispositivo = data.dispositivo ? data.dispositivo.substring(0, 30) + '...' : 'N/A';
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${fecha}</td>
+                        <td>${usuario}</td>
+                        <td style="font-family: monospace; font-size: 11px;">${folio}</td>
+                        <td>${ubicacion}</td>
+                        <td style="font-size: 10px;">${dispositivo}</td>
+                    </tr>
+                `;
+            });
+        } catch (error) {
+            console.error("Error al cargar escaneos:", error);
+            tbody.innerHTML = '<tr><td colspan="5">Error al cargar datos</td></tr>';
+        }
+    }
+    
+    async function cargarUltimosUsuarios() {
+        const tbody = document.getElementById('usersTableBody');
+        tbody.innerHTML = '<tr><td colspan="5" class="loading">Cargando...</td></tr>';
+        
+        try {
+            const q = query(collection(db, "perfiles"), orderBy("fecha_creacion", "desc"), limit(20));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="5">No hay usuarios registrados</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const fecha = data.fecha_creacion ? new Date(data.fecha_creacion).toLocaleString('es-MX') : 'N/A';
+                const email = data.email || 'N/A';
+                const nombre = data.nombre || 'N/A';
+                const sangre = data.sangre || 'N/A';
+                
+                // Contar contactos registrados
+                let contactosCount = 0;
+                for (let i = 1; i <= 5; i++) {
+                    if (data[`contacto${i}_nombre`]) contactosCount++;
+                }
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${fecha}</td>
+                        <td style="font-size: 12px;">${email}</td>
+                        <td>${nombre}</td>
+                        <td style="color: #E8152A; font-weight: bold;">${sangre}</td>
+                        <td>${contactosCount} contactos</td>
+                    </tr>
+                `;
+            });
+        } catch (error) {
+            console.error("Error al cargar usuarios:", error);
+            tbody.innerHTML = '<tr><td colspan="5">Error al cargar datos</td></tr>';
+        }
+    }
+    
+    async function cargarSuscriptores() {
+        const tbody = document.getElementById('suscriptoresTableBody');
+        tbody.innerHTML = '<tr><td colspan="2" class="loading">Cargando...</td></tr>';
+        
+        try {
+            const q = query(collection(db, "suscriptores"), orderBy("fecha", "desc"), limit(20));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="2">No hay suscriptores registrados</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const fecha = data.fecha ? new Date(data.fecha).toLocaleString('es-MX') : 'N/A';
+                const email = data.email || 'N/A';
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${fecha}</td>
+                        <td>${email}</td>
+                    </tr>
+                `;
+            });
+        } catch (error) {
+            console.error("Error al cargar suscriptores:", error);
+            tbody.innerHTML = '<tr><td colspan="2">Error al cargar datos</td></tr>';
+        }
+    }
+    
+    // Verificar si ya hay sesión activa
+    if (localStorage.getItem('adminAuth') === 'true') {
+        document.getElementById('loginPanel').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        cargarDatos();
+    }
+</script>
+</body>
+</html>
