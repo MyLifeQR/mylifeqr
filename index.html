@@ -3,7 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>MyLifeQR — Tu ángel guardián en el asfalto</title>
+    <title>MyLifeQR — Identificación médica de emergencia para motociclistas</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="MyLifeQR es un sticker con QR para tu casco que permite a paramédicos acceder a tu tipo de sangre, alergias y contactos de emergencia al instante. Gratuito y protegido por la LFPDPPP.">
+    <meta name="keywords" content="identificación médica, QR emergencia, motociclista seguro, sticker casco, datos médicos emergencia, MyLifeQR">
+    <meta name="author" content="MyLifeQR">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Spanish">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph / Redes Sociales -->
+    <meta property="og:title" content="MyLifeQR — Tu ángel guardián en el asfalto">
+    <meta property="og:description" content="Sticker QR para tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos al instante.">
+    <meta property="og:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
+    <meta property="og:url" content="https://MyLifeQR.github.io/mylifeqr/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MyLifeQR — Identificación médica para motociclistas">
+    <meta name="twitter:description" content="Protege tu vida con un sticker QR en tu casco. Gratuito.">
+    <meta name="twitter:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
+    
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -113,7 +139,6 @@
         .tab-pane.active { display: block; }
         .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px 0; }
         
-        /* Selector de formato y color */
         .sticker-selectors {
             display: flex;
             flex-direction: column;
@@ -150,7 +175,6 @@
             color: white;
             border-color: #E8152A;
         }
-        /* Colores para stickers (sin cambios) */
         .color-option.negro {
             background: #1a1a1a;
             color: white;
@@ -168,7 +192,6 @@
         
         .sticker-preview { background: #f8f8f8; border-radius: 24px; padding: 24px; text-align: center; position: sticky; top: 20px; }
         
-        /* Contenedor del sticker - tamaños según formato */
         .sticker-container { 
             position: relative; 
             width: 100%; 
@@ -188,7 +211,6 @@
         .sticker-qr-overlay { position: absolute; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 12px; }
         .sticker-qr-overlay canvas { width: 100% !important; height: 100% !important; border-radius: 12px; }
         
-        /* Botones para voltear tarjeta */
         .flip-buttons {
             display: flex;
             gap: 12px;
@@ -289,6 +311,66 @@
         }
         .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; font-size: 12px; }
         
+        /* Suscripción */
+        .suscripcion-box {
+            background: #f8f8f8;
+            padding: 32px;
+            border-radius: 32px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .suscripcion-box h3 { color: #E8152A; margin-bottom: 12px; }
+        .suscripcion-box p { color: #666; margin-bottom: 20px; }
+        .suscripcion-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .suscripcion-input-group input {
+            padding: 12px 20px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            width: 280px;
+        }
+        
+        /* Cookie consent */
+        #cookieConsent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            color: white;
+            padding: 16px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+        }
+        #cookieConsent button {
+            background: #E8152A;
+            color: white;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 30px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        /* Aviso correos */
+        .email-tip {
+            background: #f0f0f0;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .email-tip p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+        
         @media (max-width: 768px) {
             .hero, .sticker-showcase, .two-columns { grid-template-columns: 1fr; }
             .hero-content h1 { font-size: 48px; }
@@ -320,10 +402,20 @@
                     <h1>Tu vida<br>merece un guardián</h1>
                     <div class="slogan">En la carretera, cada segundo cuenta. MyLifeQR es tu voz cuando no puedes hablar.</div>
                     <p>Un sticker con QR en tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos — toda la información que los paramédicos necesitan al instante.</p>
-                    <div class="hero-badges"><span class="badge">⚡ Gratuito</span><span class="badge">🔒 Datos protegidos</span><span class="badge">🏍️ Para motociclistas</span></div>
+                    <div class="hero-badges">
+                        <span class="badge">⚡ Gratuito</span>
+                        <span class="badge">🔒 Datos protegidos</span>
+                        <span class="badge">🏍️ Para motociclistas</span>
+                        <span class="badge" id="vidasCounter">❤️ 0+ vidas protegidas</span>
+                    </div>
                     <button class="btn-primary" id="heroRegisterBtn">Protege tu vida ahora</button>
                 </div>
                 <div class="hero-image"><img src="Motoindex.png" alt="Motociclista" onerror="this.src='https://placehold.co/600x400/E8152A/white?text=MyLifeQR'"></div>
+            </div>
+            
+            <!-- Aviso para mejorar entregabilidad de correos -->
+            <div class="email-tip">
+                <p>📧 <strong>¿Tus contactos no reciben las alertas?</strong> Pídeles que agreguen <strong style="color:#E8152A;">aimaginalabs@gmail.com</strong> a su libreta de direcciones y marquen el correo como "No es spam".</p>
             </div>
             
             <div class="features">
@@ -361,6 +453,17 @@
                     <div class="feature-card"><p style="font-style: italic;">"Tranquilidad al saber que si algo pasa, los paramédicos sabrán mi tipo de sangre y alergias. Es como tener un ángel en mi casco."</p><p style="margin-top: 16px; font-weight: 600;">— Carlos M.</p></div>
                     <div class="feature-card"><p style="font-style: italic;">"Lo mejor es que puedo actualizar mis datos cuando cambio de medicamento. Mi esposa está tranquila."</p><p style="margin-top: 16px; font-weight: 600;">— Ana G.</p></div>
                 </div>
+            </div>
+            
+            <!-- Suscripción a noticias -->
+            <div class="suscripcion-box">
+                <h3>📧 Recibe consejos de seguridad</h3>
+                <p>Suscríbete y recibe información útil para motociclistas.</p>
+                <div class="suscripcion-input-group">
+                    <input type="email" id="suscripcionEmail" placeholder="Tu correo electrónico">
+                    <button id="btnSuscripcion" style="background: #E8152A; color: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer;">Suscribirme</button>
+                </div>
+                <div id="suscripcionMsg" style="margin-top: 12px; font-size: 12px;"></div>
             </div>
             
             <div id="loginFormContainer" style="display: none;">
@@ -415,7 +518,7 @@
             <div class="dashboard-logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.src='https://placehold.co/120x48/E8152A/white?text=MyLifeQR'"></div>
             <div class="user-menu">
                 <span class="user-email" id="userEmail"></span>
-                <button class="btn-logout" id="logoutBtn">Cerrar sesión</button>
+                <button class="btn-logout" id="logoutBtn">🚪 Cerrar sesión</button>
             </div>
         </div>
         <div class="container">
@@ -626,7 +729,6 @@
                         </div>
                     </div>
                     
-                    <!-- Botones para voltear tarjeta (solo visible en modo tarjeta) -->
                     <div id="flipButtons" class="flip-buttons" style="display: none;">
                         <button class="btn-flip" id="flipFrontBtn">📇 Ver Frente</button>
                         <button class="btn-flip" id="flipBackBtn">🔄 Ver Reverso</button>
@@ -638,7 +740,7 @@
                     </div>
                     <button class="btn-download" id="downloadPngBtn">📥 Descargar PNG</button>
                     <button class="btn-download" id="downloadPdfBtn">📄 Descargar PDF</button>
-                    <p style="font-size: 11px; color: #888; margin-top: 12px;">Elige formato y color</p>
+                    <p style="font-size: 11px; color: #888; margin-top: 12px;">QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color</p>
                 </div></div>
             </div>
         </div>
@@ -659,7 +761,7 @@
                 <p>MyLifeQR es un proyecto independiente sin fines de lucro. El responsable del tratamiento de tus datos es el usuario que crea el perfil.</p>
                 
                 <h4>Datos recabados</h4>
-                <p>Recopilamos: nombre, edad, tipo de sangue, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional).</p>
+                <p>Recopilamos: nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional).</p>
                 
                 <h4>Finalidad del tratamiento</h4>
                 <p>Tus datos se utilizan EXCLUSIVAMENTE para generar tu perfil médico de emergencia, accesible mediante código QR en situaciones de emergencia.</p>
@@ -695,6 +797,12 @@
         </div>
     </div>
 
+    <!-- Cookie Consent -->
+    <div id="cookieConsent">
+        <p style="margin: 0; font-size: 13px;">🍪 MyLifeQR utiliza cookies para mejorar tu experiencia. Al continuar, aceptas su uso.</p>
+        <button onclick="aceptarCookies()">Aceptar</button>
+    </div>
+
     <script type="importmap">
         {
             "imports": {
@@ -708,7 +816,7 @@
     <script type="module">
         import { initializeApp } from "firebase/app";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from "firebase/auth";
-        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc, collection, getDocs, addDoc } from "firebase/firestore";
         
         const firebaseConfig = {
             apiKey: "AIzaSyA6ZN6SVnCx2DriW72R67_5OVgF68NhmR4",
@@ -728,7 +836,7 @@
         let fotoBase64 = "";
         let currentFormato = "horizontal";
         let currentColor = "negro";
-        let mostrarReverso = false; // Para la tarjeta
+        let mostrarReverso = false;
         
         // Configuración QR según formato
         const QR_CONFIG = {
@@ -749,13 +857,95 @@
                 targetHeight: 356
             },
             tarjeta: {
-                leftPercent: 41,
-                topPercent: 24,
-                widthPercent: 47,
-                heightPercent: 47,
+                leftPercent: 42,
+                topPercent: 26,
+                widthPercent: 45,
+                heightPercent: 45,
                 targetWidth: 1063,
                 targetHeight: 591
             }
+        };
+        
+        // Función para comprimir imagen
+        function comprimirImagen(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const MAX_WIDTH = 200;
+                    const MAX_HEIGHT = 200;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height = height * (MAX_WIDTH / width);
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width = width * (MAX_HEIGHT / height);
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    callback(dataUrl);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Actualizar contador de vidas
+        async function actualizarContador() {
+            try {
+                const perfilesSnapshot = await getDocs(collection(db, "perfiles"));
+                const total = perfilesSnapshot.size;
+                const contadorElement = document.getElementById('vidasCounter');
+                if (contadorElement) {
+                    contadorElement.innerHTML = `❤️ ${total}+ vidas protegidas`;
+                }
+            } catch (error) {
+                console.log("Error al actualizar contador:", error);
+            }
+        }
+        
+        // Suscripción a noticias
+        document.getElementById('btnSuscripcion')?.addEventListener('click', async () => {
+            const email = document.getElementById('suscripcionEmail').value;
+            const msgDiv = document.getElementById('suscripcionMsg');
+            if (!email) {
+                msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Ingresa un correo válido.</span>';
+                return;
+            }
+            try {
+                await addDoc(collection(db, "suscriptores"), { 
+                    email: email, 
+                    fecha: new Date().toISOString(),
+                    origen: "MyLifeQR"
+                });
+                msgDiv.innerHTML = '<span style="color: #22C55E;">✅ ¡Gracias por suscribirte!</span>';
+                document.getElementById('suscripcionEmail').value = '';
+                setTimeout(() => msgDiv.innerHTML = '', 3000);
+            } catch (error) {
+                msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Error, intenta de nuevo.</span>';
+            }
+        });
+        
+        // Cookies
+        if (!localStorage.getItem('cookiesAceptadas')) {
+            document.getElementById('cookieConsent').style.display = 'block';
+        }
+        window.aceptarCookies = () => {
+            localStorage.setItem('cookiesAceptadas', 'true');
+            document.getElementById('cookieConsent').style.display = 'none';
         };
         
         function obtenerImagenSticker() {
@@ -881,14 +1071,12 @@
         fotoInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    fotoBase64 = event.target.result;
+                comprimirImagen(file, (imagenComprimida) => {
+                    fotoBase64 = imagenComprimida;
                     fotoPreview.src = fotoBase64;
                     fotoPreview.style.display = 'block';
                     guardarFotoEnFirestore();
-                };
-                reader.readAsDataURL(file);
+                });
             }
         });
         
@@ -926,31 +1114,31 @@
             overlay.style.height = `${qrHeight}px`;
         }
         
-function actualizarQR() {
-    if (!currentUser) return;
-    
-    // NO mostrar QR en el reverso de la tarjeta
-    if (currentFormato === "tarjeta" && mostrarReverso) {
-        const overlay = document.getElementById('qrOverlay');
-        if (overlay) {
-            overlay.innerHTML = '';
-            overlay.style.display = 'none';
+        function actualizarQR() {
+            if (!currentUser) return;
+            
+            // No mostrar QR en el reverso de la tarjeta
+            if (currentFormato === "tarjeta" && mostrarReverso) {
+                const overlay = document.getElementById('qrOverlay');
+                if (overlay) {
+                    overlay.innerHTML = '';
+                    overlay.style.display = 'none';
+                }
+                return;
+            }
+            
+            const urlPerfil = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
+            const overlay = document.getElementById('qrOverlay');
+            if (overlay && window.QRCode) {
+                overlay.style.display = 'flex';
+                overlay.innerHTML = '';
+                const qrSize = Math.min(overlay.clientWidth, overlay.clientHeight) || 100;
+                new QRCode(overlay, { text: urlPerfil, width: qrSize, height: qrSize, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+                const img = document.getElementById('stickerBgImg');
+                if (img.complete) posicionarQR();
+                else img.onload = posicionarQR;
+            }
         }
-        return;
-    }
-    
-    const urlPerfil = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
-    const overlay = document.getElementById('qrOverlay');
-    if (overlay && window.QRCode) {
-        overlay.style.display = 'flex';
-        overlay.innerHTML = '';
-        const qrSize = Math.min(overlay.clientWidth, overlay.clientHeight) || 100;
-        new QRCode(overlay, { text: urlPerfil, width: qrSize, height: qrSize, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
-        const img = document.getElementById('stickerBgImg');
-        if (img.complete) posicionarQR();
-        else img.onload = posicionarQR;
-    }
-}
         
         window.addEventListener('resize', () => { setTimeout(() => { posicionarQR(); actualizarQR(); }, 100); });
         
@@ -1037,6 +1225,7 @@ function actualizarQR() {
                 registerError.style.color = '#22C55E';
                 registerError.innerText = '✅ Cuenta creada. ¡Bienvenido!';
                 setTimeout(() => { registerError.innerText = ''; }, 3000);
+                actualizarContador();
             } catch (error) {
                 let mensaje = 'Error al registrar';
                 if (error.code === 'auth/email-already-in-use') mensaje = 'Este correo ya está registrado';
@@ -1108,6 +1297,7 @@ function actualizarQR() {
                 }
             }
             actualizarQR();
+            actualizarContador();
         }
         
         async function guardarPerfil() {
@@ -1287,6 +1477,9 @@ function actualizarQR() {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/qrcodejs2-fix/qrcode.min.js';
         document.head.appendChild(script);
+        
+        // Inicializar contador
+        actualizarContador();
     </script>
 </body>
 </html>
