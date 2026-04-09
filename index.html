@@ -15,6 +15,8 @@
     <meta property="og:title" content="MyLifeQR — Tu ángel guardián en el asfalto">
     <meta property="og:description" content="Sticker QR para tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos al instante.">
     <meta property="og:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://MyLifeQR.github.io/mylifeqr/">
     <meta property="og:type" content="website">
     
@@ -108,6 +110,7 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: #E8152A; }
         .error-msg { color: #E8152A; font-size: 13px; margin-top: 8px; }
         .success-msg { color: #22C55E; font-size: 13px; margin-top: 8px; }
+        .warning-msg { color: #E8152A; font-size: 13px; margin-top: 8px; }
         .link-text { color: #E8152A; cursor: pointer; text-decoration: underline; margin-top: 16px; display: inline-block; background: none; border: none; font-size: 14px; }
         .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         
@@ -220,29 +223,10 @@
         }
         .sticker-container.horizontal { max-width: 400px; }
         .sticker-container.cuadrado { max-width: 200px; }
-        .sticker-container.tarjeta { max-width: 500px; }
         
         .sticker-bg { width: 100%; height: auto; display: block; border-radius: 12px; }
         .sticker-qr-overlay { position: absolute; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 12px; }
         .sticker-qr-overlay canvas { width: 100% !important; height: 100% !important; border-radius: 12px; }
-        
-        .flip-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin: 12px 0;
-        }
-        .btn-flip {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-flip:hover { background: #E8152A; }
         
         .btn-download { background: #E8152A; color: white; border: none; padding: 12px 20px; border-radius: 40px; font-weight: 600; cursor: pointer; margin: 6px; transition: background 0.2s; }
         .btn-download:hover { background: #B01020; }
@@ -399,13 +383,13 @@
             .header { flex-direction: column; }
         }
     </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DKR6WB9JJM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-DKR6WB9JJM');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKR6WB9JJM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-DKR6WB9JJM');
+    </script>
 </head>
 <body>
     <div id="landingScreen">
@@ -436,7 +420,7 @@
                         <span class="badge" data-i18n="badgeFree">⚡ Gratuito</span>
                         <span class="badge" data-i18n="badgePrivacy">🔒 Datos protegidos</span>
                         <span class="badge" data-i18n="badgeMoto">🏍️ Para motociclistas</span>
-                        <span class="badge" id="vidasCounter">❤️ 0+ vidas protegidas</span>
+                        <span class="badge" id="vidasCounter">❤️ 50+ vidas protegidas</span>
                     </div>
                     <button class="btn-primary" id="heroRegisterBtn" data-i18n="heroBtn">Protege tu vida ahora</button>
                 </div>
@@ -475,7 +459,7 @@
                 <div class="sticker-preview-card"><img src="Casco.jpg" alt="Casco con sticker" onerror="this.src='https://placehold.co/300x200/E8152A/white?text=Casco+MyLifeQR'"></div>
                 <div class="sticker-info">
                     <h2 data-i18n="stickerTitle">Tu sticker personalizado</h2>
-                    <p data-i18n="stickerDesc">Imprime y pega en tu casco. Resistente al agua y al sol. Tres formatos disponibles.</p>
+                    <p data-i18n="stickerDesc">Imprime y pega en tu casco. Resistente al agua y al sol. Dos formatos disponibles: Horizontal (6×3cm) o Cuadrado (3×3cm).</p>
                     <ul>
                         <li data-i18n="stickerList1">✅ QR único con tu perfil médico</li>
                         <li data-i18n="stickerList2">✅ Tipo de sangre visible</li>
@@ -488,7 +472,7 @@
             </div>
             
             <div class="features" style="background: #E8152A0D;">
-                <h2 class="section-title" data-i18n="featuresTitle">Lo que dicen nuestros usuarios</h2>
+                <h2 class="section-title" data-i18n="testimonialsTitle">Lo que dicen nuestros usuarios</h2>
                 <div class="features-grid">
                     <div class="feature-card"><p style="font-style: italic;" data-i18n="testimonial1">"Tranquilidad al saber que si algo pasa, los paramédicos sabrán mi tipo de sangre y alergias. Es como tener un ángel en mi casco."</p><p style="margin-top: 16px; font-weight: 600;" data-i18n="testimonial1Author">— Carlos M.</p></div>
                     <div class="feature-card"><p style="font-style: italic;" data-i18n="testimonial2">"Lo mejor es que puedo actualizar mis datos cuando cambio de medicamento. Mi esposa está tranquila."</p><p style="margin-top: 16px; font-weight: 600;" data-i18n="testimonial2Author">— Ana G.</p></div>
@@ -525,9 +509,9 @@
                     <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px;">
                         <input type="checkbox" id="aceptaTerminos" style="width: 20px; margin-top: 3px;">
                         <label for="aceptaTerminos" style="font-size: 12px; text-transform: none; letter-spacing: normal; color: #666; line-height: 1.4;">
-                            He leído y acepto los <span class="legal-link-inline" onclick="showTerminosRegistro()">Términos y Condiciones</span>, la 
-                            <span class="legal-link-inline" onclick="showPrivacidadRegistro()">Política de Privacidad</span> y el
-                            <span class="legal-link-inline" onclick="showAvisoPrivacidad()">Aviso de Privacidad (LFPDPPP)</span>.
+                            <span data-i18n="termsAccept">He leído y acepto los </span><span class="legal-link-inline" onclick="showTerminosRegistro()" data-i18n="termsLink">Términos y Condiciones</span><span data-i18n="termsAccept2">, la </span>
+                            <span class="legal-link-inline" onclick="showPrivacidadRegistro()" data-i18n="privacyLink">Política de Privacidad</span><span data-i18n="termsAccept3"> y el </span>
+                            <span class="legal-link-inline" onclick="showAvisoPrivacidad()" data-i18n="avisoLink">Aviso de Privacidad (LFPDPPP)</span><span data-i18n="termsAccept4">.</span>
                         </label>
                     </div>
                     
@@ -569,7 +553,7 @@
                         <img id="fotoPreview" class="photo-preview" src="" alt="Tu foto" style="display: none;">
                         <div style="margin-top: 8px;">
                             <label for="fotoInput" style="background: #f0f0f0; padding: 8px 16px; border-radius: 30px; cursor: pointer; display: inline-block; font-size: 12px;" data-i18n="subir_foto">📸 Subir foto</label>
-                            <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+                            <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/jpg" style="display: none;">
                         </div>
                     </div>
                     <div class="form-group"><label data-i18n="nameLabel">Nombre completo</label><input type="text" id="nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
@@ -578,8 +562,10 @@
                         <div class="form-group"><label data-i18n="bloodLabel">Tipo de sangre</label>
                             <select id="sangre">
                                 <option value="" data-i18n="sangre_selecciona">Selecciona</option>
-                                <option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option>
-                                <option value="AB+">AB+</option><option value="AB-">AB-</option><option value="O+">O+</option><option value="O-">O-</option>
+                                <option value="A+" data-i18n="sangre_a_pos">A+</option><option value="A-" data-i18n="sangre_a_neg">A-</option>
+                                <option value="B+" data-i18n="sangre_b_pos">B+</option><option value="B-" data-i18n="sangre_b_neg">B-</option>
+                                <option value="AB+" data-i18n="sangre_ab_pos">AB+</option><option value="AB-" data-i18n="sangre_ab_neg">AB-</option>
+                                <option value="O+" data-i18n="sangre_o_pos">O+</option><option value="O-" data-i18n="sangre_o_neg">O-</option>
                             </select>
                         </div>
                     </div>
@@ -765,18 +751,12 @@
                             <span class="selector-label" data-i18n="formatLabel">Formato:</span>
                             <div class="format-option active" data-format="horizontal" data-i18n="formatHorizontal">📏 Horizontal (6×3cm)</div>
                             <div class="format-option" data-format="cuadrado" data-i18n="formatCuadrado">⬛ Cuadrado (3×3cm)</div>
-                            <div class="format-option" data-format="tarjeta" data-i18n="formatTarjeta">🃏 Tarjeta (9×5cm)</div>
                         </div>
                         <div class="selector-group" id="colorSelectorGroup">
                             <span class="selector-label" data-i18n="colorLabel">Color:</span>
                             <div class="color-option negro active" data-color="negro" data-i18n="colorNegro">⚫ Fondo Negro</div>
                             <div class="color-option rojo" data-color="rojo" data-i18n="colorRojo">🔴 Fondo Rojo</div>
                         </div>
-                    </div>
-                    
-                    <div id="flipButtons" class="flip-buttons" style="display: none;">
-                        <button class="btn-flip" id="flipFrontBtn" data-i18n="flipFront">📇 Ver Frente</button>
-                        <button class="btn-flip" id="flipBackBtn" data-i18n="flipBack">🔄 Ver Reverso</button>
                     </div>
                     
                     <div id="stickerContainer" class="sticker-container horizontal">
@@ -794,29 +774,12 @@
     <div id="modalAvisoPrivacidad" class="modal-legal" style="display:none;">
         <div class="modal-legal-content">
             <div class="modal-legal-header">
-                <h3>🔐 Aviso de Privacidad (LFPDPPP)</h3>
+                <h3 id="avisoTitle">🔐 Aviso de Privacidad (LFPDPPP)</h3>
                 <button class="modal-legal-close" onclick="closeModalAvisoPrivacidad()">&times;</button>
             </div>
-            <div class="modal-legal-body">
-                <h4>MyLifeQR - Aviso de Privacidad Integral</h4>
-                <p>En cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), ponemos a tu disposición el presente aviso.</p>
-                <h4>Responsable</h4>
-                <p>MyLifeQR es un proyecto independiente sin fines de lucro. El responsable del tratamiento de tus datos es el usuario que crea el perfil.</p>
-                <h4>Datos recabados</h4>
-                <p>Recopilamos: nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional).</p>
-                <h4>Finalidad del tratamiento</h4>
-                <p>Tus datos se utilizan EXCLUSIVAMENTE para generar tu perfil médico de emergencia, accesible mediante código QR en situaciones de emergencia.</p>
-                <h4>Transferencia de datos</h4>
-                <p>No transferimos tus datos a terceros. Los contactos de emergencia reciben notificaciones automáticas SOLO si activas la opción correspondiente.</p>
-                <h4>Medios para ejercer derechos ARCO</h4>
-                <p>Puedes acceder, rectificar, cancelar u oponerte al uso de tus datos ingresando a tu perfil o contactando a: <strong>privacidad@mylifeqr.com</strong></p>
-                <h4>Consentimiento</h4>
-                <p>Al registrarte y aceptar este aviso, otorgas tu consentimiento para el tratamiento de tus datos personales, incluyendo datos sensibles de salud, con los fines aquí descritos.</p>
-                <h4>Última actualización</h4>
-                <p>Abril 2026</p>
-            </div>
+            <div class="modal-legal-body" id="avisoBody"></div>
             <div class="modal-legal-footer">
-                <button onclick="closeModalAvisoPrivacidad()">Cerrar</button>
+                <button onclick="closeModalAvisoPrivacidad()" data-i18n="closeBtn">Cerrar</button>
             </div>
         </div>
     </div>
@@ -829,14 +792,14 @@
             </div>
             <div class="modal-legal-body" id="modalLegalRegistroBody"></div>
             <div class="modal-legal-footer">
-                <button onclick="closeModalLegalRegistro()">Cerrar</button>
+                <button onclick="closeModalLegalRegistro()" data-i18n="closeBtn">Cerrar</button>
             </div>
         </div>
     </div>
 
     <div id="cookieConsent">
-        <p style="margin: 0; font-size: 13px;">🍪 MyLifeQR utiliza cookies para mejorar tu experiencia. Al continuar, aceptas su uso.</p>
-        <button onclick="aceptarCookies()">Aceptar</button>
+        <p style="margin: 0; font-size: 13px;" data-i18n="cookieText">🍪 MyLifeQR utiliza cookies esenciales para el funcionamiento del sitio. No usamos cookies de rastreo. Al continuar, aceptas su uso.</p>
+        <button onclick="aceptarCookies()" data-i18n="cookieAccept">Aceptar</button>
     </div>
 
     <script type="importmap">
@@ -852,7 +815,7 @@
     <script type="module">
         import { initializeApp } from "firebase/app";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from "firebase/auth";
-        import { getFirestore, doc, setDoc, getDoc, deleteDoc, collection, getDocs, addDoc } from "firebase/firestore";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc, collection, addDoc, increment } from "firebase/firestore";
         
         const firebaseConfig = {
             apiKey: "AIzaSyA6ZN6SVnCx2DriW72R67_5OVgF68NhmR4",
@@ -872,8 +835,8 @@
         let fotoBase64 = "";
         let currentFormato = "horizontal";
         let currentColor = "negro";
-        let mostrarReverso = false;
         let currentLang = "es";
+        let qrUpdateTimeout;
         
         const traducciones = {
             es: {
@@ -888,9 +851,10 @@
                 "feature3Title": "Actualiza cuando quieras", "feature3Desc": "Cambia tus datos, contactos o medicamentos desde cualquier dispositivo.",
                 "feature4Title": "Sin app necesaria", "feature4Desc": "El paramédico solo escanea el QR con su celular. No necesita instalar nada.",
                 "creatorBio": "Motociclista desde hace más de 10 años, he recorrido carreteras de día y de noche. Sé lo que se siente ver a un compañero caer y no poder ayudar porque no sabes ni su nombre, ni si es alérgico, ni a quién llamar.<br><br><strong>MyLifeQR nació de esa impotencia.</strong> Este proyecto es gratuito porque creo que la seguridad no debería costar. Es mi forma de decir: <strong>\"Yo te cuido, como quiero que me cuiden a mí\"</strong>.",
-                "stickerTitle": "Tu sticker personalizado", "stickerDesc": "Imprime y pega en tu casco. Resistente al agua y al sol. Tres formatos disponibles.",
+                "stickerTitle": "Tu sticker personalizado", "stickerDesc": "Imprime y pega en tu casco. Resistente al agua y al sol. Dos formatos disponibles: Horizontal (6×3cm) o Cuadrado (3×3cm).",
                 "stickerList1": "✅ QR único con tu perfil médico", "stickerList2": "✅ Tipo de sangre visible", "stickerList3": "✅ Contactos de emergencia",
                 "stickerList4": "✅ Alergias y condiciones médicas", "stickerList5": "✅ Donador de órganos (Sí/No)", "stickerBtn": "Generar mi sticker ahora",
+                "testimonialsTitle": "Lo que dicen nuestros usuarios",
                 "testimonial1": "\"Tranquilidad al saber que si algo pasa, los paramédicos sabrán mi tipo de sangre y alergias. Es como tener un ángel en mi casco.\"",
                 "testimonial1Author": "— Carlos M.", "testimonial2": "\"Lo mejor es que puedo actualizar mis datos cuando cambio de medicamento. Mi esposa está tranquila.\"",
                 "testimonial2Author": "— Ana G.",
@@ -906,8 +870,8 @@
                 "addContactBtn": "+ Agregar otro contacto (máx. 5)", "additionalTitle": "📋 Información Adicional", "hospitalLabel": "Seguro / Hospital preferido",
                 "notesLabel": "Notas adicionales", "saveBtn": "💾 Guardar mis datos", "deleteAccountBtn": "🗑️ Eliminar mi cuenta (borrar todos mis datos)",
                 "stickerPreviewTitle": "🔲 Tu sticker personalizado", "formatLabel": "Formato:", "formatHorizontal": "📏 Horizontal (6×3cm)",
-                "formatCuadrado": "⬛ Cuadrado (3×3cm)", "formatTarjeta": "🃏 Tarjeta (9×5cm)", "colorLabel": "Color:", "colorNegro": "⚫ Fondo Negro",
-                "colorRojo": "🔴 Fondo Rojo", "flipFront": "📇 Ver Frente", "flipBack": "🔄 Ver Reverso", "downloadPNG": "📥 Descargar PNG",
+                "formatCuadrado": "⬛ Cuadrado (3×3cm)", "colorLabel": "Color:", "colorNegro": "⚫ Fondo Negro",
+                "colorRojo": "🔴 Fondo Rojo", "downloadPNG": "📥 Descargar PNG",
                 "downloadPDF": "📄 Descargar PDF", "qrInfo": "QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color",
                 "legalWarning": "⚠️ AVISO LEGAL ⚠️", "legalText": "MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.",
                 "legalEmergency": "📞 En caso de emergencia, llame al 911 inmediatamente.", "termsLink": "📜 Términos y Condiciones",
@@ -920,10 +884,36 @@
                 "relacion_pareja": "Pareja", "relacion_esposo": "Esposo/a", "relacion_amigo": "Amigo(a)", "relacion_otro": "Otro",
                 "donador_si": "✅ Sí, soy donador", "donador_no": "❌ No, no soy donador", "donador_selecciona": "Selecciona",
                 "sangre_selecciona": "Selecciona",
+                "sangre_a_pos": "A+", "sangre_a_neg": "A-", "sangre_b_pos": "B+", "sangre_b_neg": "B-",
+                "sangre_ab_pos": "AB+", "sangre_ab_neg": "AB-", "sangre_o_pos": "O+", "sangre_o_neg": "O-",
                 "nombre_placeholder": "Nombre completo", "edad_placeholder": "Edad", "alergias_placeholder": "Alergias (ej: penicilina, mariscos)",
                 "condiciones_placeholder": "Condiciones médicas (ej: diabetes, hipertensión)", "medicamentos_placeholder": "Medicamentos (ej: metformina, losartán)",
                 "telefono_placeholder": "5512345678", "email_placeholder": "ejemplo@correo.com",
-                "hospital_placeholder": "Seguro u hospital", "notas_placeholder": "Información adicional para emergencias"
+                "hospital_placeholder": "Seguro u hospital", "notas_placeholder": "Información adicional para emergencias",
+                "validacion_nombre": "⚠️ El nombre completo es obligatorio",
+                "validacion_sangre": "⚠️ Selecciona tu tipo de sangre (información vital para emergencias)",
+                "error_descarga": "❌ Error al generar la imagen. Por favor, recarga la página e intenta de nuevo.",
+                "error_imagen_cargando": "La imagen del sticker aún no carga. Intenta en 1 segundo.",
+                "error_tipo_archivo": "❌ Solo se permiten imágenes JPG o PNG",
+                "error_registro": "Error al registrar",
+                "error_email_existe": "Este correo ya está registrado",
+                "error_login": "Correo o contraseña incorrectos",
+                "error_eliminar_cuenta": "❌ Error al eliminar la cuenta: ",
+                "confirmar_eliminar": "⚠️ ¿ESTÁS SEGURO?\n\nEsta acción ELIMINARÁ PERMANENTEMENTE todos tus datos personales, incluyendo tu perfil médico y contactos de emergencia.",
+                "confirmar_eliminar_final": "Última advertencia: Todos tus datos serán borrados para siempre. ¿Confirmas?",
+                "exito_eliminar": "✅ Tu cuenta y todos tus datos han sido eliminados permanentemente.",
+                "error_requiere_login": "⚠️ Por seguridad, necesitas volver a iniciar sesión antes de eliminar tu cuenta.",
+                "exito_guardado": "✅ Datos guardados correctamente",
+                "exito_registro": "✅ Cuenta creada. ¡Bienvenido!",
+                "exito_suscripcion": "✅ ¡Gracias por suscribirte!",
+                "error_suscripcion": "❌ Error, intenta de nuevo.",
+                "termsAccept": "He leído y acepto los ",
+                "termsAccept2": ", la ",
+                "termsAccept3": " y el ",
+                "termsAccept4": ".",
+                "closeBtn": "Cerrar",
+                "cookieText": "🍪 MyLifeQR utiliza cookies esenciales para el funcionamiento del sitio. No usamos cookies de rastreo. Al continuar, aceptas su uso.",
+                "cookieAccept": "Aceptar"
             },
             en: {
                 "navLogin": "Log in", "navRegister": "Sign up",
@@ -933,13 +923,14 @@
                 "heroBtn": "Protect your life now", "badgeFree": "Free", "badgePrivacy": "Protected data", "badgeMoto": "For motorcyclists",
                 "featuresTitle": "Why MyLifeQR?", "featuresSubtitle": "Because heroes also need a guardian angel",
                 "feature1Title": "Immediate response", "feature1Desc": "In an accident, every second counts. Your medical information available instantly.",
-                "feature2Title": "Guaranteed privacy", "feature2Desc": "Data protected by Mexican law. Only visible in emergencies with privacy notice.",
+                "feature2Title": "Guaranteed privacy", "feature2Desc": "Data protected by international standards (GDPR, CCPA, LFPDPPP). Only visible in emergencies with privacy notice.",
                 "feature3Title": "Update anytime", "feature3Desc": "Change your data, contacts or medications from any device.",
                 "feature4Title": "No app needed", "feature4Desc": "Paramedics just scan the QR with their phone. No installation required.",
                 "creatorBio": "A motorcyclist for over 10 years, I've ridden roads day and night. I know what it's like to see a fellow rider fall and not be able to help because you don't know their name, allergies, or who to call.<br><br><strong>MyLifeQR was born from that helplessness.</strong> This project is free because I believe safety shouldn't cost. It's my way of saying: <strong>\"I take care of you, as I want to be taken care of\"</strong>.",
-                "stickerTitle": "Your personalized sticker", "stickerDesc": "Print and stick on your helmet. Water and sun resistant. Three formats available.",
+                "stickerTitle": "Your personalized sticker", "stickerDesc": "Print and stick on your helmet. Water and sun resistant. Two formats available: Horizontal (6×3cm) or Square (3×3cm).",
                 "stickerList1": "✅ Unique QR with your medical profile", "stickerList2": "✅ Visible blood type", "stickerList3": "✅ Emergency contacts",
                 "stickerList4": "✅ Allergies and medical conditions", "stickerList5": "✅ Organ donor (Yes/No)", "stickerBtn": "Generate my sticker now",
+                "testimonialsTitle": "What our users say",
                 "testimonial1": "\"Peace of mind knowing that if something happens, paramedics will know my blood type and allergies. It's like having an angel on my helmet.\"",
                 "testimonial1Author": "— Carlos M.", "testimonial2": "\"The best part is I can update my data when I change medication. My wife is at peace.\"",
                 "testimonial2Author": "— Ana G.",
@@ -955,12 +946,12 @@
                 "addContactBtn": "+ Add another contact (max 5)", "additionalTitle": "📋 Additional Information", "hospitalLabel": "Insurance / Preferred Hospital",
                 "notesLabel": "Additional notes", "saveBtn": "💾 Save my data", "deleteAccountBtn": "🗑️ Delete my account (erase all my data)",
                 "stickerPreviewTitle": "🔲 Your personalized sticker", "formatLabel": "Format:", "formatHorizontal": "📏 Horizontal (6×3cm)",
-                "formatCuadrado": "⬛ Square (3×3cm)", "formatTarjeta": "🃏 Card (9×5cm)", "colorLabel": "Color:", "colorNegro": "⚫ Black Background",
-                "colorRojo": "🔴 Red Background", "flipFront": "📇 View Front", "flipBack": "🔄 View Back", "downloadPNG": "📥 Download PNG",
+                "formatCuadrado": "⬛ Square (3×3cm)", "colorLabel": "Color:", "colorNegro": "⚫ Black Background",
+                "colorRojo": "🔴 Red Background", "downloadPNG": "📥 Download PNG",
                 "downloadPDF": "📄 Download PDF", "qrInfo": "QR 7cm (horizontal) or 2.7cm (square) | Choose format and color",
                 "legalWarning": "⚠️ LEGAL NOTICE ⚠️", "legalText": "MyLifeQR is a <strong>medical identification support system</strong>. It is not a medical or emergency service and does not replace professional care.",
                 "legalEmergency": "📞 In case of emergency, call 911 immediately.", "termsLink": "📜 Terms and Conditions",
-                "privacyLink": "🔒 Privacy Policy", "avisoLink": "🔐 Privacy Notice (LFPDPPP)",
+                "privacyLink": "🔒 Privacy Policy", "avisoLink": "🔐 Privacy Notice",
                 "emailTip": "📧 Your contacts not receiving alerts? Ask them to add aimaginalabs@gmail.com to their address book and mark the email as \"Not spam\".",
                 "newsletterTitle": "📧 Get safety tips", "newsletterDesc": "Subscribe and receive useful information for motorcyclists.",
                 "newsletterPlaceholder": "Your email address", "newsletterBtn": "Subscribe",
@@ -969,18 +960,62 @@
                 "relacion_pareja": "Partner", "relacion_esposo": "Spouse", "relacion_amigo": "Friend", "relacion_otro": "Other",
                 "donador_si": "✅ Yes, I am a donor", "donador_no": "❌ No, I am not a donor", "donador_selecciona": "Select",
                 "sangre_selecciona": "Select",
+                "sangre_a_pos": "A+", "sangre_a_neg": "A-", "sangre_b_pos": "B+", "sangre_b_neg": "B-",
+                "sangre_ab_pos": "AB+", "sangre_ab_neg": "AB-", "sangre_o_pos": "O+", "sangre_o_neg": "O-",
                 "nombre_placeholder": "Full name", "edad_placeholder": "Age", "alergias_placeholder": "Allergies (e.g., penicillin, shellfish)",
                 "condiciones_placeholder": "Medical conditions (e.g., diabetes, hypertension)", "medicamentos_placeholder": "Medications (e.g., metformin, losartan)",
                 "telefono_placeholder": "5512345678", "email_placeholder": "example@email.com",
-                "hospital_placeholder": "Insurance or hospital", "notas_placeholder": "Additional emergency information"
+                "hospital_placeholder": "Insurance or hospital", "notas_placeholder": "Additional emergency information",
+                "validacion_nombre": "⚠️ Full name is required",
+                "validacion_sangre": "⚠️ Select your blood type (vital information for emergencies)",
+                "error_descarga": "❌ Error generating image. Please reload the page and try again.",
+                "error_imagen_cargando": "Sticker image is still loading. Try again in 1 second.",
+                "error_tipo_archivo": "❌ Only JPG or PNG images are allowed",
+                "error_registro": "Registration error",
+                "error_email_existe": "This email is already registered",
+                "error_login": "Incorrect email or password",
+                "error_eliminar_cuenta": "❌ Error deleting account: ",
+                "confirmar_eliminar": "⚠️ ARE YOU SURE?\n\nThis action will PERMANENTLY DELETE all your personal data, including your medical profile and emergency contacts.",
+                "confirmar_eliminar_final": "Final warning: All your data will be permanently deleted. Do you confirm?",
+                "exito_eliminar": "✅ Your account and all your data have been permanently deleted.",
+                "error_requiere_login": "⚠️ For security reasons, you need to log in again before deleting your account.",
+                "exito_guardado": "✅ Data saved successfully",
+                "exito_registro": "✅ Account created. Welcome!",
+                "exito_suscripcion": "✅ Thank you for subscribing!",
+                "error_suscripcion": "❌ Error, please try again.",
+                "termsAccept": "I have read and accept the ",
+                "termsAccept2": ", the ",
+                "termsAccept3": " and the ",
+                "termsAccept4": ".",
+                "closeBtn": "Close",
+                "cookieText": "🍪 MyLifeQR uses essential cookies for site functionality. We do not use tracking cookies. By continuing, you accept their use.",
+                "cookieAccept": "Accept"
             }
         };
         
         const QR_CONFIG = {
             horizontal: { leftPercent: 56.5, topPercent: 6, widthPercent: 37.4, heightPercent: 74.6, targetWidth: 709, targetHeight: 355 },
-            cuadrado: { leftPercent: 13, topPercent: 6, widthPercent: 75, heightPercent: 75, targetWidth: 355, targetHeight: 356 },
-            tarjeta: { leftPercent: 42, topPercent: 26, widthPercent: 45, heightPercent: 45, targetWidth: 1063, targetHeight: 591 }
+            cuadrado: { leftPercent: 13, topPercent: 6, widthPercent: 75, heightPercent: 75, targetWidth: 355, targetHeight: 356 }
         };
+        
+        // Función para obtener la imagen del sticker según idioma y formato
+        function obtenerImagenSticker() {
+            if (currentFormato === "horizontal") {
+                // Stickers horizontales: tienen texto, dependen del idioma
+                if (currentColor === "negro") {
+                    return currentLang === 'en' ? 'TemplateNegroMyLifeQREN.png' : 'TemplateNegroMyLifeQR.png';
+                } else {
+                    return currentLang === 'en' ? 'TemplateRojoMyLifeQREN.png' : 'TemplateRojoMyLifeQR.png';
+                }
+            } else { // formato cuadrado
+                // Stickers cuadrados: NO tienen texto, son iguales en ambos idiomas
+                if (currentColor === "negro") {
+                    return 'TemplateNegroMyLifeQRCuadrado.png';
+                } else {
+                    return 'TemplateRojoMyLifeQRCuadrado.png';
+                }
+            }
+        }
         
         function cambiarIdioma(lang) {
             currentLang = lang;
@@ -1019,6 +1054,11 @@
         }
         
         function comprimirImagen(file, callback) {
+            if (!file.type.startsWith('image/')) {
+                const msg = traducciones[currentLang].error_tipo_archivo || '❌ Solo se permiten imágenes';
+                alert(msg);
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function(event) {
                 const img = new Image();
@@ -1040,66 +1080,64 @@
         
         async function actualizarContador() {
             try {
-                const perfilesSnapshot = await getDocs(collection(db, "perfiles"));
-                document.getElementById('vidasCounter').innerHTML = `❤️ ${perfilesSnapshot.size}+ vidas protegidas`;
-            } catch (error) { console.log(error); }
+                const counterDoc = await getDoc(doc(db, "public", "stats"));
+                let total = 50;
+                
+                if (counterDoc.exists() && counterDoc.data().totalUsuarios) {
+                    total = counterDoc.data().totalUsuarios;
+                }
+                
+                document.getElementById('vidasCounter').innerHTML = `❤️ ${total}+ vidas protegidas`;
+            } catch (error) { 
+                console.log('Error al obtener contador:', error);
+                document.getElementById('vidasCounter').innerHTML = `❤️ 50+ vidas protegidas`;
+            }
         }
         
         document.getElementById('btnSuscripcion')?.addEventListener('click', async () => {
             const email = document.getElementById('suscripcionEmail').value;
             const msgDiv = document.getElementById('suscripcionMsg');
-            if (!email) { msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Ingresa un correo válido.</span>'; return; }
+            if (!email) { 
+                msgDiv.innerHTML = `<span style="color: #E8152A;">❌ ${traducciones[currentLang].error_suscripcion || 'Error'}</span>`; 
+                return; 
+            }
             try {
                 await addDoc(collection(db, "suscriptores"), { email, fecha: new Date().toISOString(), origen: "MyLifeQR" });
-                msgDiv.innerHTML = '<span style="color: #22C55E;">✅ ¡Gracias por suscribirte!</span>';
+                msgDiv.innerHTML = `<span style="color: #22C55E;">✅ ${traducciones[currentLang].exito_suscripcion || '¡Gracias!'}</span>`;
                 document.getElementById('suscripcionEmail').value = '';
                 setTimeout(() => msgDiv.innerHTML = '', 3000);
-            } catch (error) { msgDiv.innerHTML = '<span style="color: #E8152A;">❌ Error, intenta de nuevo.</span>'; }
+            } catch (error) { 
+                msgDiv.innerHTML = `<span style="color: #E8152A;">❌ ${traducciones[currentLang].error_suscripcion || 'Error'}</span>`; 
+            }
         });
         
         if (!localStorage.getItem('cookiesAceptadas')) document.getElementById('cookieConsent').style.display = 'block';
         window.aceptarCookies = () => { localStorage.setItem('cookiesAceptadas', 'true'); document.getElementById('cookieConsent').style.display = 'none'; };
         
-        function obtenerImagenSticker() {
-            if (currentFormato === "tarjeta") {
-                if (mostrarReverso) {
-                    return currentLang === 'en' ? 'TarjetaBackEN.png' : 'TarjetaBack.png';
-                } else {
-                    return currentLang === 'en' ? 'TarjetaFrenteEN.png' : 'TarjetaFrente.png';
-                }
-            } else if (currentFormato === "horizontal") {
-                return currentColor === "negro" ? 'TemplateNegroMyLifeQR.png' : 'TemplateRojoMyLifeQR.png';
-            } else {
-                return currentColor === "negro" ? 'TemplateNegroMyLifeQRCuadrado.png' : 'TemplateRojoMyLifeQRCuadrado.png';
-            }
-        }
-        
-        function actualizarVisibilidadColorSelector() {
-            const colorSelector = document.getElementById('colorSelectorGroup');
-            const flipButtons = document.getElementById('flipButtons');
-            if (currentFormato === "tarjeta") { colorSelector.style.display = 'none'; flipButtons.style.display = 'flex'; }
-            else { colorSelector.style.display = 'flex'; flipButtons.style.display = 'none'; mostrarReverso = false; }
-        }
-        
         function cambiarFormato(formato) {
             currentFormato = formato;
             const container = document.getElementById('stickerContainer');
-            container.classList.remove('horizontal', 'cuadrado', 'tarjeta');
+            container.classList.remove('horizontal', 'cuadrado');
             container.classList.add(formato);
-            mostrarReverso = false;
-            actualizarVisibilidadColorSelector();
             actualizarImagenSticker();
         }
         
         function cambiarColor(color) { currentColor = color; actualizarImagenSticker(); }
-        function mostrarFrente() { mostrarReverso = false; actualizarImagenSticker(); }
-        function mostrarBack() { mostrarReverso = true; actualizarImagenSticker(); }
         
         function actualizarImagenSticker() {
+            clearTimeout(qrUpdateTimeout);
             const imgElement = document.getElementById('stickerBgImg');
             imgElement.src = obtenerImagenSticker();
-            imgElement.onload = () => { posicionarQR(); actualizarQR(); };
-            posicionarQR(); actualizarQR();
+            imgElement.onload = () => {
+                qrUpdateTimeout = setTimeout(() => {
+                    posicionarQR();
+                    actualizarQR();
+                }, 50);
+            };
+            if (imgElement.complete) {
+                posicionarQR();
+                actualizarQR();
+            }
         }
         
         document.querySelectorAll('.format-option').forEach(opt => {
@@ -1117,9 +1155,6 @@
                 cambiarColor(opt.getAttribute('data-color'));
             });
         });
-        
-        document.getElementById('flipFrontBtn')?.addEventListener('click', mostrarFrente);
-        document.getElementById('flipBackBtn')?.addEventListener('click', mostrarBack);
         
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => cambiarIdioma(btn.getAttribute('data-lang')));
@@ -1139,17 +1174,17 @@
         
         window.eliminarCuenta = async () => {
             if (!currentUser) return;
-            if (!confirm("⚠️ ¿ESTÁS SEGURO?\n\nEsta acción ELIMINARÁ PERMANENTEMENTE todos tus datos...")) return;
-            if (!confirm("Última advertencia: Todos tus datos serán borrados para siempre. ¿Confirmas?")) return;
+            if (!confirm(traducciones[currentLang].confirmar_eliminar)) return;
+            if (!confirm(traducciones[currentLang].confirmar_eliminar_final)) return;
             try {
                 await deleteDoc(doc(db, "perfiles", currentUser.uid));
                 await deleteUser(currentUser);
-                alert("✅ Tu cuenta y todos tus datos han sido eliminados permanentemente.");
+                alert(traducciones[currentLang].exito_eliminar);
                 await signOut(auth);
                 window.location.reload();
             } catch (error) {
-                if (error.code === 'auth/requires-recent-login') alert("⚠️ Por seguridad, necesitas volver a iniciar sesión antes de eliminar tu cuenta.");
-                else alert("❌ Error al eliminar la cuenta: " + error.message);
+                if (error.code === 'auth/requires-recent-login') alert(traducciones[currentLang].error_requiere_login);
+                else alert(traducciones[currentLang].error_eliminar_cuenta + error.message);
             }
         };
         
@@ -1158,7 +1193,9 @@
         
         fotoInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
-            if (file) { comprimirImagen(file, (img) => { fotoBase64 = img; fotoPreview.src = fotoBase64; fotoPreview.style.display = 'block'; guardarFotoEnFirestore(); }); }
+            if (file) { 
+                comprimirImagen(file, (img) => { fotoBase64 = img; fotoPreview.src = fotoBase64; fotoPreview.style.display = 'block'; guardarFotoEnFirestore(); }); 
+            }
         });
         
         async function guardarFotoEnFirestore() { if (!currentUser) return; await setDoc(doc(db, "perfiles", currentUser.uid), { foto: fotoBase64 }, { merge: true }); }
@@ -1180,11 +1217,6 @@
         
         function actualizarQR() {
             if (!currentUser) return;
-            if (currentFormato === "tarjeta" && mostrarReverso) {
-                const overlay = document.getElementById('qrOverlay');
-                if (overlay) { overlay.innerHTML = ''; overlay.style.display = 'none'; }
-                return;
-            }
             const urlPerfil = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
             const overlay = document.getElementById('qrOverlay');
             if (overlay && window.QRCode) {
@@ -1212,24 +1244,257 @@
         function showLoginForm() { loginFormContainer.style.display = 'block'; registerFormContainer.style.display = 'none'; loginFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         function showRegisterForm() { registerFormContainer.style.display = 'block'; loginFormContainer.style.display = 'none'; registerFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         
-        window.showAvisoPrivacidad = () => { document.getElementById('modalAvisoPrivacidad').style.display = 'flex'; };
+        // Función para mostrar el Aviso de Privacidad (bilingüe)
+        window.showAvisoPrivacidad = () => {
+            const modal = document.getElementById('modalAvisoPrivacidad');
+            const title = document.getElementById('avisoTitle');
+            const body = document.getElementById('avisoBody');
+            
+            if (currentLang === 'en') {
+                title.innerText = '🔐 Privacy Notice (Global)';
+                body.innerHTML = `
+                    <h4>MyLifeQR - Global Privacy Notice</h4>
+                    <p><strong>Last updated:</strong> April 2026</p>
+                    
+                    <h4>📋 Data Controller</h4>
+                    <p>MyLifeQR is an independent non-profit project created by Marcos Esparza. YOU are the data controller, as you control your own information.</p>
+                    
+                    <h4>📊 Data We Collect</h4>
+                    <p>To create your emergency medical profile, we collect:</p>
+                    <ul>
+                        <li><strong>Identification:</strong> Name, age, photo (optional)</li>
+                        <li><strong>Medical:</strong> Blood type, allergies, medical conditions, medications</li>
+                        <li><strong>Emergency:</strong> Contacts (name, relationship, phone, email)</li>
+                        <li><strong>Technical:</strong> IP address, registration date (for security)</li>
+                    </ul>
+                    
+                    <h4>🎯 Purpose of Processing</h4>
+                    <p><strong>EXCLUSIVELY</strong> to generate your emergency medical profile, accessible via QR code in emergency situations by medical personnel or first responders.</p>
+                    
+                    <h4>⚖️ Legal Framework and Applicable Standards</h4>
+                    <p>MyLifeQR complies with the following legal frameworks and international standards:</p>
+                    <ul>
+                        <li><strong>🇲🇽 Mexico:</strong> LFPDPPP</li>
+                        <li><strong>🇪🇺 European Union:</strong> GDPR</li>
+                        <li><strong>🇺🇸 California, USA:</strong> CCPA/CPRA</li>
+                        <li><strong>🇧🇷 Brazil:</strong> LGPD</li>
+                        <li><strong>🇨🇴 Colombia:</strong> Law 1581 of 2012</li>
+                        <li><strong>🇦🇷 Argentina:</strong> Law 25.326</li>
+                    </ul>
+                    
+                    <h4>🔒 International Data Transfer</h4>
+                    <p>Your data is stored on secure servers. By using MyLifeQR, you accept the international transfer of your data for service provision.</p>
+                    
+                    <h4>✋ Your Rights (ARCO + GDPR + CCPA)</h4>
+                    <p>Depending on your location, you have the right to:</p>
+                    <ul>
+                        <li><strong>Access</strong> your data at any time</li>
+                        <li><strong>Rectify</strong> incorrect information</li>
+                        <li><strong>Cancel/Delete</strong> your account and all your data</li>
+                        <li><strong>Object</strong> to the processing of your data</li>
+                        <li><strong>Portability</strong> (receive your data in common format)</li>
+                        <li><strong>Restrict</strong> processing</li>
+                    </ul>
+                    
+                    <h4>⏱️ Data Retention</h4>
+                    <p>Your data is kept as long as your account is active. When you delete your account, all your data is permanently deleted.</p>
+                    
+                    <h4>👶 Minimum Age</h4>
+                    <p>You must be at least 16 years old to register. If you are a minor, you need parental or guardian authorization.</p>
+                    
+                    <h4>📧 Exercise of Rights</h4>
+                    <p>To exercise any of your rights, contact:</p>
+                    <p><strong>✉️ aimaginalabs@gmail.com</strong><br>
+                    <strong>📱 WhatsApp:</strong> +52 5652502785</p>
+                    
+                    <h4>⚠️ Limitation of Liability</h4>
+                    <p><strong>MyLifeQR is a medical identification support system, NOT an emergency medical service.</strong> In case of emergency, ALWAYS call 911 or your local emergency number.</p>
+                `;
+            } else {
+                title.innerText = '🔐 Aviso de Privacidad (Global)';
+                body.innerHTML = `
+                    <h4>MyLifeQR - Aviso de Privacidad Global</h4>
+                    <p><strong>Última actualización:</strong> Abril 2026</p>
+                    
+                    <h4>📋 Responsable</h4>
+                    <p>MyLifeQR es un proyecto independiente sin fines de lucro creado por Marcos Esparza. TÚ eres el responsable del tratamiento de tus datos, ya que controlas tu propia información.</p>
+                    
+                    <h4>📊 Datos que recopilamos</h4>
+                    <p>Para crear tu perfil médico de emergencia, recopilamos:</p>
+                    <ul>
+                        <li><strong>Identificación:</strong> Nombre, edad, fotografía (opcional)</li>
+                        <li><strong>Médicos:</strong> Tipo de sangre, alergias, condiciones médicas, medicamentos</li>
+                        <li><strong>Emergencia:</strong> Contactos (nombre, relación, teléfono, correo)</li>
+                        <li><strong>Técnicos:</strong> Dirección IP, fecha de registro (para seguridad)</li>
+                    </ul>
+                    
+                    <h4>🎯 Finalidad del tratamiento</h4>
+                    <p><strong>EXCLUSIVAMENTE</strong> para generar tu perfil médico de emergencia, accesible mediante código QR en situaciones de emergencia por personal médico o primeros respondientes.</p>
+                    
+                    <h4>⚖️ Marco legal y estándares aplicables</h4>
+                    <p>MyLifeQR cumple con los siguientes marcos legales y estándares internacionales:</p>
+                    <ul>
+                        <li><strong>🇲🇽 México:</strong> LFPDPPP</li>
+                        <li><strong>🇪🇺 Unión Europea:</strong> GDPR</li>
+                        <li><strong>🇺🇸 California, EE.UU.:</strong> CCPA/CPRA</li>
+                        <li><strong>🇧🇷 Brasil:</strong> LGPD</li>
+                        <li><strong>🇨🇴 Colombia:</strong> Ley 1581 de 2012</li>
+                        <li><strong>🇦🇷 Argentina:</strong> Ley 25.326</li>
+                    </ul>
+                    
+                    <h4>🔒 Transferencia internacional de datos</h4>
+                    <p>Tus datos se almacenan en servidores seguros. Al utilizar MyLifeQR, aceptas la transferencia internacional de tus datos para la prestación del servicio.</p>
+                    
+                    <h4>✋ Tus derechos (ARCO + GDPR + CCPA)</h4>
+                    <p>Dependiendo de tu ubicación, tienes derecho a:</p>
+                    <ul>
+                        <li><strong>Acceder</strong> a tus datos en cualquier momento</li>
+                        <li><strong>Rectificar</strong> información incorrecta</li>
+                        <li><strong>Cancelar/Eliminar</strong> tu cuenta y todos tus datos</li>
+                        <li><strong>Oponerte</strong> al tratamiento de tus datos</li>
+                        <li><strong>Portabilidad</strong> (recibir tus datos en formato común)</li>
+                        <li><strong>Limitar</strong> el tratamiento</li>
+                    </ul>
+                    
+                    <h4>⏱️ Conservación de datos</h4>
+                    <p>Tus datos se conservan mientras tu cuenta esté activa. Al eliminar tu cuenta, todos tus datos se borran permanentemente.</p>
+                    
+                    <h4>👶 Edad mínima</h4>
+                    <p>Debes tener al menos 16 años para registrarte. Si eres menor, necesitas autorización de tus padres o tutores.</p>
+                    
+                    <h4>📧 Ejercicio de derechos</h4>
+                    <p>Para ejercer cualquiera de tus derechos, contacta a:</p>
+                    <p><strong>✉️ aimaginalabs@gmail.com</strong><br>
+                    <strong>📱 WhatsApp:</strong> +52 5652502785</p>
+                    
+                    <h4>⚠️ Limitación de responsabilidad</h4>
+                    <p><strong>MyLifeQR es un sistema de identificación médica de apoyo, NO es un servicio médico de emergencia.</strong> En caso de emergencia, llama siempre al 911 o a tu número local de emergencias.</p>
+                `;
+            }
+            modal.style.display = 'flex';
+        };
+        
         window.closeModalAvisoPrivacidad = () => { document.getElementById('modalAvisoPrivacidad').style.display = 'none'; };
         
+        // Función para mostrar Términos y Condiciones (bilingüe)
         window.showTerminosRegistro = () => {
             const modal = document.getElementById('modalLegalRegistro');
             const title = document.getElementById('modalLegalRegistroTitle');
             const body = document.getElementById('modalLegalRegistroBody');
-            title.innerText = '📜 Términos y Condiciones';
-            body.innerHTML = `<h4>1. Aceptación</h4><p>Al utilizar MyLifeQR, aceptas estos términos.</p><h4>2. Descripción</h4><p>MyLifeQR es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p><h4>3. Responsabilidad</h4><p>Eres el único responsable de la veracidad de tus datos.</p><h4>4. Ley Aplicable</h4><p>Leyes de México.</p>`;
+            
+            if (currentLang === 'en') {
+                title.innerText = '📜 Terms and Conditions';
+                body.innerHTML = `
+                    <h4>1. Acceptance</h4>
+                    <p>By using MyLifeQR, you agree to these Terms and Conditions.</p>
+                    
+                    <h4>2. Service Description</h4>
+                    <p>MyLifeQR is a medical identification support system. It is NOT a medical or emergency service.</p>
+                    
+                    <h4>3. User Responsibility</h4>
+                    <p>You are solely responsible for the accuracy and truthfulness of your medical data.</p>
+                    
+                    <h4>4. Emergency Situations</h4>
+                    <p>In case of emergency, ALWAYS call your local emergency number (911 in many countries) immediately.</p>
+                    
+                    <h4>5. Limitation of Liability</h4>
+                    <p>MyLifeQR is provided "as is" without warranties. We are not responsible for any damages arising from the use of this service.</p>
+                    
+                    <h4>6. Account Termination</h4>
+                    <p>You may delete your account at any time. We reserve the right to suspend accounts that violate these terms.</p>
+                    
+                    <h4>7. Governing Law</h4>
+                    <p>These terms are governed by international privacy standards including GDPR, CCPA, and Mexican law LFPDPPP.</p>
+                    
+                    <h4>8. Changes to Terms</h4>
+                    <p>We may update these terms occasionally. We will notify you of material changes via email.</p>
+                    
+                    <h4>9. Contact</h4>
+                    <p>For questions: <strong>aimaginalabs@gmail.com</strong> or WhatsApp: <strong>+52 5652502785</strong></p>
+                `;
+            } else {
+                title.innerText = '📜 Términos y Condiciones';
+                body.innerHTML = `
+                    <h4>1. Aceptación</h4>
+                    <p>Al utilizar MyLifeQR, aceptas estos Términos y Condiciones.</p>
+                    
+                    <h4>2. Descripción del servicio</h4>
+                    <p>MyLifeQR es un sistema de identificación médica de apoyo. NO es un servicio médico ni de emergencia.</p>
+                    
+                    <h4>3. Responsabilidad del usuario</h4>
+                    <p>Eres el único responsable de la veracidad y exactitud de tus datos médicos.</p>
+                    
+                    <h4>4. Situaciones de emergencia</h4>
+                    <p>En caso de emergencia, SIEMPRE llama a tu número local de emergencias (911 en muchos países) inmediatamente.</p>
+                    
+                    <h4>5. Limitación de responsabilidad</h4>
+                    <p>MyLifeQR se proporciona "tal cual" sin garantías. No somos responsables de daños derivados del uso de este servicio.</p>
+                    
+                    <h4>6. Cancelación de cuenta</h4>
+                    <p>Puedes eliminar tu cuenta en cualquier momento. Nos reservamos el derecho de suspender cuentas que violen estos términos.</p>
+                    
+                    <h4>7. Ley aplicable</h4>
+                    <p>Estos términos se rigen por estándares internacionales de privacidad incluyendo GDPR, CCPA y la ley mexicana LFPDPPP.</p>
+                    
+                    <h4>8. Cambios a los términos</h4>
+                    <p>Podemos actualizar estos términos ocasionalmente. Te notificaremos de cambios importantes por correo electrónico.</p>
+                    
+                    <h4>9. Contacto</h4>
+                    <p>Para preguntas: <strong>aimaginalabs@gmail.com</strong> o WhatsApp: <strong>+52 5652502785</strong></p>
+                `;
+            }
             modal.style.display = 'flex';
         };
         
+        // Función para mostrar Política de Privacidad (bilingüe)
         window.showPrivacidadRegistro = () => {
             const modal = document.getElementById('modalLegalRegistro');
             const title = document.getElementById('modalLegalRegistroTitle');
             const body = document.getElementById('modalLegalRegistroBody');
-            title.innerText = '🔒 Política de Privacidad';
-            body.innerHTML = `<h4>1. Datos</h4><p>Recopilamos nombre, edad, tipo de sangre, alergias, contactos.</p><h4>2. Uso</h4><p>Solo para tu perfil de emergencia.</p><h4>3. Protección</h4><p>Datos protegidos por LFPDPPP.</p>`;
+            
+            if (currentLang === 'en') {
+                title.innerText = '🔒 Privacy Policy';
+                body.innerHTML = `
+                    <h4>1. Data Collected</h4>
+                    <p>We collect: name, age, blood type, allergies, medical conditions, medications, emergency contacts (name, relationship, phone, email), photo (optional), IP address.</p>
+                    
+                    <h4>2. Use of Data</h4>
+                    <p>Data is used EXCLUSIVELY to generate your emergency medical profile accessible via QR code.</p>
+                    
+                    <h4>3. Data Protection</h4>
+                    <p>Your data is protected by international standards including GDPR, CCPA, and Mexican law LFPDPPP. We do not share your data with third parties.</p>
+                    
+                    <h4>4. Your Rights</h4>
+                    <p>You have the right to access, rectify, cancel, and object to the processing of your data. You can also request data portability.</p>
+                    
+                    <h4>5. Data Retention</h4>
+                    <p>Your data is kept until you delete your account. Upon account deletion, all data is permanently erased.</p>
+                    
+                    <h4>6. Contact</h4>
+                    <p>For privacy questions: <strong>aimaginalabs@gmail.com</strong></p>
+                `;
+            } else {
+                title.innerText = '🔒 Política de Privacidad';
+                body.innerHTML = `
+                    <h4>1. Datos recabados</h4>
+                    <p>Recopilamos: nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional), dirección IP.</p>
+                    
+                    <h4>2. Uso de datos</h4>
+                    <p>Los datos se utilizan EXCLUSIVAMENTE para generar tu perfil médico de emergencia accesible mediante código QR.</p>
+                    
+                    <h4>3. Protección de datos</h4>
+                    <p>Tus datos están protegidos por estándares internacionales incluyendo GDPR, CCPA y la ley mexicana LFPDPPP. No compartimos tus datos con terceros.</p>
+                    
+                    <h4>4. Tus derechos</h4>
+                    <p>Tienes derecho a acceder, rectificar, cancelar y oponerte al tratamiento de tus datos. También puedes solicitar la portabilidad de tus datos.</p>
+                    
+                    <h4>5. Conservación de datos</h4>
+                    <p>Tus datos se conservan hasta que eliminas tu cuenta. Al eliminar la cuenta, todos los datos se borran permanentemente.</p>
+                    
+                    <h4>6. Contacto</h4>
+                    <p>Para preguntas de privacidad: <strong>aimaginalabs@gmail.com</strong></p>
+                `;
+            }
             modal.style.display = 'flex';
         };
         
@@ -1270,13 +1535,23 @@
                     ip_registro: ip,
                     fecha_creacion: new Date().toISOString()
                 });
+                
+                const statsRef = doc(db, "public", "stats");
+                const statsDoc = await getDoc(statsRef);
+                
+                if (!statsDoc.exists()) {
+                    await setDoc(statsRef, { totalUsuarios: 50 });
+                } else {
+                    await setDoc(statsRef, { totalUsuarios: increment(1) }, { merge: true });
+                }
+                
                 registerError.style.color = '#22C55E';
-                registerError.innerText = '✅ Cuenta creada. ¡Bienvenido!';
+                registerError.innerText = traducciones[currentLang].exito_registro;
                 setTimeout(() => { registerError.innerText = ''; }, 3000);
                 actualizarContador();
             } catch (error) {
-                let mensaje = 'Error al registrar';
-                if (error.code === 'auth/email-already-in-use') mensaje = 'Este correo ya está registrado';
+                let mensaje = traducciones[currentLang].error_registro;
+                if (error.code === 'auth/email-already-in-use') mensaje = traducciones[currentLang].error_email_existe;
                 registerError.innerText = mensaje;
                 registerError.style.color = '#E8152A';
             }
@@ -1288,7 +1563,7 @@
             if (!email || !password) { loginError.innerText = 'Completa todos los campos'; return; }
             loginError.innerText = '';
             try { await signInWithEmailAndPassword(auth, email, password); } 
-            catch (error) { loginError.innerText = 'Correo o contraseña incorrectos'; }
+            catch (error) { loginError.innerText = traducciones[currentLang].error_login; }
         }
         
         async function handleLogout() { await signOut(auth); }
@@ -1350,9 +1625,26 @@
         
         async function guardarPerfil() {
             if (!currentUser) return;
+            
+            const nombre = document.getElementById('nombre').value.trim();
+            const sangre = document.getElementById('sangre').value;
+            
+            if (!nombre) {
+                saveMessage.innerText = traducciones[currentLang].validacion_nombre;
+                saveMessage.style.color = '#E8152A';
+                setTimeout(() => saveMessage.innerText = '', 3000);
+                return;
+            }
+            if (!sangre) {
+                saveMessage.innerText = traducciones[currentLang].validacion_sangre;
+                saveMessage.style.color = '#E8152A';
+                setTimeout(() => saveMessage.innerText = '', 3000);
+                return;
+            }
+            
             const perfil = {
-                nombre: document.getElementById('nombre').value, edad: document.getElementById('edad').value,
-                sangre: document.getElementById('sangre').value, donador: document.getElementById('donador').value,
+                nombre: nombre, edad: document.getElementById('edad').value,
+                sangre: sangre, donador: document.getElementById('donador').value,
                 alergias: document.getElementById('alergias').value, condiciones: document.getElementById('condiciones').value,
                 medicamentos: document.getElementById('medicamentos').value,
                 contacto1_nombre: document.getElementById('contacto1_nombre').value,
@@ -1384,7 +1676,8 @@
                 foto: fotoBase64, fecha_actualizacion: new Date().toISOString()
             };
             await setDoc(doc(db, "perfiles", currentUser.uid), perfil, { merge: true });
-            saveMessage.innerText = '✅ Datos guardados';
+            saveMessage.innerText = traducciones[currentLang].exito_guardado;
+            saveMessage.style.color = '#22C55E';
             setTimeout(() => saveMessage.innerText = '', 2000);
         }
         
@@ -1398,6 +1691,12 @@
             try {
                 await new Promise(resolve => setTimeout(resolve, 300));
                 if (typeof html2canvas === 'undefined') throw new Error('html2canvas no está cargado');
+                
+                const img = document.getElementById('stickerBgImg');
+                if (!img.complete || img.naturalWidth === 0) {
+                    throw new Error(traducciones[currentLang].error_imagen_cargando);
+                }
+                
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
                 const config = QR_CONFIG[currentFormato];
                 const finalCanvas = document.createElement('canvas');
@@ -1405,12 +1704,14 @@
                 const ctx = finalCanvas.getContext('2d');
                 ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, config.targetWidth, config.targetHeight);
                 const link = document.createElement('a');
-                let formatoNombre = currentFormato === "horizontal" ? "horizontal" : (currentFormato === "cuadrado" ? "cuadrado" : "tarjeta");
-                if (currentFormato === "tarjeta") formatoNombre += mostrarReverso ? "_back" : "_front";
-                link.download = `mylifeqr_sticker_${formatoNombre}_${currentFormato !== "tarjeta" ? currentColor + "_" : ""}${currentUser?.uid || 'usuario'}.png`;
+                let formatoNombre = currentFormato === "horizontal" ? "horizontal" : "cuadrado";
+                link.download = `mylifeqr_sticker_${formatoNombre}_${currentColor}_${currentUser?.uid || 'usuario'}.png`;
                 link.href = finalCanvas.toDataURL('image/png');
                 link.click();
-            } catch (error) { alert('Error al generar la imagen. Intenta de nuevo.'); }
+            } catch (error) { 
+                alert(traducciones[currentLang].error_descarga);
+                console.error(error);
+            }
             finally { btn.innerText = originalText; btn.disabled = false; }
         }
         
@@ -1424,6 +1725,12 @@
             try {
                 await new Promise(resolve => setTimeout(resolve, 300));
                 if (typeof html2canvas === 'undefined') throw new Error('html2canvas no está cargado');
+                
+                const img = document.getElementById('stickerBgImg');
+                if (!img.complete || img.naturalWidth === 0) {
+                    throw new Error(traducciones[currentLang].error_imagen_cargando);
+                }
+                
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
                 const config = QR_CONFIG[currentFormato];
                 const finalCanvas = document.createElement('canvas');
@@ -1444,16 +1751,17 @@
                 const { jsPDF } = window.jspdf;
                 let anchoMM, altoMM;
                 if (currentFormato === "horizontal") { anchoMM = 60; altoMM = 30; }
-                else if (currentFormato === "cuadrado") { anchoMM = 30; altoMM = 30; }
-                else { anchoMM = 90; altoMM = 50; }
+                else { anchoMM = 30; altoMM = 30; }
                 
                 const pdf = new jsPDF({ orientation: anchoMM > altoMM ? 'landscape' : 'portrait', unit: 'mm', format: [anchoMM, altoMM] });
                 pdf.addImage(imgData, 'PNG', 0, 0, anchoMM, altoMM, undefined, 'FAST');
                 
-                let formatoNombre = currentFormato === "horizontal" ? "horizontal" : (currentFormato === "cuadrado" ? "cuadrado" : "tarjeta");
-                if (currentFormato === "tarjeta") formatoNombre += mostrarReverso ? "_back" : "_front";
-                pdf.save(`mylifeqr_sticker_${formatoNombre}_${currentFormato !== "tarjeta" ? currentColor + "_" : ""}${currentUser?.uid || 'usuario'}.pdf`);
-            } catch (error) { alert('Error al generar el PDF. Intenta de nuevo o usa PNG.'); }
+                let formatoNombre = currentFormato === "horizontal" ? "horizontal" : "cuadrado";
+                pdf.save(`mylifeqr_sticker_${formatoNombre}_${currentColor}_${currentUser?.uid || 'usuario'}.pdf`);
+            } catch (error) { 
+                alert(traducciones[currentLang].error_descarga);
+                console.error(error);
+            }
             finally { btn.innerText = originalText; btn.disabled = false; }
         }
         
@@ -1490,7 +1798,6 @@
                 await cargarPerfil(user.uid);
                 await cargarFoto(user.uid);
                 actualizarQR();
-                actualizarVisibilidadColorSelector();
             } else {
                 currentUser = null;
                 landingScreen.style.display = 'block';
@@ -1506,13 +1813,12 @@
         
         actualizarContador();
     </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/mylifeqr/sw.js')
-      .then(reg => console.log('✅ Service Worker registrado'))
-      .catch(err => console.log('❌ Error:', err));
-  }
-</script>
-
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/mylifeqr/sw.js')
+          .then(reg => console.log('✅ Service Worker registrado'))
+          .catch(err => console.log('❌ Error:', err));
+      }
+    </script>
 </body>
 </html>
