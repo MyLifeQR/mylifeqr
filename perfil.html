@@ -490,6 +490,31 @@
             margin: 2px 4px 2px 0;
         }
         
+        /* Tarjeta de notas */
+        .notes-card {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFF0E0 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #FF6B00;
+        }
+        
+        .notes-card .info-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #CC7722;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        
+        .notes-text {
+            font-size: 14px;
+            color: #8B5E3C;
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
         /* Contactos */
         .contact-card {
             background: white;
@@ -534,22 +559,6 @@
         }
         
         .btn-call:hover { transform: scale(1.05); }
-        
-        /* Notas */
-        .notes-card {
-            background: linear-gradient(135deg, #FFF8F0 0%, #FFF0E0 100%);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-            border-left: 4px solid #FF6B00;
-        }
-        
-        .notes-text {
-            font-size: 14px;
-            color: #CC7722;
-            font-style: italic;
-            line-height: 1.5;
-        }
         
         /* Footer */
         .footer {
@@ -818,10 +827,11 @@
     <div class="medical-section">
         <div class="section-title">📋 Información Adicional</div>
         <div class="info-card">
-            <div class="info-label">🏥 SEGURO / HOSPITAL PREFERIDO</div>
+            <div class="info-label">🏥 SEGURO SOCIAL / NÚMERO</div>
             <div class="info-value" id="perfilHospital">---</div>
         </div>
         <div class="notes-card">
+            <div class="info-label">📝 NOTAS ADICIONALES</div>
             <div class="notes-text" id="perfilNotas">---</div>
         </div>
     </div>
