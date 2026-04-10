@@ -2,177 +2,592 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>MyLifeQR — Perfil de Emergencia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>MyLifeQR — Perfil Médico de Emergencia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        :root {
-            --red:#E8152A; --red-dark:#B01020; --orange:#FF6B00;
-            --black:#0A0A0A; --dark:#f5f5f5; --card:#ffffff;
-            --border:#e0e0e0; --text:#1a1a1a; --muted:#666; --green:#22C55E;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            background: white;
-            font-family:'Barlow',sans-serif; font-size:15px;
-            max-width:430px; margin:0 auto; min-height:100vh;
+            background: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            min-height: 100vh;
         }
         
+        /* ===== ANIMACIONES ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        .slide-in { animation: slideIn 0.4s ease-out; }
+        
+        /* ===== GATE ===== */
         #gate {
-            position:fixed; inset:0; background:var(--black); z-index:999;
-            display:flex; flex-direction:column; align-items:center; justify-content:center;
-            padding:28px 24px; max-width:430px; margin:0 auto;
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 100%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 24px;
+            max-width: 500px;
+            margin: 0 auto;
         }
-        .gate-icon { width:64px; height:64px; background:rgba(232,21,42,0.1); border:2px solid rgba(232,21,42,0.35); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:30px; }
-        .gate-title { font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:3px; color:white; text-align:center; }
-        .gate-subtitle { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:3px; color:var(--red); text-align:center; margin-bottom:24px; }
-        .gate-box { background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:20px; margin-bottom:8px; width:100%; }
-        .gate-box-text { font-size:13px; color:#AAA; line-height:1.8; text-align:justify; }
-        .gate-box-text strong { color:white; }
-        @keyframes pulse-btn { 0%,100%{box-shadow:0 0 0 0 rgba(232,21,42,0.45)} 60%{box-shadow:0 0 0 10px rgba(232,21,42,0)} }
-        .btn-accept { width:100%; background:var(--red); color:white; border:none; border-radius:12px; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; padding:16px; cursor:pointer; animation:pulse-btn 2.2s ease-in-out infinite; }
         
-        #profile { display:none; opacity:0; transition:opacity 0.4s ease; background: white; }
-        #profile.visible { display:block; opacity:1; }
+        .gate-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(232,21,42,0.15);
+            border: 2px solid rgba(232,21,42,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 40px;
+            animation: pulse 2s ease-in-out infinite;
+        }
         
+        .gate-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: white;
+            text-align: center;
+        }
+        
+        .gate-subtitle {
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: #E8152A;
+            text-align: center;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        
+        .gate-box {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+        
+        .gate-box-text {
+            font-size: 13px;
+            color: #CCC;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .gate-box-text strong { color: #E8152A; }
+        
+        .btn-accept {
+            width: 100%;
+            background: linear-gradient(135deg, #E8152A 0%, #B01020 100%);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+        }
+        
+        .btn-accept:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(232,21,42,0.4);
+        }
+        
+        /* ===== PERFIL PRINCIPAL ===== */
+        #profile {
+            display: none;
+            max-width: 500px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        #profile.visible { display: block; }
+        
+        /* Banner de escaneo */
         .scan-notification {
-            background: #E8152A;
+            background: linear-gradient(135deg, #E8152A 0%, #B01020 100%);
             color: white;
             padding: 16px;
             text-align: center;
-            margin: 0;
-            font-weight: bold;
+            font-weight: 600;
+            animation: slideIn 0.4s ease-out;
         }
+        
         .folio-number {
-            font-family: monospace;
-            font-size: 18px;
-            background: rgba(0,0,0,0.2);
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            background: rgba(255,255,255,0.2);
             display: inline-block;
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+        
+        /* Banner de emergencia */
+        .emergency-banner {
+            background: #E8152A;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Banner de casco */
+        .helmet-warning {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #E8152A;
+        }
+        
+        .helmet-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+        
+        .helmet-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #E8152A;
+            letter-spacing: 1px;
+        }
+        
+        .helmet-desc {
+            font-size: 14px;
+            color: #CCC;
+            margin-top: 4px;
+        }
+        
+        /* Tarjeta de perfil */
+        .profile-card {
+            background: white;
+            margin: 20px;
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            border: 3px solid #E8152A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .avatar:hover { transform: scale(1.02); }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-placeholder { font-size: 48px; color: #999; }
+        
+        .profile-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+        
+        .profile-age {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        /* Tarjeta de ubicación */
+        .location-card {
+            background: white;
+            margin: 20px;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .location-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .location-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .location-status {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+        
+        .map-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-map {
+            padding: 12px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-map:hover { transform: translateY(-2px); }
+        .btn-google { background: #E8152A; color: white; }
+        .btn-waze { background: #33CCFF; color: white; }
+        
+        /* Botón 911 */
+        .btn-911-container {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+        
+        .btn-911 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #E8152A 0%, #B01020 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 60px;
+            padding: 18px;
+            font-weight: 800;
+            font-size: 22px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(232,21,42,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .btn-911:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(232,21,42,0.5);
+        }
+        
+        /* Acordeón de instrucciones */
+        .accordion {
+            background: white;
+            border-radius: 20px;
+            margin: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .accordion-header {
+            background: linear-gradient(135deg, #E8152A 0%, #B01020 100%);
+            color: white;
+            padding: 16px 20px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+        }
+        
+        .accordion-header span {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .accordion-header.active span { transform: rotate(180deg); }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #fafafa;
+        }
+        
+        .accordion-content-inner { padding: 20px; }
+        
+        .instruction-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .instruction-step:last-child { border-bottom: none; }
+        
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: #E8152A;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .step-content { flex: 1; }
+        .step-title { font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+        .step-desc { font-size: 13px; color: #666; line-height: 1.4; }
+        
+        /* Tarjetas de información médica */
+        .medical-section {
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #E8152A;
+            border-radius: 2px;
+        }
+        
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .vital-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .vital-card.blood {
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE5E5 100%);
+            border: 1px solid rgba(232,21,42,0.2);
+        }
+        
+        .vital-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .vital-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+        
+        .vital-value.blood { color: #E8152A; }
+        
+        .donor-badge {
+            display: inline-block;
+            background: #22C55E;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
             padding: 4px 12px;
             border-radius: 20px;
             margin-top: 8px;
         }
         
-        .emergency-banner { background:var(--red); padding:10px 16px; display:flex; align-items:center; gap:8px; position:sticky; top:0; z-index:100; animation:pulse-bar 2s ease-in-out infinite; color:white; }
-        @keyframes pulse-bar { 0%,100%{opacity:1} 50%{opacity:0.85} }
-        
-        .casco-banner { background: #E8152A; padding: 24px 20px; text-align: center; }
-        .casco-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: white; line-height: 1.2; margin-bottom: 8px; }
-        .casco-desc { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.95); line-height: 1.4; }
-        
-        .hero { background: white; padding: 32px 16px; border-bottom: 1px solid #eee; text-align: center; }
-        .avatar-large { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 16px auto; background: #f0f0f0; border: 4px solid var(--red); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
-        .avatar-large:hover { transform: scale(1.02); }
-        .avatar-large img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-large-placeholder { font-size: 64px; color: #ccc; }
-        .hero-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #1a1a1a; letter-spacing: 1px; margin-bottom: 8px; }
-        .hero-age { font-size: 18px; font-weight: 600; color: #666; }
-        
-        .location-section {
-            background: #f0f0f0;
-            padding: 16px;
-            margin: 16px;
-            border-radius: 16px;
-            text-align: center;
-        }
-        .map-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 12px;
-        }
-        .map-btn {
-            background: #E8152A;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .map-btn.waze { background: #33CCFF; }
-        
-        .call-911-wrap { padding:14px 16px; background:white; border-bottom:1px solid #eee; }
-        .btn-911 { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; background:var(--red); color:white; text-decoration:none; border-radius:12px; padding:16px; animation:pulse-btn 2s ease-in-out infinite; }
-        .btn-911-main { font-family:'Bebas Neue',sans-serif; font-size:26px; }
-        
-        .accordion {
-            background: #f0f0f0;
-            border-radius: 12px;
-            margin: 16px;
-            overflow: hidden;
-        }
-        .accordion-header {
-            background: #E8152A;
-            color: white;
-            padding: 14px 16px;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-        }
-        .accordion-header span {
-            font-size: 24px;
-            transition: transform 0.3s;
-        }
-        .accordion-header.active span {
-            transform: rotate(180deg);
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
+        .info-card {
             background: white;
-        }
-        .accordion-content-inner {
+            border-radius: 16px;
             padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .firstaid-card { background:#fafafa; border-radius:14px; border:1px solid #eee; overflow:hidden; margin-bottom:16px; }
-        .step { display:flex; align-items:flex-start; gap:12px; padding:13px 16px; border-bottom:1px solid #eee; }
-        .step-num { width:24px; height:24px; border-radius:50%; background:#f0f0f0; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; color:#888; }
-        .step-title { font-weight:700; font-size:14px; color:#333; }
-        .step-desc { font-size:13px; color:#888; }
         
-        .section { padding:0 16px; margin-top:20px; }
-        .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 2px; color: #000000; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #E8152A; }
+        .info-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
         
-        .vitals-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
-        .vital-card { background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px; }
-        .vital-card.blood { border-color:rgba(232,21,42,0.3); background:rgba(232,21,42,0.05); }
-        .vital-label { font-size:10px; font-weight:700; letter-spacing:2px; color:#888; margin-bottom:8px; }
-        .vital-value { font-family:'Bebas Neue',sans-serif; font-size:38px; line-height:1; color:#333; }
-        .vital-value.blood { color:var(--red); }
+        .info-value {
+            font-size: 14px;
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
         
-        .donor-badge-small { display: inline-block; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #22C55E; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; margin-top: 6px; }
+        .tag {
+            display: inline-block;
+            background: rgba(232,21,42,0.1);
+            color: #E8152A;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin: 2px 4px 2px 0;
+        }
         
-        .info-card { background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px 16px; margin-bottom:10px; }
-        .info-card-label { font-size:10px; font-weight:700; letter-spacing:2.5px; color:#888; margin-bottom:8px; }
-        .info-card-value { font-size:15px; font-weight:600; color:#333; }
-        .tag { display:inline-block; background:rgba(232,21,42,0.1); border:1px solid rgba(232,21,42,0.2); color:#E8152A; font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px; margin:2px 3px; }
+        /* Contactos */
+        .contact-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
         
-        .contact-card { background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; }
-        .contact-avatar { width:44px; height:44px; border-radius:50%; background:#e0e0e0; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px; color:#666; }
-        .contact-name { font-weight:700; font-size:15px; color:#333; }
-        .contact-rel { font-size:12px; color:#888; }
-        .btn-call { background:var(--green); color:white; text-decoration:none; border-radius:8px; padding:9px 14px; font-weight:900; font-size:13px; margin-left:auto; cursor:pointer; }
+        .contact-card:hover { transform: translateX(4px); }
         
-        .notes-card { background:rgba(255,107,0,0.05); border:1px solid rgba(255,107,0,0.15); border-radius:12px; padding:14px 16px; margin-bottom:10px; }
-        .notes-text { font-size:14px; color:#CC7722; font-style:italic; }
+        .contact-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: #666;
+        }
         
-        .footer { margin-top: 28px; padding: 24px 16px 20px; border-top: 1px solid #eee; text-align: center; }
-        .footer-logo { margin-bottom: 16px; }
-        .footer-logo img { height: 32px; width: auto; opacity: 0.7; }
-        .disclaimer-text { font-size: 10px; color: #999; line-height: 1.6; text-align: center; }
-        .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; margin: 0 8px; font-size: 12px; }
+        .contact-info { flex: 1; }
+        .contact-name { font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+        .contact-relation { font-size: 12px; color: #888; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; cursor: pointer; }
-        .modal img { max-width: 90%; max-height: 90%; border-radius: 20px; }
-        .modal-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; }
+        .btn-call {
+            background: #22C55E;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+        
+        .btn-call:hover { transform: scale(1.05); }
+        
+        /* Notas */
+        .notes-card {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFF0E0 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #FF6B00;
+        }
+        
+        .notes-text {
+            font-size: 14px;
+            color: #CC7722;
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+        
+        .footer-logo img { height: 32px; opacity: 0.6; margin-bottom: 16px; }
+        .disclaimer-text { font-size: 10px; color: #999; line-height: 1.6; }
+        .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; margin: 0 8px; font-size: 11px; }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .modal img { max-width: 90%; max-height: 90%; border-radius: 16px; }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
         
         .modal-legal {
             display: none;
@@ -187,6 +602,7 @@
             align-items: center;
             padding: 20px;
         }
+        
         .modal-legal-content {
             background: white;
             max-width: 500px;
@@ -194,12 +610,9 @@
             max-height: 85%;
             border-radius: 24px;
             overflow: hidden;
-            animation: modalFadeIn 0.3s ease;
+            animation: fadeIn 0.3s ease;
         }
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        
         .modal-legal-header {
             background: #E8152A;
             padding: 16px 20px;
@@ -207,28 +620,33 @@
             justify-content: space-between;
             align-items: center;
         }
-        .modal-legal-header h3 { color: white; font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin: 0; }
+        
+        .modal-legal-header h3 { color: white; font-size: 20px; margin: 0; }
         .modal-legal-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
-        .modal-legal-body { padding: 20px; overflow-y: auto; max-height: 60vh; font-size: 13px; color: #333; line-height: 1.6; }
-        .modal-legal-body h4 { color: #E8152A; margin: 16px 0 8px 0; }
+        .modal-legal-body { padding: 20px; overflow-y: auto; max-height: 60vh; font-size: 13px; line-height: 1.6; }
+        .modal-legal-body h4 { color: #E8152A; margin: 16px 0 8px; }
         .modal-legal-footer { padding: 16px 20px; border-top: 1px solid #eee; text-align: center; }
         .modal-legal-footer button { background: #E8152A; color: white; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 600; cursor: pointer; }
         
-        @media (max-width: 768px) {
-            .map-buttons { flex-direction: column; align-items: center; }
+        @media (max-width: 480px) {
+            .profile-name { font-size: 24px; }
+            .vital-value { font-size: 28px; }
+            .btn-911 { font-size: 18px; padding: 14px; }
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DKR6WB9JJM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-DKR6WB9JJM');
-</script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKR6WB9JJM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DKR6WB9JJM');
+    </script>
 </head>
 <body>
 
+<!-- GATE DE ACCESO -->
 <div id="gate">
     <div class="gate-icon">⚠️</div>
     <div class="gate-title">Acceso Restringido</div>
@@ -237,21 +655,24 @@
         <p class="gate-box-text">
             La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (<strong>LFPDPPP</strong>).
             <br><br>
-            Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación mexicana vigente, con <strong>penas de 3 a 5 años de prisión</strong>.
+            Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación mexicana vigente.
             <br><br>
             Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
         </p>
     </div>
-    <p style="font-size:11px; color:#555; margin:12px 0 20px;">Al aceptar confirmas que accedes con fines de atención médica de emergencia.</p>
-    <button class="btn-accept" onclick="acceptGate()">Entiendo — Ver perfil de emergencia</button>
+    <p style="font-size:11px; color:#888; margin:8px 0 16px;">Al aceptar confirmas que accedes con fines de atención médica de emergencia.</p>
+    <button class="btn-accept" onclick="acceptGate()">✓ Entiendo — Ver perfil de emergencia</button>
 </div>
 
+<!-- PERFIL DE EMERGENCIA -->
 <div id="profile">
+    <!-- Modal de foto -->
     <div id="photoModal" class="modal" onclick="closeModal()">
         <span class="modal-close" onclick="closeModal()">&times;</span>
         <img id="modalImage" src="" alt="Foto ampliada">
     </div>
     
+    <!-- Modal legal -->
     <div id="modalLegal" class="modal-legal">
         <div class="modal-legal-content">
             <div class="modal-legal-header">
@@ -265,100 +686,162 @@
         </div>
     </div>
     
+    <!-- Notificación de escaneo -->
     <div id="scanNotification" class="scan-notification" style="display: none;">
-        🔴 AVISO: PERFIL ESCANEADO<br>
+        🔴 AVISO: PERFIL ESCANEADO 🔴<br>
         <span id="scanDateTime"></span><br>
         <span id="scanFolio" class="folio-number"></span>
     </div>
     
+    <!-- Banner superior -->
     <div class="emergency-banner">
-        <span>🚨 PERFIL DE EMERGENCIA ACTIVO</span>
+        <span>🚨 PERFIL DE EMERGENCIA</span>
         <span style="margin-left:auto;">MyLifeQR</span>
     </div>
-
-    <div class="casco-banner">
-        <div class="casco-title">¡NO RETIRAR EL CASCO!</div>
-        <div class="casco-desc">Posible lesión cervical. Solo personal capacitado puede retirarlo.</div>
+    
+    <!-- Advertencia de casco -->
+    <div class="helmet-warning">
+        <div class="helmet-icon">⚠️</div>
+        <div class="helmet-title">¡NO RETIRAR EL CASCO!</div>
+        <div class="helmet-desc">Posible lesión cervical. Solo personal médico capacitado puede retirarlo.</div>
     </div>
-
-    <div class="hero">
-        <div class="avatar-large" id="avatarLargeContainer" onclick="openModal()">
-            <div class="avatar-large-placeholder" id="avatarLargePlaceholder">👤</div>
-            <img id="avatarLargeImg" style="display:none; width:100%; height:100%; object-fit:cover;">
+    
+    <!-- Tarjeta de perfil -->
+    <div class="profile-card fade-in">
+        <div class="avatar" id="avatarContainer" onclick="openModal()">
+            <div class="avatar-placeholder" id="avatarPlaceholder">👤</div>
+            <img id="avatarImg" style="display:none; width:100%; height:100%; object-fit:cover;">
         </div>
-        <div class="hero-name" id="perfilNombre">Cargando...</div>
-        <div class="hero-age" id="perfilEdad"></div>
+        <div class="profile-name" id="perfilNombre">Cargando...</div>
+        <div class="profile-age" id="perfilEdad"></div>
     </div>
-
-    <div class="location-section" id="locationSection">
-        <div style="font-weight: bold; margin-bottom: 8px;">📍 UBICACIÓN APROXIMADA</div>
-        <div id="locationStatus">Obteniendo ubicación...</div>
+    
+    <!-- Ubicación -->
+    <div class="location-card">
+        <div class="location-header">
+            <span>📍</span>
+            <h3>Ubicación aproximada</h3>
+        </div>
+        <div class="location-status" id="locationStatus">Obteniendo ubicación...</div>
         <div class="map-buttons" id="mapButtons" style="display: none;">
-            <a href="#" id="googleMapsLink" class="map-btn" target="_blank">🗺️ Google Maps</a>
-            <a href="#" id="wazeLink" class="map-btn waze" target="_blank">🧭 Waze</a>
+            <a href="#" id="googleMapsLink" class="btn-map btn-google" target="_blank">🗺️ Google Maps</a>
+            <a href="#" id="wazeLink" class="btn-map btn-waze" target="_blank">🧭 Waze</a>
         </div>
     </div>
-
-    <div class="call-911-wrap">
+    
+    <!-- Botón 911 -->
+    <div class="btn-911-container">
         <a href="tel:911" class="btn-911">
             <span style="font-size:28px;">📞</span>
-            <span class="btn-911-main">LLAMAR AL 911</span>
+            <span>LLAMAR AL 911</span>
         </a>
     </div>
-
+    
+    <!-- Instrucciones para no paramédicos -->
     <div class="accordion">
         <div class="accordion-header" onclick="toggleAccordion()">
-            🚑 SI NO ERES PARAMÉDICO - TOCA PARA VER INSTRUCCIONES
+            🚑 GUÍA PARA QUIENES NO SON PARAMÉDICOS
             <span>▼</span>
         </div>
         <div class="accordion-content" id="accordionContent">
             <div class="accordion-content-inner">
-                <div class="step"><div class="step-num">1</div><div><div class="step-title">Llama al 911</div><div class="step-desc">Informa ubicación exacta. No muevas al motociclista.</div></div></div>
-                <div class="step"><div class="step-num">2</div><div><div class="step-title">No retires el casco</div><div class="step-desc">Solo personal capacitado. Posible lesión cervical.</div></div></div>
-                <div class="step"><div class="step-num">3</div><div><div class="step-title">Controla hemorragias</div><div class="step-desc">Presiona con trapo limpio sin soltar.</div></div></div>
-                <div class="step"><div class="step-num">4</div><div><div class="step-title">Muestra este perfil al paramédico</div><div class="step-desc">Contiene sangre, alergias y contactos.</div></div></div>
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">📞 Llama al 911</div>
+                        <div class="step-desc">Informa la ubicación exacta. No muevas al motociclista.</div>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">🪖 No retires el casco</div>
+                        <div class="step-desc">Solo personal capacitado. Posible lesión cervical.</div>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">🩸 Controla hemorragias</div>
+                        <div class="step-desc">Presiona con un trapo limpio sin soltar.</div>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">📋 Muestra este perfil al paramédico</div>
+                        <div class="step-desc">Contiene tipo de sangre, alergias y contactos de emergencia.</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="section">
-        <div class="section-title">🩸 DATOS VITALES</div>
+    
+    <!-- Datos médicos -->
+    <div class="medical-section">
+        <div class="section-title">🩸 Datos Médicos</div>
         <div class="vitals-grid">
-            <div class="vital-card blood"><div class="vital-label">TIPO DE SANGRE</div><div class="vital-value blood" id="perfilSangre">---</div></div>
-            <div class="vital-card"><div class="vital-label">DONADOR DE ÓRGANOS</div><div class="vital-value" id="perfilDonadorGrande">---</div><div id="perfilDonadorBadge" class="donor-badge-small"></div></div>
+            <div class="vital-card blood">
+                <div class="vital-label">TIPO DE SANGRE</div>
+                <div class="vital-value blood" id="perfilSangre">---</div>
+            </div>
+            <div class="vital-card">
+                <div class="vital-label">DONADOR DE ÓRGANOS</div>
+                <div class="vital-value" id="perfilDonadorGrande">---</div>
+                <div id="perfilDonadorBadge" class="donor-badge" style="display: none;"></div>
+            </div>
         </div>
-        <div class="info-card"><div class="info-card-label">⚠️ ALERGIAS</div><div class="info-card-value" id="perfilAlergias">---</div></div>
-        <div class="info-card"><div class="info-card-label">🏥 CONDICIONES MÉDICAS</div><div class="info-card-value" id="perfilCondiciones">---</div></div>
-        <div class="info-card"><div class="info-card-label">💊 MEDICAMENTOS</div><div class="info-card-value" id="perfilMedicamentos">---</div></div>
+        
+        <div class="info-card">
+            <div class="info-label">⚠️ ALERGIAS</div>
+            <div class="info-value" id="perfilAlergias">---</div>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-label">🏥 CONDICIONES MÉDICAS</div>
+            <div class="info-value" id="perfilCondiciones">---</div>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-label">💊 MEDICAMENTOS ACTUALES</div>
+            <div class="info-value" id="perfilMedicamentos">---</div>
+        </div>
     </div>
-
-    <div class="section">
-        <div class="section-title">📞 CONTACTOS DE EMERGENCIA</div>
+    
+    <!-- Contactos de emergencia -->
+    <div class="medical-section">
+        <div class="section-title">📞 Contactos de Emergencia</div>
         <div id="contactosContainer"></div>
     </div>
-
-    <div class="section">
-        <div class="section-title">📋 INFORMACIÓN ADICIONAL</div>
-        <div class="info-card"><div class="info-card-label">🏥 SEGURO / HOSPITAL PREFERIDO</div><div class="info-card-value" id="perfilHospital">---</div></div>
-        <div class="notes-card"><div class="notes-text" id="perfilNotas">---</div></div>
+    
+    <!-- Información adicional -->
+    <div class="medical-section">
+        <div class="section-title">📋 Información Adicional</div>
+        <div class="info-card">
+            <div class="info-label">🏥 SEGURO / HOSPITAL PREFERIDO</div>
+            <div class="info-value" id="perfilHospital">---</div>
+        </div>
+        <div class="notes-card">
+            <div class="notes-text" id="perfilNotas">---</div>
+        </div>
     </div>
-
+    
+    <!-- Footer -->
     <div class="footer">
         <div class="footer-logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.style.display='none'"></div>
-        <div class="disclaimer">
-            <p class="disclaimer-text">
-                <strong>⚠️ AVISO LEGAL IMPORTANTE ⚠️</strong><br><br>
-                MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.<br><br>
-                La información médica contenida en este perfil es <strong>proporcionada voluntariamente por el usuario</strong> y puede no estar actualizada, ser incompleta o inexacta. En caso de emergencia, la prioridad siempre debe ser llamar al 911 y seguir las indicaciones del personal médico.<br><br>
-                Al utilizar este sistema, el usuario acepta que es su <strong>única responsabilidad</strong> mantener sus datos actualizados y verificar su exactitud. En caso de emergencia, siempre prevalece el criterio del personal médico capacitado.<br><br>
-                <strong>📞 En caso de emergencia, llame inmediatamente al 911.</strong>
-            </p>
-        </div>
-        <div style="margin-top: 20px;">
+        <p class="disclaimer-text">
+            <strong>⚠️ AVISO LEGAL IMPORTANTE ⚠️</strong><br><br>
+            MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.<br><br>
+            En caso de emergencia, la prioridad siempre debe ser llamar al 911 y seguir las indicaciones del personal médico.<br><br>
+            <strong>📞 En caso de emergencia, llame inmediatamente al 911.</strong><br><br>
+            <strong>✉️ Contacto: mylifeqrsticker@gmail.com</strong>
+        </p>
+        <div style="margin-top: 16px;">
             <span class="legal-link" onclick="showTerminos()">📜 Términos y Condiciones</span>
             <span style="color: #ccc; margin: 0 8px;">|</span>
             <span class="legal-link" onclick="showPrivacidad()">🔒 Política de Privacidad</span>
         </div>
+        <div class="copyright" style="margin-top: 16px; font-size: 10px; color: #aaa;">MyLifeQR © AImaginalabs 2026</div>
     </div>
 </div>
 
@@ -393,17 +876,17 @@
     let currentUserLocation = null;
     let currentPerfilData = null;
     
-    // CONFIGURACIÓN DE EMAILJS
+    // Configuración EmailJS
     const EMAILJS_CONFIG = {
         PUBLIC_KEY: "6uXAgtCdN40jsNSgd",
         SERVICE_ID: "service_76kehki",
         TEMPLATE_ID: "template_b71jlbn"
     };
     
-    // Inicializar EmailJS
     emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
     console.log("✅ EmailJS inicializado correctamente");
     
+    // Funciones UI
     window.toggleAccordion = () => {
         const header = document.querySelector('.accordion-header');
         const content = document.getElementById('accordionContent');
@@ -429,12 +912,7 @@
     };
     
     async function enviarCorreoEmergencia(email, nombreContacto, perfil, folio, ubicacion) {
-        console.log(`📧 Intentando enviar correo a: ${email} (${nombreContacto})`);
-        
-        if (!email) {
-            console.log(`⚠️ No hay email, no se enviará correo`);
-            return { success: false, error: "No email provided" };
-        }
+        if (!email) return { success: false, error: "No email provided" };
         
         const templateParams = {
             email: email,
@@ -450,16 +928,14 @@
             medicamentos: perfil.medicamentos || 'Ninguno'
         };
         
-        console.log("📧 Parámetros a enviar:", templateParams);
-        
         try {
             const result = await emailjs.send(
                 EMAILJS_CONFIG.SERVICE_ID,
                 EMAILJS_CONFIG.TEMPLATE_ID,
                 templateParams
             );
-            console.log(`✅ Correo enviado a ${email}:`, result);
-            return { success: true, email: email };
+            console.log(`✅ Correo enviado a ${email}`);
+            return { success: true };
         } catch (error) {
             console.error(`❌ Error al enviar correo a ${email}:`, error);
             return { success: false, error: error };
@@ -478,8 +954,6 @@
             return;
         }
         
-        console.log("🔍 Cargando perfil:", profileId);
-        
         const docRef = doc(db, "perfiles", profileId);
         const docSnap = await getDoc(docRef);
         
@@ -491,19 +965,14 @@
         currentPerfilData = docSnap.data();
         const perfil = currentPerfilData;
         
-        console.log("📋 Perfil cargado:", perfil.nombre);
-        
-        // Generar folio único
         const folio = 'MLQR-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
         const fechaHora = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' });
         
-        // Mostrar notificación
         const notif = document.getElementById('scanNotification');
         document.getElementById('scanDateTime').innerHTML = `📅 ${fechaHora}`;
         document.getElementById('scanFolio').innerHTML = `Folio: ${folio}`;
         notif.style.display = 'block';
         
-        // Obtener ubicación
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 currentUserLocation = {
@@ -511,9 +980,7 @@
                     lng: position.coords.longitude
                 };
                 
-                console.log("📍 Ubicación obtenida:", currentUserLocation);
-                
-                document.getElementById('locationStatus').innerHTML = `📍 Lat: ${currentUserLocation.lat.toFixed(4)}, Lng: ${currentUserLocation.lng.toFixed(4)}`;
+                document.getElementById('locationStatus').innerHTML = `📍 ${currentUserLocation.lat.toFixed(6)}, ${currentUserLocation.lng.toFixed(6)}`;
                 document.getElementById('mapButtons').style.display = 'flex';
                 
                 const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${currentUserLocation.lat},${currentUserLocation.lng}`;
@@ -521,7 +988,6 @@
                 document.getElementById('googleMapsLink').href = mapsUrl;
                 document.getElementById('wazeLink').href = wazeUrl;
                 
-                // Guardar evento en Firestore
                 await addDoc(collection(db, "eventos_escaneo"), {
                     perfil_id: profileId,
                     perfil_nombre: perfil.nombre || 'Usuario',
@@ -531,66 +997,18 @@
                     dispositivo: navigator.userAgent
                 });
                 
-                // Enviar correos a contactos con email y notificar activado
                 const contactosParaEnviar = [];
-                
-                // Revisar contacto 1
-                if (perfil.contacto1_email && perfil.contacto1_notificar === true) {
-                    contactosParaEnviar.push({
-                        email: perfil.contacto1_email,
-                        nombre: perfil.contacto1_nombre || "Contacto 1"
-                    });
-                    console.log(`✅ Contacto 1 agregado: ${perfil.contacto1_email}`);
-                } else {
-                    console.log(`❌ Contacto 1 no agregado: email=${perfil.contacto1_email}, notificar=${perfil.contacto1_notificar}`);
-                }
-                
-                // Revisar contacto 2
-                if (perfil.contacto2_email && perfil.contacto2_notificar === true) {
-                    contactosParaEnviar.push({
-                        email: perfil.contacto2_email,
-                        nombre: perfil.contacto2_nombre || "Contacto 2"
-                    });
-                    console.log(`✅ Contacto 2 agregado: ${perfil.contacto2_email}`);
-                } else {
-                    console.log(`❌ Contacto 2 no agregado: email=${perfil.contacto2_email}, notificar=${perfil.contacto2_notificar}`);
-                }
-                
-                // Revisar contacto 3
-                if (perfil.contacto3_email && perfil.contacto3_notificar === true) {
-                    contactosParaEnviar.push({
-                        email: perfil.contacto3_email,
-                        nombre: perfil.contacto3_nombre || "Contacto 3"
-                    });
-                    console.log(`✅ Contacto 3 agregado: ${perfil.contacto3_email}`);
-                }
-                
-                // Revisar contacto 4
-                if (perfil.contacto4_email && perfil.contacto4_notificar === true) {
-                    contactosParaEnviar.push({
-                        email: perfil.contacto4_email,
-                        nombre: perfil.contacto4_nombre || "Contacto 4"
-                    });
-                    console.log(`✅ Contacto 4 agregado: ${perfil.contacto4_email}`);
-                }
-                
-                // Revisar contacto 5
-                if (perfil.contacto5_email && perfil.contacto5_notificar === true) {
-                    contactosParaEnviar.push({
-                        email: perfil.contacto5_email,
-                        nombre: perfil.contacto5_nombre || "Contacto 5"
-                    });
-                    console.log(`✅ Contacto 5 agregado: ${perfil.contacto5_email}`);
-                }
-                
-                console.log(`📧 Total contactos a notificar: ${contactosParaEnviar.length}`);
-                
-                if (contactosParaEnviar.length > 0) {
-                    for (const contacto of contactosParaEnviar) {
-                        await enviarCorreoEmergencia(contacto.email, contacto.nombre, perfil, folio, currentUserLocation);
+                for (let i = 1; i <= 5; i++) {
+                    const email = perfil[`contacto${i}_email`];
+                    const notificar = perfil[`contacto${i}_notificar`];
+                    const nombre = perfil[`contacto${i}_nombre`] || `Contacto ${i}`;
+                    if (email && notificar === true) {
+                        contactosParaEnviar.push({ email, nombre });
                     }
-                } else {
-                    console.log("⚠️ No hay contactos con email y notificación activada");
+                }
+                
+                for (const contacto of contactosParaEnviar) {
+                    await enviarCorreoEmergencia(contacto.email, contacto.nombre, perfil, folio, currentUserLocation);
                 }
                 
             }, (error) => {
@@ -630,6 +1048,8 @@
             <p>Eres el único responsable de la veracidad y actualización de tus datos.</p>
             <h4>4. Ley Aplicable</h4>
             <p>Estos términos se rigen por las leyes de los Estados Unidos Mexicanos.</p>
+            <h4>5. Contacto</h4>
+            <p>✉️ mylifeqrsticker@gmail.com</p>
         `;
         modal.style.display = 'flex';
     };
@@ -648,6 +1068,8 @@
             <p>Tus datos están protegidos por la LFPDPPP. El acceso queda registrado.</p>
             <h4>4. Derechos ARCO</h4>
             <p>Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos.</p>
+            <h4>5. Contacto</h4>
+            <p>✉️ mylifeqrsticker@gmail.com</p>
         `;
         modal.style.display = 'flex';
     };
@@ -686,22 +1108,21 @@
         document.getElementById('perfilSangre').innerText = perfil.sangre || 'No registrado';
         
         const donadorValor = perfil.donador || 'No especificado';
-        let donadorMostrar = '', donadorBadge = '';
         if (donadorValor === 'Sí') {
-            donadorMostrar = '✅';
-            donadorBadge = '✅ SÍ, donador de órganos';
+            document.getElementById('perfilDonadorGrande').innerHTML = '✅';
+            document.getElementById('perfilDonadorBadge').style.display = 'inline-block';
+            document.getElementById('perfilDonadorBadge').innerHTML = '✅ SÍ, donador de órganos';
         } else if (donadorValor === 'No') {
-            donadorMostrar = '❌';
-            donadorBadge = '❌ NO donador';
+            document.getElementById('perfilDonadorGrande').innerHTML = '❌';
+            document.getElementById('perfilDonadorBadge').style.display = 'inline-block';
+            document.getElementById('perfilDonadorBadge').innerHTML = '❌ NO donador';
         } else {
-            donadorMostrar = '?';
-            donadorBadge = 'No especificado';
+            document.getElementById('perfilDonadorGrande').innerHTML = '?';
+            document.getElementById('perfilDonadorBadge').style.display = 'none';
         }
-        document.getElementById('perfilDonadorGrande').innerText = donadorMostrar;
-        document.getElementById('perfilDonadorBadge').innerText = donadorBadge;
         
-        const avatarImg = document.getElementById('avatarLargeImg');
-        const avatarPlaceholder = document.getElementById('avatarLargePlaceholder');
+        const avatarImg = document.getElementById('avatarImg');
+        const avatarPlaceholder = document.getElementById('avatarPlaceholder');
         if (perfil.foto && perfil.foto.startsWith('data:image')) {
             currentPhotoUrl = perfil.foto;
             avatarImg.src = perfil.foto;
@@ -737,7 +1158,10 @@
                 contactosDiv.innerHTML += `
                     <div class="contact-card">
                         <div class="contact-avatar">${contacto.nombre.charAt(0)}</div>
-                        <div><div class="contact-name">${contacto.nombre}${relacionMostrar}</div><div class="contact-rel">Contacto ${contacto.num}</div></div>
+                        <div class="contact-info">
+                            <div class="contact-name">${contacto.nombre}${relacionMostrar}</div>
+                            <div class="contact-relation">Contacto ${contacto.num}</div>
+                        </div>
                         <a href="tel:+52${contacto.telefono}" class="btn-call">📞 Llamar</a>
                     </div>
                 `;
@@ -745,7 +1169,7 @@
         });
         
         if (contactosDiv.innerHTML === '') {
-            contactosDiv.innerHTML = '<div class="info-card"><div class="info-card-value">No hay contactos registrados</div></div>';
+            contactosDiv.innerHTML = '<div class="info-card"><div class="info-value">No hay contactos registrados</div></div>';
         }
     }
     
