@@ -25,25 +25,68 @@
     <meta name="twitter:description" content="Protege tu vida con un sticker QR en tu casco. Gratuito.">
     <meta name="twitter:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
     
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MyLifeQR">
+    <meta name="mobile-web-app-capable" content="yes">
+    
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: white; font-family: 'Inter', sans-serif; color: #1a1a1a; min-height: 100vh; }
+        
+        body {
+            background: white;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+        
+        /* ===== ANIMACIONES ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shine {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        .slide-in { animation: slideIn 0.5s ease-out; }
+        
         .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
         
         .header { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 20px; }
-        .logo img { height: 64px; width: auto; transition: transform 0.2s; }
-        .logo img:hover { transform: scale(1.02); }
+        .logo img { height: 64px; width: auto; transition: transform 0.3s; }
+        .logo img:hover { transform: scale(1.05); }
+        
         .nav-links { display: flex; gap: 32px; align-items: center; }
-        .nav-link { background: none; border: none; font-size: 16px; font-weight: 500; color: #4a4a4a; cursor: pointer; font-family: 'Inter', sans-serif; transition: color 0.2s; }
+        .nav-link { background: none; border: none; font-size: 16px; font-weight: 500; color: #4a4a4a; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #E8152A; transition: width 0.3s; }
+        .nav-link:hover::after { width: 100%; }
         .nav-link:hover { color: #E8152A; }
-        .btn-outline { border: 2px solid #E8152A; background: transparent; padding: 8px 24px; border-radius: 40px; font-weight: 600; color: #E8152A; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; transition: all 0.2s; }
-        .btn-outline:hover { background: #E8152A; color: white; }
+        
+        .btn-outline { border: 2px solid #E8152A; background: transparent; padding: 8px 24px; border-radius: 40px; font-weight: 600; color: #E8152A; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; transition: all 0.3s; position: relative; overflow: hidden; }
+        .btn-outline::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+        .btn-outline:hover::before { left: 100%; }
+        .btn-outline:hover { background: #E8152A; color: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(232,21,42,0.3); }
         
         .language-selector {
             display: flex;
@@ -51,7 +94,7 @@
             background: #f0f0f0;
             padding: 4px;
             border-radius: 40px;
-            margin-left: auto;
+            position: relative;
         }
         .lang-btn {
             background: transparent;
@@ -61,53 +104,104 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-family: 'Inter', sans-serif;
         }
         .lang-btn.active {
             background: #E8152A;
             color: white;
         }
+        .lang-dropdown {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+            z-index: 100;
+            width: 160px;
+            animation: fadeIn 0.2s ease-out;
+        }
+        .lang-dropdown.show { display: block; }
+        .lang-dropdown-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lang-dropdown-item:hover { background: #f5f5f5; }
+        .lang-dropdown-item.active { background: #E8152A; color: white; }
+        .lang-more-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.3s;
+        }
+        .lang-more-btn:hover { background: #e0e0e0; }
         
         .donation-bar { background: linear-gradient(135deg, #E8152A 0%, #B01020 100%); border-radius: 60px; padding: 12px 24px; margin: 20px 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .donation-text { color: white; font-weight: 500; display: flex; align-items: center; gap: 12px; }
-        .donation-text span { font-size: 24px; }
-        .btn-donate { background: white; color: #E8152A; border: none; padding: 10px 28px; border-radius: 40px; font-weight: 700; font-size: 16px; cursor: pointer; transition: transform 0.2s; text-decoration: none; display: inline-block; font-family: 'Inter', sans-serif; }
-        .btn-donate:hover { transform: scale(1.05); }
+        .donation-text span:first-child { font-size: 24px; animation: pulse 2s ease-in-out infinite; }
+        .btn-donate { background: white; color: #E8152A; border: none; padding: 10px 28px; border-radius: 40px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; font-family: 'Inter', sans-serif; }
+        .btn-donate:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         
         .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding: 60px 0; align-items: center; }
         .hero-content h1 { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 2px; color: #E8152A; line-height: 1.1; margin-bottom: 20px; }
         .hero-content .slogan { font-size: 22px; font-weight: 600; color: #333; margin-bottom: 20px; line-height: 1.4; }
         .hero-content p { font-size: 18px; color: #4a4a4a; line-height: 1.6; margin-bottom: 30px; }
         .hero-badges { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; }
-        .badge { background: #f5f5f5; padding: 8px 16px; border-radius: 40px; font-size: 14px; font-weight: 500; color: #E8152A; }
-        .btn-primary { background: #E8152A; color: white; border: none; padding: 14px 32px; border-radius: 40px; font-size: 18px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
-        .btn-primary:hover { background: #B01020; transform: translateY(-2px); }
-        .hero-image img { width: 100%; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); object-fit: cover; }
+        .badge { background: #f5f5f5; padding: 8px 16px; border-radius: 40px; font-size: 14px; font-weight: 500; color: #E8152A; transition: all 0.3s; }
+        .badge:hover { transform: translateY(-2px); background: #E8152A; color: white; }
+        
+        .btn-primary { background: #E8152A; color: white; border: none; padding: 14px 32px; border-radius: 40px; font-size: 18px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; position: relative; overflow: hidden; }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover { background: #B01020; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(232,21,42,0.4); }
+        
+        .hero-image img { width: 100%; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .hero-image img:hover { transform: scale(1.02); }
         
         .features { padding: 60px 0; background: #f8f8f8; border-radius: 40px; margin: 40px 0; }
         .section-title { text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: #E8152A; margin-bottom: 16px; }
         .section-subtitle { text-align: center; color: #666; margin-bottom: 48px; font-size: 18px; }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; padding: 0 24px; }
-        .feature-card { background: white; padding: 32px; border-radius: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .feature-card:hover { transform: translateY(-4px); }
-        .feature-icon { font-size: 48px; margin-bottom: 20px; }
+        .feature-card { background: white; padding: 32px; border-radius: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.3s; position: relative; overflow: hidden; }
+        .feature-card::after { content: ''; position: absolute; top: -50%; left: -60%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(232,21,42,0.05) 0%, transparent 70%); opacity: 0; transition: opacity 0.5s; pointer-events: none; }
+        .feature-card:hover::after { opacity: 1; }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(232,21,42,0.15); }
+        .feature-icon { font-size: 48px; margin-bottom: 20px; transition: transform 0.3s; }
+        .feature-card:hover .feature-icon { transform: scale(1.1); }
         .feature-card h3 { font-size: 20px; margin-bottom: 12px; color: #E8152A; }
         .feature-card p { color: #666; line-height: 1.5; }
         
         .sticker-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding: 60px 0; align-items: center; }
-        .sticker-preview-card { background: #f5f5f5; border-radius: 32px; padding: 32px; text-align: center; }
+        .sticker-preview-card { background: linear-gradient(135deg, #f5f5f5 0%, #fff 100%); border-radius: 32px; padding: 32px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; }
+        .sticker-preview-card::after { content: ''; position: absolute; top: -50%; left: -60%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(232,21,42,0.05) 0%, transparent 70%); opacity: 0; transition: opacity 0.5s; pointer-events: none; }
+        .sticker-preview-card:hover::after { opacity: 1; }
+        .sticker-preview-card:hover { transform: translateY(-5px); }
         .sticker-preview-card img { max-width: 60%; height: auto; border-radius: 20px; box-shadow: 0 12px 24px rgba(0,0,0,0.1); margin: 0 auto; display: block; }
         .sticker-info h2 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #E8152A; margin-bottom: 20px; }
         .sticker-info ul { list-style: none; margin: 24px 0; }
-        .sticker-info li { padding: 8px 0; display: flex; align-items: center; gap: 12px; font-size: 16px; }
+        .sticker-info li { padding: 8px 0; display: flex; align-items: center; gap: 12px; font-size: 16px; transition: transform 0.3s; }
+        .sticker-info li:hover { transform: translateX(5px); }
         
         .login-card { max-width: 440px; margin: 60px auto 80px; }
-        .form-card { background: white; border-radius: 24px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #eee; }
+        .form-card { background: white; border-radius: 24px; padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid #eee; animation: fadeIn 0.5s ease-out; }
         .form-group { margin-bottom: 20px; }
         label { display: block; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 6px; }
-        input, select, textarea { width: 100%; padding: 12px 16px; background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; transition: border 0.2s; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #E8152A; }
+        input, select, textarea { width: 100%; padding: 12px 16px; background: #f8f8f8; border: 2px solid #e0e0e0; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; transition: all 0.3s; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #E8152A; box-shadow: 0 0 0 3px rgba(232,21,42,0.1); }
+        
         .error-msg { color: #E8152A; font-size: 13px; margin-top: 8px; }
         .success-msg { color: #22C55E; font-size: 13px; margin-top: 8px; }
         .warning-msg { color: #E8152A; font-size: 13px; margin-top: 8px; }
@@ -136,8 +230,57 @@
         .dashboard-logo img { height: 48px; }
         .user-menu { display: flex; align-items: center; gap: 20px; color: #333; }
         .user-email { color: #666; font-size: 14px; }
-        .btn-logout { background: transparent; border: 1px solid #E8152A; color: #E8152A; padding: 6px 16px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
-        .btn-logout:hover { background: #E8152A; color: white; }
+        .btn-logout { background: transparent; border: 1px solid #E8152A; color: #E8152A; padding: 6px 16px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s; position: relative; overflow: hidden; }
+        .btn-logout::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+        .btn-logout:hover::before { left: 100%; }
+        .btn-logout:hover { background: #E8152A; color: white; transform: translateY(-2px); }
+        
+        .emergency-btn {
+            background: linear-gradient(135deg, #E8152A 0%, #B01020 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 60px;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 4px 15px rgba(232,21,42,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 20px auto;
+            display: block;
+            animation: pulse 2s ease-in-out infinite;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+        }
+        .emergency-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(232,21,42,0.5);
+        }
+        
+        .natives-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .native-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .native-btn:hover {
+            background: #E8152A;
+            color: white;
+            transform: translateY(-2px);
+        }
         
         .btn-danger {
             background: transparent;
@@ -157,11 +300,133 @@
         }
         
         .tabs { display: flex; gap: 16px; margin: 24px 0; border-bottom: 2px solid #eee; }
-        .tab-btn { background: none; border: none; font-size: 16px; font-weight: 600; padding: 12px 0; cursor: pointer; color: #666; font-family: 'Inter', sans-serif; transition: color 0.2s; }
-        .tab-btn.active { color: #E8152A; border-bottom: 2px solid #E8152A; }
+        .tab-btn { background: none; border: none; font-size: 16px; font-weight: 600; padding: 12px 0; cursor: pointer; color: #666; font-family: 'Inter', sans-serif; transition: all 0.3s; position: relative; }
+        .tab-btn.active { color: #E8152A; }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: #E8152A; animation: slideIn 0.3s ease-out; }
         .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
+        .tab-pane.active { display: block; animation: fadeIn 0.3s ease-out; }
+        
         .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px 0; }
+        .sticker-preview { background: #f8f8f8; border-radius: 24px; padding: 24px; text-align: center; position: sticky; top: 20px; transition: transform 0.3s; }
+        .sticker-preview:hover { transform: translateY(-5px); }
+        
+        .sticker-container { position: relative; width: 100%; margin: 0 auto; }
+        .sticker-container.horizontal { max-width: 400px; }
+        .sticker-container.cuadrado { max-width: 200px; }
+        .sticker-bg { width: 100%; height: auto; display: block; border-radius: 12px; }
+        .sticker-qr-overlay { position: absolute; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 12px; }
+        .sticker-qr-overlay canvas { width: 100% !important; height: 100% !important; border-radius: 12px; }
+        
+        .btn-download { background: #E8152A; color: white; border: none; padding: 12px 20px; border-radius: 40px; font-weight: 600; cursor: pointer; margin: 6px; transition: all 0.3s; position: relative; overflow: hidden; }
+        .btn-download::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+        .btn-download:hover::before { left: 100%; }
+        .btn-download:hover { background: #B01020; transform: translateY(-2px); }
+        
+        .photo-upload { margin-bottom: 20px; text-align: center; }
+        .photo-preview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #E8152A; }
+        
+        .section-subtitle-form { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: #E8152A; margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #E8152A; }
+        
+        .contact-group { background: #fafafa; padding: 16px; border-radius: 16px; margin-bottom: 20px; }
+        
+        .creator-section {
+            background: linear-gradient(135deg, #f8f8f8 0%, #fff 100%);
+            border-radius: 32px;
+            padding: 48px 32px;
+            margin: 60px 0 40px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .creator-section::after { content: ''; position: absolute; top: -50%; left: -60%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(232,21,42,0.05) 0%, transparent 70%); opacity: 0; transition: opacity 0.5s; pointer-events: none; }
+        .creator-section:hover::after { opacity: 1; }
+        .creator-section:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .creator-avatar { width: 100px; height: 100px; background: linear-gradient(135deg, #E8152A 0%, #B01020 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 48px; color: white; transition: transform 0.3s; }
+        .creator-avatar:hover { transform: rotate(10deg) scale(1.05); }
+        .creator-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #E8152A; margin-bottom: 8px; }
+        .creator-bio { max-width: 700px; margin: 20px auto; color: #555; line-height: 1.8; font-size: 16px; }
+        .creator-contact { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 24px; padding-top: 20px; border-top: 1px solid #eee; }
+        .creator-contact a { color: #E8152A; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+        .creator-contact a:hover { transform: translateX(5px); color: #B01020; }
+        
+        .modal-legal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-legal-content {
+            background: white;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85%;
+            border-radius: 24px;
+            overflow: hidden;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .modal-legal-header {
+            background: linear-gradient(135deg, #E8152A 0%, #B01020 100%);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-legal-header h3 { color: white; font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin: 0; }
+        .modal-legal-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; transition: transform 0.3s; }
+        .modal-legal-close:hover { transform: scale(1.1); }
+        .modal-legal-body { padding: 20px; overflow-y: auto; max-height: 60vh; font-size: 13px; color: #333; line-height: 1.6; }
+        .modal-legal-body h4 { color: #E8152A; margin: 16px 0 8px 0; }
+        .modal-legal-footer { padding: 16px 20px; border-top: 1px solid #eee; text-align: center; }
+        .modal-legal-footer button { background: #E8152A; color: white; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .modal-legal-footer button:hover { background: #B01020; transform: scale(1.05); }
+        
+        .legal-footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        .legal-footer-text { font-size: 11px; color: #999; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+        .legal-links-footer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; font-size: 12px; transition: color 0.3s; }
+        .legal-link:hover { color: #B01020; text-decoration: underline; }
+        
+        .suscripcion-box {
+            background: #f8f8f8;
+            padding: 32px;
+            border-radius: 32px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .suscripcion-box h3 { color: #E8152A; margin-bottom: 12px; }
+        .suscripcion-box p { color: #666; margin-bottom: 20px; }
+        .suscripcion-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .suscripcion-input-group input {
+            padding: 12px 20px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            width: 280px;
+        }
         
         .sticker-selectors {
             display: flex;
@@ -186,7 +451,7 @@
             padding: 8px 16px;
             border-radius: 40px;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-size: 14px;
         }
         .format-option {
@@ -214,120 +479,24 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
-        .sticker-preview { background: #f8f8f8; border-radius: 24px; padding: 24px; text-align: center; position: sticky; top: 20px; }
-        
-        .sticker-container { 
-            position: relative; 
-            width: 100%; 
-            margin: 0 auto; 
-        }
-        .sticker-container.horizontal { max-width: 400px; }
-        .sticker-container.cuadrado { max-width: 200px; }
-        
-        .sticker-bg { width: 100%; height: auto; display: block; border-radius: 12px; }
-        .sticker-qr-overlay { position: absolute; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 12px; }
-        .sticker-qr-overlay canvas { width: 100% !important; height: 100% !important; border-radius: 12px; }
-        
-        .btn-download { background: #E8152A; color: white; border: none; padding: 12px 20px; border-radius: 40px; font-weight: 600; cursor: pointer; margin: 6px; transition: background 0.2s; }
-        .btn-download:hover { background: #B01020; }
-        
-        .photo-upload { margin-bottom: 20px; text-align: center; }
-        .photo-preview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #E8152A; }
-        
-        .section-subtitle-form { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: #E8152A; margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #E8152A; }
-        
-        .contact-group { background: #fafafa; padding: 16px; border-radius: 16px; margin-bottom: 20px; }
-        
-        .creator-section {
-            background: linear-gradient(135deg, #f8f8f8 0%, #fff 100%);
-            border-radius: 32px;
-            padding: 48px 32px;
-            margin: 60px 0 40px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-        .creator-avatar { width: 100px; height: 100px; background: #E8152A; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 48px; color: white; }
-        .creator-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #E8152A; margin-bottom: 8px; }
-        .creator-bio { max-width: 700px; margin: 20px auto; color: #555; line-height: 1.8; font-size: 16px; }
-        .creator-contact { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 24px; padding-top: 20px; border-top: 1px solid #eee; }
-        .creator-contact a { color: #E8152A; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-        
-        .modal-legal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-legal-content {
-            background: white;
-            max-width: 500px;
-            width: 100%;
-            max-height: 85%;
-            border-radius: 24px;
-            overflow: hidden;
-            animation: modalFadeIn 0.3s ease;
-        }
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .modal-legal-header {
-            background: #E8152A;
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .modal-legal-header h3 { color: white; font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin: 0; }
-        .modal-legal-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
-        .modal-legal-body { padding: 20px; overflow-y: auto; max-height: 60vh; font-size: 13px; color: #333; line-height: 1.6; }
-        .modal-legal-body h4 { color: #E8152A; margin: 16px 0 8px 0; }
-        .modal-legal-footer { padding: 16px 20px; border-top: 1px solid #eee; text-align: center; }
-        .modal-legal-footer button { background: #E8152A; color: white; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 600; cursor: pointer; }
-        
-        .legal-footer {
-            margin-top: 60px;
-            padding: 30px 0;
-            border-top: 1px solid #eee;
+        .email-tip {
+            background: #f0f0f0;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 20px 0;
             text-align: center;
         }
-        .legal-footer-text { font-size: 11px; color: #999; line-height: 1.6; max-width: 800px; margin: 0 auto; }
-        .legal-links-footer {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 16px;
+        .email-tip p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
         }
-        .legal-link { color: #E8152A; text-decoration: none; font-weight: 500; cursor: pointer; font-size: 12px; }
         
-        .suscripcion-box {
-            background: #f8f8f8;
-            padding: 32px;
-            border-radius: 32px;
-            margin: 40px 0;
+        .copyright {
+            margin-top: 20px;
+            font-size: 10px;
+            color: #aaa;
             text-align: center;
-        }
-        .suscripcion-box h3 { color: #E8152A; margin-bottom: 12px; }
-        .suscripcion-box p { color: #666; margin-bottom: 20px; }
-        .suscripcion-input-group {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .suscripcion-input-group input {
-            padding: 12px 20px;
-            border-radius: 40px;
-            border: 1px solid #ddd;
-            width: 280px;
         }
         
         #cookieConsent {
@@ -352,26 +521,6 @@
             cursor: pointer;
         }
         
-        .email-tip {
-            background: #f0f0f0;
-            padding: 12px;
-            border-radius: 12px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .email-tip p {
-            font-size: 12px;
-            color: #666;
-            margin: 0;
-        }
-        
-        .copyright {
-            margin-top: 20px;
-            font-size: 10px;
-            color: #aaa;
-            text-align: center;
-        }
-        
         @media (max-width: 768px) {
             .hero, .sticker-showcase, .two-columns { grid-template-columns: 1fr; }
             .hero-content h1 { font-size: 48px; }
@@ -385,10 +534,10 @@
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKR6WB9JJM"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-DKR6WB9JJM');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DKR6WB9JJM');
     </script>
 </head>
 <body>
@@ -399,6 +548,17 @@
                 <div class="language-selector">
                     <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
                     <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+                    <button class="lang-more-btn" id="langMoreBtn">🌐 +8</button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <div class="lang-dropdown-item" data-lang="pt">🇵🇹 Português</div>
+                        <div class="lang-dropdown-item" data-lang="fr">🇫🇷 Français</div>
+                        <div class="lang-dropdown-item" data-lang="de">🇩🇪 Deutsch</div>
+                        <div class="lang-dropdown-item" data-lang="it">🇮🇹 Italiano</div>
+                        <div class="lang-dropdown-item" data-lang="nl">🇳🇱 Nederlands</div>
+                        <div class="lang-dropdown-item" data-lang="pl">🇵🇱 Polski</div>
+                        <div class="lang-dropdown-item" data-lang="ja">🇯🇵 日本語</div>
+                        <div class="lang-dropdown-item" data-lang="tr">🇹🇷 Türkçe</div>
+                    </div>
                 </div>
                 <div class="nav-links">
                     <button class="nav-link" id="navLoginBtn" data-i18n="navLogin">Iniciar sesión</button>
@@ -428,7 +588,7 @@
             </div>
             
             <div class="email-tip">
-                <p data-i18n="emailTip">📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen aimaginalabs@gmail.com a su libreta de direcciones y marquen el correo como "No es spam".</p>
+                <p data-i18n="emailTip">📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen mylifeqrsticker@gmail.com a su libreta de direcciones y marquen el correo como "No es spam".</p>
             </div>
             
             <div class="features">
@@ -451,7 +611,7 @@
                 </div>
                 <div class="creator-contact">
                     <a href="https://wa.me/525652502785" target="_blank">📱 WhatsApp: +52 5652502785</a>
-                    <a href="mailto:aimaginalabs@gmail.com">✉️ aimaginalabs@gmail.com</a>
+                    <a href="mailto:mylifeqrsticker@gmail.com">✉️ mylifeqrsticker@gmail.com</a>
                 </div>
             </div>
             
@@ -546,9 +706,16 @@
             </div>
         </div>
         <div class="container">
+            <button id="emergencyBtn" class="emergency-btn">🚨 ¡EMERGENCIA! 🚨</button>
             <div class="tabs"><button class="tab-btn active" id="tabFormBtn" data-i18n="dashboardPersonal">📝 Mis datos</button><button class="tab-btn" id="tabStickerBtn" data-i18n="dashboardSticker">🔲 Mi sticker</button></div>
             <div class="two-columns">
                 <div><div id="tabForm" class="tab-pane active"><div class="form-card"><h2 style="font-family: 'Bebas Neue'; font-size: 28px; color: #E8152A;" data-i18n="personalTitle">📝 Datos personales</h2>
+                    
+                    <div class="natives-buttons">
+                        <button class="native-btn" id="scanQrBtn">📷 Escanear QR</button>
+                        <button class="native-btn" id="shareProfileBtn">📤 Compartir perfil</button>
+                    </div>
+                    
                     <div class="photo-upload">
                         <img id="fotoPreview" class="photo-preview" src="" alt="Tu foto" style="display: none;">
                         <div style="margin-top: 8px;">
@@ -614,6 +781,7 @@
                         <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                             <input type="checkbox" id="contacto1_notificar" style="width: 18px;">
                             <label for="contacto1_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia (recibirá correo si se escanea tu QR)</label>
+                            <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto1_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
                         </div>
                     </div>
                     
@@ -642,6 +810,7 @@
                         <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                             <input type="checkbox" id="contacto2_notificar" style="width: 18px;">
                             <label for="contacto2_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                            <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto2_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
                         </div>
                     </div>
                     
@@ -670,6 +839,7 @@
                         <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                             <input type="checkbox" id="contacto3_notificar" style="width: 18px;">
                             <label for="contacto3_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                            <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto3_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
                         </div>
                     </div>
                     
@@ -699,6 +869,7 @@
                             <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                                 <input type="checkbox" id="contacto4_notificar" style="width: 18px;">
                                 <label for="contacto4_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                                <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto4_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
                             </div>
                         </div>
                         
@@ -727,6 +898,7 @@
                             <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
                                 <input type="checkbox" id="contacto5_notificar" style="width: 18px;">
                                 <label for="contacto5_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                                <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto5_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
                             </div>
                         </div>
                     </div>
@@ -876,7 +1048,7 @@
                 "legalWarning": "⚠️ AVISO LEGAL ⚠️", "legalText": "MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.",
                 "legalEmergency": "📞 En caso de emergencia, llame al 911 inmediatamente.", "termsLink": "📜 Términos y Condiciones",
                 "privacyLink": "🔒 Política de Privacidad", "avisoLink": "🔐 Aviso de Privacidad (LFPDPPP)",
-                "emailTip": "📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen aimaginalabs@gmail.com a su libreta de direcciones y marquen el correo como \"No es spam\".",
+                "emailTip": "📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen mylifeqrsticker@gmail.com a su libreta de direcciones y marquen el correo como \"No es spam\".",
                 "newsletterTitle": "📧 Recibe consejos de seguridad", "newsletterDesc": "Suscríbete y recibe información útil para motociclistas.",
                 "newsletterPlaceholder": "Tu correo electrónico", "newsletterBtn": "Suscribirme",
                 "subir_foto": "📸 Subir foto",
@@ -952,7 +1124,7 @@
                 "legalWarning": "⚠️ LEGAL NOTICE ⚠️", "legalText": "MyLifeQR is a <strong>medical identification support system</strong>. It is not a medical or emergency service and does not replace professional care.",
                 "legalEmergency": "📞 In case of emergency, call 911 immediately.", "termsLink": "📜 Terms and Conditions",
                 "privacyLink": "🔒 Privacy Policy", "avisoLink": "🔐 Privacy Notice",
-                "emailTip": "📧 Your contacts not receiving alerts? Ask them to add aimaginalabs@gmail.com to their address book and mark the email as \"Not spam\".",
+                "emailTip": "📧 Your contacts not receiving alerts? Ask them to add mylifeqrsticker@gmail.com to their address book and mark the email as \"Not spam\".",
                 "newsletterTitle": "📧 Get safety tips", "newsletterDesc": "Subscribe and receive useful information for motorcyclists.",
                 "newsletterPlaceholder": "Your email address", "newsletterBtn": "Subscribe",
                 "subir_foto": "📸 Upload photo",
@@ -993,22 +1165,31 @@
             }
         };
         
+        // Traducciones básicas para idiomas adicionales (se pueden expandir)
+        const idiomasExtras = {
+            pt: { "heroTitle": "Sua vida<br>merece um guardião", "heroSlogan": "Na estrada, cada segundo conta. MyLifeQR é sua voz quando você não pode falar." },
+            fr: { "heroTitle": "Votre vie<br>mérite un gardien", "heroSlogan": "Sur la route, chaque seconde compte. MyLifeQR est votre voix quand vous ne pouvez pas parler." },
+            de: { "heroTitle": "Dein Leben<br>verdient einen Wächter", "heroSlogan": "Auf der Straße zählt jede Sekunde. MyLifeQR ist deine Stimme, wenn du nicht sprechen kannst." },
+            it: { "heroTitle": "La tua vita<br>merita un guardiano", "heroSlogan": "Sulla strada, ogni secondo conta. MyLifeQR è la tua voce quando non puoi parlare." },
+            nl: { "heroTitle": "Jouw leven<br>verdient een beschermer", "heroSlogan": "Op de weg telt elke seconde. MyLifeQR is jouw stem als je niet kunt praten." },
+            pl: { "heroTitle": "Twoje życie<br>zasługuje na opiekuna", "heroSlogan": "Na drodze liczy się każda sekunda. MyLifeQR to twój głos, gdy nie możesz mówić." },
+            ja: { "heroTitle": "あなたの命には<br>守護者がいる", "heroSlogan": "道路上では毎秒が重要です。MyLifeQRはあなたが話せないときのあなたの声です。" },
+            tr: { "heroTitle": "Hayatın<br>bir koruyucuyu hak ediyor", "heroSlogan": "Yolda her saniye önemlidir. MyLifeQR, konuşamadığınızda sesinizdir." }
+        };
+        
         const QR_CONFIG = {
             horizontal: { leftPercent: 56.5, topPercent: 6, widthPercent: 37.4, heightPercent: 74.6, targetWidth: 709, targetHeight: 355 },
             cuadrado: { leftPercent: 13, topPercent: 6, widthPercent: 75, heightPercent: 75, targetWidth: 355, targetHeight: 356 }
         };
         
-        // Función para obtener la imagen del sticker según idioma y formato
         function obtenerImagenSticker() {
             if (currentFormato === "horizontal") {
-                // Stickers horizontales: tienen texto, dependen del idioma
                 if (currentColor === "negro") {
                     return currentLang === 'en' ? 'TemplateNegroMyLifeQREN.png' : 'TemplateNegroMyLifeQR.png';
                 } else {
                     return currentLang === 'en' ? 'TemplateRojoMyLifeQREN.png' : 'TemplateRojoMyLifeQR.png';
                 }
-            } else { // formato cuadrado
-                // Stickers cuadrados: NO tienen texto, son iguales en ambos idiomas
+            } else {
                 if (currentColor === "negro") {
                     return 'TemplateNegroMyLifeQRCuadrado.png';
                 } else {
@@ -1023,25 +1204,31 @@
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (traducciones[lang][key]) {
+                if (traducciones[lang] && traducciones[lang][key]) {
                     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         el.placeholder = traducciones[lang][key];
                     } else {
                         el.innerHTML = traducciones[lang][key];
+                    }
+                } else if (idiomasExtras[lang] && idiomasExtras[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = idiomasExtras[lang][key];
+                    } else {
+                        el.innerHTML = idiomasExtras[lang][key];
                     }
                 }
             });
             
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
-                if (traducciones[lang][key]) {
+                if (traducciones[lang] && traducciones[lang][key]) {
                     el.placeholder = traducciones[lang][key];
                 }
             });
             
             document.querySelectorAll('.relacion-select option, #donador option, #sangre option').forEach(opt => {
                 const key = opt.getAttribute('data-i18n');
-                if (key && traducciones[lang][key]) {
+                if (key && traducciones[lang] && traducciones[lang][key]) {
                     opt.textContent = traducciones[lang][key];
                 }
             });
@@ -1050,12 +1237,16 @@
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
             
+            document.querySelectorAll('.lang-dropdown-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-lang') === lang);
+            });
+            
             actualizarImagenSticker();
         }
         
         function comprimirImagen(file, callback) {
             if (!file.type.startsWith('image/')) {
-                const msg = traducciones[currentLang].error_tipo_archivo || '❌ Solo se permiten imágenes';
+                const msg = traducciones[currentLang]?.error_tipo_archivo || '❌ Solo se permiten imágenes';
                 alert(msg);
                 return;
             }
@@ -1082,11 +1273,9 @@
             try {
                 const counterDoc = await getDoc(doc(db, "public", "stats"));
                 let total = 50;
-                
                 if (counterDoc.exists() && counterDoc.data().totalUsuarios) {
                     total = counterDoc.data().totalUsuarios;
                 }
-                
                 document.getElementById('vidasCounter').innerHTML = `❤️ ${total}+ vidas protegidas`;
             } catch (error) { 
                 console.log('Error al obtener contador:', error);
@@ -1098,16 +1287,16 @@
             const email = document.getElementById('suscripcionEmail').value;
             const msgDiv = document.getElementById('suscripcionMsg');
             if (!email) { 
-                msgDiv.innerHTML = `<span style="color: #E8152A;">❌ ${traducciones[currentLang].error_suscripcion || 'Error'}</span>`; 
+                msgDiv.innerHTML = `<span style="color: #E8152A;">❌ ${traducciones[currentLang]?.error_suscripcion || 'Error'}</span>`; 
                 return; 
             }
             try {
                 await addDoc(collection(db, "suscriptores"), { email, fecha: new Date().toISOString(), origen: "MyLifeQR" });
-                msgDiv.innerHTML = `<span style="color: #22C55E;">✅ ${traducciones[currentLang].exito_suscripcion || '¡Gracias!'}</span>`;
+                msgDiv.innerHTML = `<span style="color: #22C55E;">✅ ${traducciones[currentLang]?.exito_suscripcion || '¡Gracias!'}</span>`;
                 document.getElementById('suscripcionEmail').value = '';
                 setTimeout(() => msgDiv.innerHTML = '', 3000);
             } catch (error) { 
-                msgDiv.innerHTML = `<span style="color: #E8152A;">❌ ${traducciones[currentLang].error_suscripcion || 'Error'}</span>`; 
+                msgDiv.innerHTML = `<span style="color: #E8152A;">❌ ${traducciones[currentLang]?.error_suscripcion || 'Error'}</span>`; 
             }
         });
         
@@ -1156,6 +1345,29 @@
             });
         });
         
+        // Selector de idiomas expandido
+        document.getElementById('langMoreBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('langDropdown');
+            dropdown.classList.toggle('show');
+        });
+        
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('langDropdown');
+            const moreBtn = document.getElementById('langMoreBtn');
+            if (dropdown && moreBtn && !moreBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        document.querySelectorAll('.lang-dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const lang = item.getAttribute('data-lang');
+                cambiarIdioma(lang);
+                document.getElementById('langDropdown').classList.remove('show');
+            });
+        });
+        
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => cambiarIdioma(btn.getAttribute('data-lang')));
         });
@@ -1174,17 +1386,17 @@
         
         window.eliminarCuenta = async () => {
             if (!currentUser) return;
-            if (!confirm(traducciones[currentLang].confirmar_eliminar)) return;
-            if (!confirm(traducciones[currentLang].confirmar_eliminar_final)) return;
+            if (!confirm(traducciones[currentLang]?.confirmar_eliminar)) return;
+            if (!confirm(traducciones[currentLang]?.confirmar_eliminar_final)) return;
             try {
                 await deleteDoc(doc(db, "perfiles", currentUser.uid));
                 await deleteUser(currentUser);
-                alert(traducciones[currentLang].exito_eliminar);
+                alert(traducciones[currentLang]?.exito_eliminar);
                 await signOut(auth);
                 window.location.reload();
             } catch (error) {
-                if (error.code === 'auth/requires-recent-login') alert(traducciones[currentLang].error_requiere_login);
-                else alert(traducciones[currentLang].error_eliminar_cuenta + error.message);
+                if (error.code === 'auth/requires-recent-login') alert(traducciones[currentLang]?.error_requiere_login);
+                else alert(traducciones[currentLang]?.error_eliminar_cuenta + error.message);
             }
         };
         
@@ -1244,139 +1456,84 @@
         function showLoginForm() { loginFormContainer.style.display = 'block'; registerFormContainer.style.display = 'none'; loginFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         function showRegisterForm() { registerFormContainer.style.display = 'block'; loginFormContainer.style.display = 'none'; registerFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         
-        // Función para mostrar el Aviso de Privacidad (bilingüe)
+        // Botón de emergencia
+        document.getElementById('emergencyBtn')?.addEventListener('click', () => {
+            if (confirm('🚨 ¿Estás en una emergencia? Llama al 911 inmediatamente.')) {
+                window.location.href = 'tel:911';
+            }
+        });
+        
+        // Escanear QR
+        document.getElementById('scanQrBtn')?.addEventListener('click', () => {
+            if (window.location.protocol === 'https:' && 'mediaDevices' in navigator) {
+                alert('📷 Para escanear un QR, abre la cámara de tu teléfono y apunta al código.\n\nSi tienes Android, también puedes usar Google Lens.');
+            } else {
+                alert('📷 Escáner QR - Apunta la cámara al código QR.\n\nRecomendamos usar Google Lens o la cámara nativa de tu teléfono.');
+            }
+        });
+        
+        // Compartir perfil
+        document.getElementById('shareProfileBtn')?.addEventListener('click', async () => {
+            if (!currentUser) return;
+            const url = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Mi perfil MyLifeQR',
+                        text: 'Mi información médica de emergencia',
+                        url: url
+                    });
+                } catch (e) {}
+            } else {
+                await navigator.clipboard.writeText(url);
+                alert('📤 Enlace copiado al portapapeles');
+            }
+        });
+        
+        // Función para llamar contacto
+        window.llamarContacto = (telefono) => {
+            if (telefono && telefono.trim()) {
+                window.location.href = `tel:${telefono}`;
+            } else {
+                alert('📞 No hay número de teléfono registrado para este contacto');
+            }
+        };
+        
         window.showAvisoPrivacidad = () => {
             const modal = document.getElementById('modalAvisoPrivacidad');
             const title = document.getElementById('avisoTitle');
             const body = document.getElementById('avisoBody');
             
             if (currentLang === 'en') {
-                title.innerText = '🔐 Privacy Notice (Global)';
-                body.innerHTML = `
-                    <h4>MyLifeQR - Global Privacy Notice</h4>
-                    <p><strong>Last updated:</strong> April 2026</p>
-                    
-                    <h4>📋 Data Controller</h4>
-                    <p>MyLifeQR is an independent non-profit project created by Marcos Esparza. YOU are the data controller, as you control your own information.</p>
-                    
-                    <h4>📊 Data We Collect</h4>
-                    <p>To create your emergency medical profile, we collect:</p>
-                    <ul>
-                        <li><strong>Identification:</strong> Name, age, photo (optional)</li>
-                        <li><strong>Medical:</strong> Blood type, allergies, medical conditions, medications</li>
-                        <li><strong>Emergency:</strong> Contacts (name, relationship, phone, email)</li>
-                        <li><strong>Technical:</strong> IP address, registration date (for security)</li>
-                    </ul>
-                    
-                    <h4>🎯 Purpose of Processing</h4>
-                    <p><strong>EXCLUSIVELY</strong> to generate your emergency medical profile, accessible via QR code in emergency situations by medical personnel or first responders.</p>
-                    
-                    <h4>⚖️ Legal Framework and Applicable Standards</h4>
-                    <p>MyLifeQR complies with the following legal frameworks and international standards:</p>
-                    <ul>
-                        <li><strong>🇲🇽 Mexico:</strong> LFPDPPP</li>
-                        <li><strong>🇪🇺 European Union:</strong> GDPR</li>
-                        <li><strong>🇺🇸 California, USA:</strong> CCPA/CPRA</li>
-                        <li><strong>🇧🇷 Brazil:</strong> LGPD</li>
-                        <li><strong>🇨🇴 Colombia:</strong> Law 1581 of 2012</li>
-                        <li><strong>🇦🇷 Argentina:</strong> Law 25.326</li>
-                    </ul>
-                    
-                    <h4>🔒 International Data Transfer</h4>
-                    <p>Your data is stored on secure servers. By using MyLifeQR, you accept the international transfer of your data for service provision.</p>
-                    
-                    <h4>✋ Your Rights (ARCO + GDPR + CCPA)</h4>
-                    <p>Depending on your location, you have the right to:</p>
-                    <ul>
-                        <li><strong>Access</strong> your data at any time</li>
-                        <li><strong>Rectify</strong> incorrect information</li>
-                        <li><strong>Cancel/Delete</strong> your account and all your data</li>
-                        <li><strong>Object</strong> to the processing of your data</li>
-                        <li><strong>Portability</strong> (receive your data in common format)</li>
-                        <li><strong>Restrict</strong> processing</li>
-                    </ul>
-                    
-                    <h4>⏱️ Data Retention</h4>
-                    <p>Your data is kept as long as your account is active. When you delete your account, all your data is permanently deleted.</p>
-                    
-                    <h4>👶 Minimum Age</h4>
-                    <p>You must be at least 16 years old to register. If you are a minor, you need parental or guardian authorization.</p>
-                    
-                    <h4>📧 Exercise of Rights</h4>
-                    <p>To exercise any of your rights, contact:</p>
-                    <p><strong>✉️ aimaginalabs@gmail.com</strong><br>
-                    <strong>📱 WhatsApp:</strong> +52 5652502785</p>
-                    
-                    <h4>⚠️ Limitation of Liability</h4>
-                    <p><strong>MyLifeQR is a medical identification support system, NOT an emergency medical service.</strong> In case of emergency, ALWAYS call 911 or your local emergency number.</p>
-                `;
+                title.innerText = '🔐 Privacy Notice';
+                body.innerHTML = `<h4>MyLifeQR - Privacy Notice</h4>
+                <p><strong>Last updated:</strong> April 2026</p>
+                <h4>Data We Collect</h4>
+                <p>Name, age, blood type, allergies, medical conditions, medications, emergency contacts, photo (optional), IP address.</p>
+                <h4>Purpose</h4>
+                <p>EXCLUSIVELY to generate your emergency medical profile accessible via QR code.</p>
+                <h4>Your Rights</h4>
+                <p>You have the right to access, rectify, cancel, and object to the processing of your data.</p>
+                <h4>Contact</h4>
+                <p><strong>✉️ mylifeqrsticker@gmail.com</strong><br>📱 WhatsApp: +52 5652502785</p>`;
             } else {
-                title.innerText = '🔐 Aviso de Privacidad (Global)';
-                body.innerHTML = `
-                    <h4>MyLifeQR - Aviso de Privacidad Global</h4>
-                    <p><strong>Última actualización:</strong> Abril 2026</p>
-                    
-                    <h4>📋 Responsable</h4>
-                    <p>MyLifeQR es un proyecto independiente sin fines de lucro creado por Marcos Esparza. TÚ eres el responsable del tratamiento de tus datos, ya que controlas tu propia información.</p>
-                    
-                    <h4>📊 Datos que recopilamos</h4>
-                    <p>Para crear tu perfil médico de emergencia, recopilamos:</p>
-                    <ul>
-                        <li><strong>Identificación:</strong> Nombre, edad, fotografía (opcional)</li>
-                        <li><strong>Médicos:</strong> Tipo de sangre, alergias, condiciones médicas, medicamentos</li>
-                        <li><strong>Emergencia:</strong> Contactos (nombre, relación, teléfono, correo)</li>
-                        <li><strong>Técnicos:</strong> Dirección IP, fecha de registro (para seguridad)</li>
-                    </ul>
-                    
-                    <h4>🎯 Finalidad del tratamiento</h4>
-                    <p><strong>EXCLUSIVAMENTE</strong> para generar tu perfil médico de emergencia, accesible mediante código QR en situaciones de emergencia por personal médico o primeros respondientes.</p>
-                    
-                    <h4>⚖️ Marco legal y estándares aplicables</h4>
-                    <p>MyLifeQR cumple con los siguientes marcos legales y estándares internacionales:</p>
-                    <ul>
-                        <li><strong>🇲🇽 México:</strong> LFPDPPP</li>
-                        <li><strong>🇪🇺 Unión Europea:</strong> GDPR</li>
-                        <li><strong>🇺🇸 California, EE.UU.:</strong> CCPA/CPRA</li>
-                        <li><strong>🇧🇷 Brasil:</strong> LGPD</li>
-                        <li><strong>🇨🇴 Colombia:</strong> Ley 1581 de 2012</li>
-                        <li><strong>🇦🇷 Argentina:</strong> Ley 25.326</li>
-                    </ul>
-                    
-                    <h4>🔒 Transferencia internacional de datos</h4>
-                    <p>Tus datos se almacenan en servidores seguros. Al utilizar MyLifeQR, aceptas la transferencia internacional de tus datos para la prestación del servicio.</p>
-                    
-                    <h4>✋ Tus derechos (ARCO + GDPR + CCPA)</h4>
-                    <p>Dependiendo de tu ubicación, tienes derecho a:</p>
-                    <ul>
-                        <li><strong>Acceder</strong> a tus datos en cualquier momento</li>
-                        <li><strong>Rectificar</strong> información incorrecta</li>
-                        <li><strong>Cancelar/Eliminar</strong> tu cuenta y todos tus datos</li>
-                        <li><strong>Oponerte</strong> al tratamiento de tus datos</li>
-                        <li><strong>Portabilidad</strong> (recibir tus datos en formato común)</li>
-                        <li><strong>Limitar</strong> el tratamiento</li>
-                    </ul>
-                    
-                    <h4>⏱️ Conservación de datos</h4>
-                    <p>Tus datos se conservan mientras tu cuenta esté activa. Al eliminar tu cuenta, todos tus datos se borran permanentemente.</p>
-                    
-                    <h4>👶 Edad mínima</h4>
-                    <p>Debes tener al menos 16 años para registrarte. Si eres menor, necesitas autorización de tus padres o tutores.</p>
-                    
-                    <h4>📧 Ejercicio de derechos</h4>
-                    <p>Para ejercer cualquiera de tus derechos, contacta a:</p>
-                    <p><strong>✉️ aimaginalabs@gmail.com</strong><br>
-                    <strong>📱 WhatsApp:</strong> +52 5652502785</p>
-                    
-                    <h4>⚠️ Limitación de responsabilidad</h4>
-                    <p><strong>MyLifeQR es un sistema de identificación médica de apoyo, NO es un servicio médico de emergencia.</strong> En caso de emergencia, llama siempre al 911 o a tu número local de emergencias.</p>
-                `;
+                title.innerText = '🔐 Aviso de Privacidad';
+                body.innerHTML = `<h4>MyLifeQR - Aviso de Privacidad</h4>
+                <p><strong>Última actualización:</strong> Abril 2026</p>
+                <h4>Datos que recopilamos</h4>
+                <p>Nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia, fotografía (opcional), dirección IP.</p>
+                <h4>Finalidad</h4>
+                <p>EXCLUSIVAMENTE para generar tu perfil médico de emergencia accesible mediante código QR.</p>
+                <h4>Tus derechos</h4>
+                <p>Tienes derecho a acceder, rectificar, cancelar y oponerte al tratamiento de tus datos.</p>
+                <h4>Contacto</h4>
+                <p><strong>✉️ mylifeqrsticker@gmail.com</strong><br>📱 WhatsApp: +52 5652502785</p>`;
             }
             modal.style.display = 'flex';
         };
         
         window.closeModalAvisoPrivacidad = () => { document.getElementById('modalAvisoPrivacidad').style.display = 'none'; };
         
-        // Función para mostrar Términos y Condiciones (bilingüe)
         window.showTerminosRegistro = () => {
             const modal = document.getElementById('modalLegalRegistro');
             const title = document.getElementById('modalLegalRegistroTitle');
@@ -1384,69 +1541,22 @@
             
             if (currentLang === 'en') {
                 title.innerText = '📜 Terms and Conditions';
-                body.innerHTML = `
-                    <h4>1. Acceptance</h4>
-                    <p>By using MyLifeQR, you agree to these Terms and Conditions.</p>
-                    
-                    <h4>2. Service Description</h4>
-                    <p>MyLifeQR is a medical identification support system. It is NOT a medical or emergency service.</p>
-                    
-                    <h4>3. User Responsibility</h4>
-                    <p>You are solely responsible for the accuracy and truthfulness of your medical data.</p>
-                    
-                    <h4>4. Emergency Situations</h4>
-                    <p>In case of emergency, ALWAYS call your local emergency number (911 in many countries) immediately.</p>
-                    
-                    <h4>5. Limitation of Liability</h4>
-                    <p>MyLifeQR is provided "as is" without warranties. We are not responsible for any damages arising from the use of this service.</p>
-                    
-                    <h4>6. Account Termination</h4>
-                    <p>You may delete your account at any time. We reserve the right to suspend accounts that violate these terms.</p>
-                    
-                    <h4>7. Governing Law</h4>
-                    <p>These terms are governed by international privacy standards including GDPR, CCPA, and Mexican law LFPDPPP.</p>
-                    
-                    <h4>8. Changes to Terms</h4>
-                    <p>We may update these terms occasionally. We will notify you of material changes via email.</p>
-                    
-                    <h4>9. Contact</h4>
-                    <p>For questions: <strong>aimaginalabs@gmail.com</strong> or WhatsApp: <strong>+52 5652502785</strong></p>
-                `;
+                body.innerHTML = `<h4>1. Acceptance</h4><p>By using MyLifeQR, you agree to these Terms and Conditions.</p>
+                <h4>2. Service Description</h4><p>MyLifeQR is a medical identification support system. It is NOT a medical or emergency service.</p>
+                <h4>3. User Responsibility</h4><p>You are solely responsible for the accuracy of your medical data.</p>
+                <h4>4. Governing Law</h4><p>These terms are governed by international privacy standards.</p>
+                <h4>5. Contact</h4><p><strong>mylifeqrsticker@gmail.com</strong></p>`;
             } else {
                 title.innerText = '📜 Términos y Condiciones';
-                body.innerHTML = `
-                    <h4>1. Aceptación</h4>
-                    <p>Al utilizar MyLifeQR, aceptas estos Términos y Condiciones.</p>
-                    
-                    <h4>2. Descripción del servicio</h4>
-                    <p>MyLifeQR es un sistema de identificación médica de apoyo. NO es un servicio médico ni de emergencia.</p>
-                    
-                    <h4>3. Responsabilidad del usuario</h4>
-                    <p>Eres el único responsable de la veracidad y exactitud de tus datos médicos.</p>
-                    
-                    <h4>4. Situaciones de emergencia</h4>
-                    <p>En caso de emergencia, SIEMPRE llama a tu número local de emergencias (911 en muchos países) inmediatamente.</p>
-                    
-                    <h4>5. Limitación de responsabilidad</h4>
-                    <p>MyLifeQR se proporciona "tal cual" sin garantías. No somos responsables de daños derivados del uso de este servicio.</p>
-                    
-                    <h4>6. Cancelación de cuenta</h4>
-                    <p>Puedes eliminar tu cuenta en cualquier momento. Nos reservamos el derecho de suspender cuentas que violen estos términos.</p>
-                    
-                    <h4>7. Ley aplicable</h4>
-                    <p>Estos términos se rigen por estándares internacionales de privacidad incluyendo GDPR, CCPA y la ley mexicana LFPDPPP.</p>
-                    
-                    <h4>8. Cambios a los términos</h4>
-                    <p>Podemos actualizar estos términos ocasionalmente. Te notificaremos de cambios importantes por correo electrónico.</p>
-                    
-                    <h4>9. Contacto</h4>
-                    <p>Para preguntas: <strong>aimaginalabs@gmail.com</strong> o WhatsApp: <strong>+52 5652502785</strong></p>
-                `;
+                body.innerHTML = `<h4>1. Aceptación</h4><p>Al utilizar MyLifeQR, aceptas estos Términos y Condiciones.</p>
+                <h4>2. Descripción del servicio</h4><p>MyLifeQR es un sistema de identificación médica de apoyo. NO es un servicio médico ni de emergencia.</p>
+                <h4>3. Responsabilidad del usuario</h4><p>Eres el único responsable de la veracidad de tus datos médicos.</p>
+                <h4>4. Ley aplicable</h4><p>Estos términos se rigen por estándares internacionales de privacidad.</p>
+                <h4>5. Contacto</h4><p><strong>mylifeqrsticker@gmail.com</strong></p>`;
             }
             modal.style.display = 'flex';
         };
         
-        // Función para mostrar Política de Privacidad (bilingüe)
         window.showPrivacidadRegistro = () => {
             const modal = document.getElementById('modalLegalRegistro');
             const title = document.getElementById('modalLegalRegistroTitle');
@@ -1454,46 +1564,16 @@
             
             if (currentLang === 'en') {
                 title.innerText = '🔒 Privacy Policy';
-                body.innerHTML = `
-                    <h4>1. Data Collected</h4>
-                    <p>We collect: name, age, blood type, allergies, medical conditions, medications, emergency contacts (name, relationship, phone, email), photo (optional), IP address.</p>
-                    
-                    <h4>2. Use of Data</h4>
-                    <p>Data is used EXCLUSIVELY to generate your emergency medical profile accessible via QR code.</p>
-                    
-                    <h4>3. Data Protection</h4>
-                    <p>Your data is protected by international standards including GDPR, CCPA, and Mexican law LFPDPPP. We do not share your data with third parties.</p>
-                    
-                    <h4>4. Your Rights</h4>
-                    <p>You have the right to access, rectify, cancel, and object to the processing of your data. You can also request data portability.</p>
-                    
-                    <h4>5. Data Retention</h4>
-                    <p>Your data is kept until you delete your account. Upon account deletion, all data is permanently erased.</p>
-                    
-                    <h4>6. Contact</h4>
-                    <p>For privacy questions: <strong>aimaginalabs@gmail.com</strong></p>
-                `;
+                body.innerHTML = `<h4>Data Collected</h4><p>Name, age, blood type, allergies, medical conditions, medications, emergency contacts, photo (optional).</p>
+                <h4>Use of Data</h4><p>EXCLUSIVELY to generate your emergency medical profile.</p>
+                <h4>Data Protection</h4><p>Your data is protected by international standards.</p>
+                <h4>Your Rights</h4><p>You have the right to access, rectify, cancel, and object.</p>`;
             } else {
                 title.innerText = '🔒 Política de Privacidad';
-                body.innerHTML = `
-                    <h4>1. Datos recabados</h4>
-                    <p>Recopilamos: nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia (nombre, relación, teléfono, correo), fotografía (opcional), dirección IP.</p>
-                    
-                    <h4>2. Uso de datos</h4>
-                    <p>Los datos se utilizan EXCLUSIVAMENTE para generar tu perfil médico de emergencia accesible mediante código QR.</p>
-                    
-                    <h4>3. Protección de datos</h4>
-                    <p>Tus datos están protegidos por estándares internacionales incluyendo GDPR, CCPA y la ley mexicana LFPDPPP. No compartimos tus datos con terceros.</p>
-                    
-                    <h4>4. Tus derechos</h4>
-                    <p>Tienes derecho a acceder, rectificar, cancelar y oponerte al tratamiento de tus datos. También puedes solicitar la portabilidad de tus datos.</p>
-                    
-                    <h4>5. Conservación de datos</h4>
-                    <p>Tus datos se conservan hasta que eliminas tu cuenta. Al eliminar la cuenta, todos los datos se borran permanentemente.</p>
-                    
-                    <h4>6. Contacto</h4>
-                    <p>Para preguntas de privacidad: <strong>aimaginalabs@gmail.com</strong></p>
-                `;
+                body.innerHTML = `<h4>Datos recabados</h4><p>Nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia, fotografía (opcional).</p>
+                <h4>Uso de datos</h4><p>EXCLUSIVAMENTE para generar tu perfil médico de emergencia.</p>
+                <h4>Protección de datos</h4><p>Tus datos están protegidos por estándares internacionales.</p>
+                <h4>Tus derechos</h4><p>Tienes derecho a acceder, rectificar, cancelar y oponerte.</p>`;
             }
             modal.style.display = 'flex';
         };
@@ -1538,7 +1618,6 @@
                 
                 const statsRef = doc(db, "public", "stats");
                 const statsDoc = await getDoc(statsRef);
-                
                 if (!statsDoc.exists()) {
                     await setDoc(statsRef, { totalUsuarios: 50 });
                 } else {
@@ -1546,12 +1625,12 @@
                 }
                 
                 registerError.style.color = '#22C55E';
-                registerError.innerText = traducciones[currentLang].exito_registro;
+                registerError.innerText = traducciones[currentLang]?.exito_registro || '✅ Cuenta creada. ¡Bienvenido!';
                 setTimeout(() => { registerError.innerText = ''; }, 3000);
                 actualizarContador();
             } catch (error) {
-                let mensaje = traducciones[currentLang].error_registro;
-                if (error.code === 'auth/email-already-in-use') mensaje = traducciones[currentLang].error_email_existe;
+                let mensaje = traducciones[currentLang]?.error_registro || 'Error al registrar';
+                if (error.code === 'auth/email-already-in-use') mensaje = traducciones[currentLang]?.error_email_existe || 'Este correo ya está registrado';
                 registerError.innerText = mensaje;
                 registerError.style.color = '#E8152A';
             }
@@ -1563,7 +1642,7 @@
             if (!email || !password) { loginError.innerText = 'Completa todos los campos'; return; }
             loginError.innerText = '';
             try { await signInWithEmailAndPassword(auth, email, password); } 
-            catch (error) { loginError.innerText = traducciones[currentLang].error_login; }
+            catch (error) { loginError.innerText = traducciones[currentLang]?.error_login || 'Correo o contraseña incorrectos'; }
         }
         
         async function handleLogout() { await signOut(auth); }
@@ -1630,13 +1709,13 @@
             const sangre = document.getElementById('sangre').value;
             
             if (!nombre) {
-                saveMessage.innerText = traducciones[currentLang].validacion_nombre;
+                saveMessage.innerText = traducciones[currentLang]?.validacion_nombre || '⚠️ El nombre completo es obligatorio';
                 saveMessage.style.color = '#E8152A';
                 setTimeout(() => saveMessage.innerText = '', 3000);
                 return;
             }
             if (!sangre) {
-                saveMessage.innerText = traducciones[currentLang].validacion_sangre;
+                saveMessage.innerText = traducciones[currentLang]?.validacion_sangre || '⚠️ Selecciona tu tipo de sangre';
                 saveMessage.style.color = '#E8152A';
                 setTimeout(() => saveMessage.innerText = '', 3000);
                 return;
@@ -1676,7 +1755,7 @@
                 foto: fotoBase64, fecha_actualizacion: new Date().toISOString()
             };
             await setDoc(doc(db, "perfiles", currentUser.uid), perfil, { merge: true });
-            saveMessage.innerText = traducciones[currentLang].exito_guardado;
+            saveMessage.innerText = traducciones[currentLang]?.exito_guardado || '✅ Datos guardados correctamente';
             saveMessage.style.color = '#22C55E';
             setTimeout(() => saveMessage.innerText = '', 2000);
         }
@@ -1694,7 +1773,7 @@
                 
                 const img = document.getElementById('stickerBgImg');
                 if (!img.complete || img.naturalWidth === 0) {
-                    throw new Error(traducciones[currentLang].error_imagen_cargando);
+                    throw new Error(traducciones[currentLang]?.error_imagen_cargando || 'La imagen del sticker aún no carga');
                 }
                 
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
@@ -1709,7 +1788,7 @@
                 link.href = finalCanvas.toDataURL('image/png');
                 link.click();
             } catch (error) { 
-                alert(traducciones[currentLang].error_descarga);
+                alert(traducciones[currentLang]?.error_descarga || '❌ Error al generar la imagen');
                 console.error(error);
             }
             finally { btn.innerText = originalText; btn.disabled = false; }
@@ -1728,7 +1807,7 @@
                 
                 const img = document.getElementById('stickerBgImg');
                 if (!img.complete || img.naturalWidth === 0) {
-                    throw new Error(traducciones[currentLang].error_imagen_cargando);
+                    throw new Error(traducciones[currentLang]?.error_imagen_cargando || 'La imagen del sticker aún no carga');
                 }
                 
                 const canvas = await html2canvas(container, { scale: 4, backgroundColor: '#ffffff', useCORS: true, logging: false });
@@ -1759,7 +1838,7 @@
                 let formatoNombre = currentFormato === "horizontal" ? "horizontal" : "cuadrado";
                 pdf.save(`mylifeqr_sticker_${formatoNombre}_${currentColor}_${currentUser?.uid || 'usuario'}.pdf`);
             } catch (error) { 
-                alert(traducciones[currentLang].error_descarga);
+                alert(traducciones[currentLang]?.error_descarga || '❌ Error al generar el PDF');
                 console.error(error);
             }
             finally { btn.innerText = originalText; btn.disabled = false; }
@@ -1814,11 +1893,11 @@
         actualizarContador();
     </script>
     <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/mylifeqr/sw.js')
-          .then(reg => console.log('✅ Service Worker registrado'))
-          .catch(err => console.log('❌ Error:', err));
-      }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/mylifeqr/sw.js')
+                .then(reg => console.log('✅ Service Worker registrado'))
+                .catch(err => console.log('❌ Error:', err));
+        }
     </script>
 </body>
 </html>
