@@ -1429,7 +1429,7 @@
         
         function actualizarQR() {
             if (!currentUser) return;
-            const urlPerfil = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
+            const urlPerfil = `https://MyLifeQR.github.io/perfil.html?id=${currentUser.uid}`;
             const overlay = document.getElementById('qrOverlay');
             if (overlay && window.QRCode) {
                 overlay.style.display = 'flex';
@@ -1475,7 +1475,7 @@
         // Compartir perfil
         document.getElementById('shareProfileBtn')?.addEventListener('click', async () => {
             if (!currentUser) return;
-            const url = `https://MyLifeQR.github.io/mylifeqr/perfil.html?id=${currentUser.uid}`;
+            const url = `https://MyLifeQR.github.io/perfil.html?id=${currentUser.uid}`;
             if (navigator.share) {
                 try {
                     await navigator.share({
