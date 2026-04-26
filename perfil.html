@@ -885,6 +885,7 @@
     let scanRegistered = false;
     let currentUserLocation = null;
     let currentPerfilData = null;
+    let lastNotificationTime = 0; // Control anti-spam: última vez que se enviaron correos para este perfil
     
     // Configuración EmailJS
     const EMAILJS_CONFIG = {
@@ -917,6 +918,7 @@
             gate.style.display = 'none';
             profile.style.display = 'block';
             setTimeout(() => profile.classList.add('visible'), 10);
+            // IMPORTANTE: El escaneo y envío de correos SOLO se ejecuta después de aceptar el gate
             registrarEscaneo();
         }, 350);
     };
@@ -953,14 +955,26 @@
     }
     
     async function registrarEscaneo() {
-        if (scanRegistered) return;
-        scanRegistered = true;
+        if (scanRegistered) {
+            console.log("⚠️ Escaneo ya registrado anteriormente. Omitiendo...");
+            return;
+        }
         
         const urlParams = new URLSearchParams(window.location.search);
         const profileId = urlParams.get('id');
         
         if (!profileId) {
-            console.error("No se encontró ID de perfil");
+            console.error("❌ No se encontró ID de perfil");
+            return;
+        }
+        
+        // CONTROL ANTI-SPAM: Verificar si ya se enviaron correos para este perfil recientemente (5 minutos)
+        const lastKey = `last_notification_${profileId}`;
+        const lastNotif = localStorage.getItem(lastKey);
+        const now = Date.now();
+        if (lastNotif && (now - parseInt(lastNotif)) < 300000) { // 5 minutos = 300,000 ms
+            console.log("⚠️ Ya se envió una notificación para este perfil en los últimos 5 minutos. Omitiendo para evitar SPAM.");
+            scanRegistered = true; // Marcamos como registrado para no intentar de nuevo
             return;
         }
         
@@ -968,7 +982,7 @@
         const docSnap = await getDoc(docRef);
         
         if (!docSnap.exists()) {
-            console.error("Perfil no encontrado");
+            console.error("❌ Perfil no encontrado");
             return;
         }
         
@@ -982,6 +996,9 @@
         document.getElementById('scanDateTime').innerHTML = `📅 ${fechaHora}`;
         document.getElementById('scanFolio').innerHTML = `Folio: ${folio}`;
         notif.style.display = 'block';
+        
+        // Guardar en localStorage que ya se envió notificación
+        localStorage.setItem(lastKey, now.toString());
         
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
@@ -998,6 +1015,7 @@
                 document.getElementById('googleMapsLink').href = mapsUrl;
                 document.getElementById('wazeLink').href = wazeUrl;
                 
+                // Registrar evento en Firestore
                 await addDoc(collection(db, "eventos_escaneo"), {
                     perfil_id: profileId,
                     perfil_nombre: perfil.nombre || 'Usuario',
@@ -1007,6 +1025,7 @@
                     dispositivo: navigator.userAgent
                 });
                 
+                // Enviar correos SOLO a contactos que tienen notificación activada
                 const contactosParaEnviar = [];
                 for (let i = 1; i <= 5; i++) {
                     const email = perfil[`contacto${i}_email`];
@@ -1017,16 +1036,24 @@
                     }
                 }
                 
+                console.log(`📧 Enviando correos a ${contactosParaEnviar.length} contactos...`);
+                
                 for (const contacto of contactosParaEnviar) {
                     await enviarCorreoEmergencia(contacto.email, contacto.nombre, perfil, folio, currentUserLocation);
                 }
                 
+                scanRegistered = true;
+                
             }, (error) => {
-                console.error("Error de geolocalización:", error);
+                console.error("❌ Error de geolocalización:", error);
                 document.getElementById('locationStatus').innerHTML = '📍 No se pudo obtener la ubicación. Activa los servicios de ubicación.';
+                // Aún así marcamos como registrado para no reintentar
+                scanRegistered = true;
             });
         } else {
+            console.warn("⚠️ Navegador no soporta geolocalización");
             document.getElementById('locationStatus').innerHTML = '📍 Tu navegador no soporta geolocalización.';
+            scanRegistered = true;
         }
     }
     
