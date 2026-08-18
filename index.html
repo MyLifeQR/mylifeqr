@@ -613,19 +613,19 @@
                 <div class="logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.src='https://placehold.co/200x64/E8152A/white?text=MyLifeQR'"></div>
                 
                 <!-- ===== SELECTOR DE PAÍS CON LABEL ===== -->
-                <div class="pais-selector-wrapper">
-                    <span class="pais-label">🌍 Elige tu país:</span>
-                    <div class="pais-selector">
-                        <button class="pais-btn active" data-pais="mx" title="México">🇲🇽</button>
-                        <button class="pais-btn" data-pais="br" title="Brasil">🇧🇷</button>
-                        <button class="pais-btn" data-pais="co" title="Colombia">🇨🇴</button>
-                        <button class="pais-btn" data-pais="cl" title="Chile">🇨🇱</button>
-                        <button class="pais-btn" data-pais="pe" title="Perú">🇵🇪</button>
-                        <button class="pais-btn" data-pais="ar" title="Argentina">🇦🇷</button>
-                        <button class="pais-btn" data-pais="uy" title="Uruguay">🇺🇾</button>
-                        <button class="pais-btn" data-pais="ec" title="Ecuador">🇪🇨</button>
-                    </div>
-                </div>
+                <div class="pais-selector-wrapper" id="paisSelectorWrapper">
+    <span class="pais-label">🌍 Elige tu país:</span>
+    <div class="pais-selector" id="paisSelector">
+        <button class="pais-btn" data-pais="mx" title="México">🇲🇽</button>
+        <button class="pais-btn" data-pais="br" title="Brasil">🇧🇷</button>
+        <button class="pais-btn" data-pais="co" title="Colombia">🇨🇴</button>
+        <button class="pais-btn" data-pais="cl" title="Chile">🇨🇱</button>
+        <button class="pais-btn" data-pais="pe" title="Perú">🇵🇪</button>
+        <button class="pais-btn" data-pais="ar" title="Argentina">🇦🇷</button>
+        <button class="pais-btn" data-pais="uy" title="Uruguay">🇺🇾</button>
+        <button class="pais-btn" data-pais="ec" title="Ecuador">🇪🇨</button>
+    </div>
+</div>
                 
                 <div class="language-selector">
                     <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
@@ -2512,36 +2512,97 @@ function aplicarConfiguracionPaisIndex() {
     console.log(`✅ Configuración aplicada a index.html para ${config.nombre}`);
 }
 
-// === SELECTOR DE PAÍS MANUAL ===
+// === SELECTOR DE PAÍS MANUAL (VERSIÓN MEJORADA) ===
 function inicializarSelectorPais() {
+    console.log('🔄 Inicializando selector de país...');
+    
     const botones = document.querySelectorAll('.pais-btn');
-    const paisActual = localStorage.getItem('mylifeqr_pais') || 'mx';
+    console.log(`🔍 Encontrados ${botones.length} botones de país`);
     
+    // Verificar que PAISES existe
+    if (typeof PAISES === 'undefined') {
+        console.error('❌ PAISES no está definido. Revisa config-paises.js');
+        return;
+    }
+    
+    // Obtener país actual
+    let paisActual = localStorage.getItem('mylifeqr_pais');
+    if (!paisActual || !PAISES[paisActual]) {
+        paisActual = 'mx';
+        localStorage.setItem('mylifeqr_pais', paisActual);
+    }
+    console.log(`📍 País actual: ${paisActual}`);
+    
+    // Marcar el botón activo
     botones.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.pais === paisActual);
+        const pais = btn.getAttribute('data-pais');
+        if (pais === paisActual) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
     });
     
+    // Agregar event listeners
     botones.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const pais = this.dataset.pais;
-            console.log(`🌍 Cambiando a país: ${pais}`);
-            if (pais && PAISES[pais]) {
-                localStorage.setItem('mylifeqr_pais', pais);
-                window.location.reload();
-            } else {
-                console.warn(`⚠️ País no válido: ${pais}`);
-            }
-        });
+        // Eliminar listeners anteriores para evitar duplicados
+        btn.removeEventListener('click', cambiarPais);
+        btn.addEventListener('click', cambiarPais);
     });
+    
+    console.log('✅ Selector de país inicializado correctamente');
 }
 
-// Ejecutar cuando el DOM esté listo
+function cambiarPais(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const btn = e.currentTarget;
+    const pais = btn.getAttribute('data-pais');
+    console.log(`🌍 Click en país: ${pais}`);
+    
+    if (pais && PAISES[pais]) {
+        // Guardar en localStorage
+        localStorage.setItem('mylifeqr_pais', pais);
+        console.log(`✅ País guardado: ${pais}`);
+        
+        // Recargar la página
+        window.location.reload();
+    } else {
+        console.warn(`⚠️ País no válido: ${pais}`);
+        alert('⚠️ País no disponible. Selecciona otro.');
+    }
+}
+
+// Ejecutar cuando el DOM esté listo (con más tiempo)
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM cargado, inicializando...');
+    
+    // Esperar a que todo esté listo
     setTimeout(() => {
-        aplicarConfiguracionPaisIndex();
+        // 1. Verificar que CONFIG existe
+        if (typeof CONFIG !== 'undefined') {
+            aplicarConfiguracionPaisIndex();
+        } else {
+            console.error('❌ CONFIG no cargado. Esperando...');
+            // Intentar de nuevo después de 500ms
+            setTimeout(() => {
+                if (typeof CONFIG !== 'undefined') {
+                    aplicarConfiguracionPaisIndex();
+                }
+            }, 500);
+        }
+        
+        // 2. Inicializar selector de país
         inicializarSelectorPais();
-    }, 150);
+    }, 300);
+});
+
+// También ejecutar cuando la página termine de cargar completamente
+window.addEventListener('load', function() {
+    console.log('🔄 Window load event - verificando selector...');
+    // Asegurar que los botones tengan eventos
+    setTimeout(inicializarSelectorPais, 100);
 });
 </script>
 
