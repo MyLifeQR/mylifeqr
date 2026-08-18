@@ -170,7 +170,7 @@
             font-size: 14px;
         }
         
-        /* ===== SELECTOR DE PAÍS MINI ===== */
+        /* ===== SELECTOR DE PAÍS MINI CON BANDERAS ===== */
         .pais-selector-mini {
             display: flex;
             gap: 2px;
@@ -188,16 +188,37 @@
             font-size: 14px;
             transition: all 0.3s;
             line-height: 1;
-            opacity: 0.6;
+            opacity: 0.5;
+            position: relative;
         }
         .pais-btn-mini:hover {
             opacity: 1;
-            transform: scale(1.1);
+            transform: scale(1.2);
         }
         .pais-btn-mini.active {
             opacity: 1;
             background: rgba(255,255,255,0.25);
-            transform: scale(1.05);
+            transform: scale(1.1);
+        }
+        .pais-btn-mini::after {
+            content: attr(title);
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            color: white;
+            font-size: 8px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            font-weight: 500;
+        }
+        .pais-btn-mini:hover::after {
+            opacity: 1;
         }
         
         /* Banner de casco */
@@ -695,6 +716,9 @@
                 font-size: 12px;
                 padding: 2px 4px;
             }
+            .pais-btn-mini::after {
+                display: none;
+            }
         }
     </style>
     
@@ -756,9 +780,9 @@
     <div class="emergency-banner">
         <span>🚨 <span id="bannerTitulo">PERFIL DE EMERGENCIA</span></span>
         
-        <!-- ===== SELECTOR DE PAÍS MINI ===== -->
+        <!-- ===== SELECTOR DE PAÍS MINI CON BANDERAS ===== -->
         <div class="pais-selector-mini">
-            <button class="pais-btn-mini active" data-pais="mx" title="México">🇲🇽</button>
+            <button class="pais-btn-mini" data-pais="mx" title="México">🇲🇽</button>
             <button class="pais-btn-mini" data-pais="br" title="Brasil">🇧🇷</button>
             <button class="pais-btn-mini" data-pais="co" title="Colombia">🇨🇴</button>
             <button class="pais-btn-mini" data-pais="cl" title="Chile">🇨🇱</button>
@@ -766,6 +790,7 @@
             <button class="pais-btn-mini" data-pais="ar" title="Argentina">🇦🇷</button>
             <button class="pais-btn-mini" data-pais="uy" title="Uruguay">🇺🇾</button>
             <button class="pais-btn-mini" data-pais="ec" title="Ecuador">🇪🇨</button>
+            <button class="pais-btn-mini" data-pais="ve" title="Venezuela">🇻🇪</button>
         </div>
         
         <span style="margin-left:auto;">MyLifeQR</span>
@@ -1407,95 +1432,169 @@ function aplicarConfiguracionPaisPerfil() {
     console.log(`🌍 Aplicando configuración a perfil.html para: ${config.nombre} (${config.id})`);
     
     // === GATE ===
-    document.getElementById('gateTitle').textContent = config.gate_titulo;
-    document.getElementById('gateSubtitle').textContent = config.gate_subtitulo;
-    document.getElementById('gateText').innerHTML = `
-        La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la ${config.ley_nombre} (<strong>${config.ley}</strong>).
-        <br><br>
-        Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación ${config.nombre} vigente.
-        <br><br>
-        Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
-    `;
-    document.getElementById('gateAceptar').textContent = config.gate_aceptar;
-    document.getElementById('gateBoton').textContent = config.gate_boton;
+    const gateTitle = document.getElementById('gateTitle');
+    const gateSubtitle = document.getElementById('gateSubtitle');
+    const gateText = document.getElementById('gateText');
+    const gateAceptar = document.getElementById('gateAceptar');
+    const gateBoton = document.getElementById('gateBoton');
+    
+    if (gateTitle) gateTitle.textContent = config.gate_titulo;
+    if (gateSubtitle) gateSubtitle.textContent = config.gate_subtitulo;
+    if (gateText) {
+        gateText.innerHTML = `
+            La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la ${config.ley_nombre} (<strong>${config.ley}</strong>).
+            <br><br>
+            Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación ${config.nombre} vigente.
+            <br><br>
+            Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
+        `;
+    }
+    if (gateAceptar) gateAceptar.textContent = config.gate_aceptar;
+    if (gateBoton) gateBoton.textContent = config.gate_boton;
     
     // === BANNER ===
-    document.getElementById('bannerTitulo').textContent = config.perfil_titulo;
+    const bannerTitulo = document.getElementById('bannerTitulo');
+    if (bannerTitulo) bannerTitulo.textContent = config.perfil_titulo;
     
     // === CASCO ===
-    document.getElementById('helmetTitle').textContent = config.perfil_casco;
-    document.getElementById('helmetDesc').textContent = config.perfil_casco_desc;
+    const helmetTitle = document.getElementById('helmetTitle');
+    const helmetDesc = document.getElementById('helmetDesc');
+    if (helmetTitle) helmetTitle.textContent = config.perfil_casco;
+    if (helmetDesc) helmetDesc.textContent = config.perfil_casco_desc;
     
     // === CARGANDO ===
-    document.getElementById('cargandoTexto').textContent = config.perfil_cargando;
+    const cargandoTexto = document.getElementById('cargandoTexto');
+    if (cargandoTexto) cargandoTexto.textContent = config.perfil_cargando;
     
     // === UBICACIÓN ===
-    document.getElementById('ubicacionTitulo').textContent = config.perfil_ubicacion_titulo;
-    document.getElementById('ubicacionStatus').textContent = config.perfil_ubicacion;
+    const ubicacionTitulo = document.getElementById('ubicacionTitulo');
+    const ubicacionStatus = document.getElementById('ubicacionStatus');
+    if (ubicacionTitulo) ubicacionTitulo.textContent = config.perfil_ubicacion_titulo;
+    if (ubicacionStatus) ubicacionStatus.textContent = config.perfil_ubicacion;
     
     // === BOTÓN DE EMERGENCIA ===
     const link = document.getElementById('emergenciaLink');
     const container = document.getElementById('emergenciaContainer');
     const texto = document.getElementById('emergenciaTexto');
     
-    link.href = `tel:${config.emergencia}`;
-    link.className = `btn-${config.emergencia}`;
-    container.className = `btn-${config.emergencia}-container`;
-    texto.textContent = config.perfil_911;
+    if (link) {
+        link.href = `tel:${config.emergencia}`;
+        link.className = `btn-${config.emergencia}`;
+    }
+    if (container) container.className = `btn-${config.emergencia}-container`;
+    if (texto) texto.textContent = config.perfil_911;
     
     // === GUÍA ===
-    document.getElementById('guiaTitulo').textContent = config.perfil_guia;
+    const guiaTitulo = document.getElementById('guiaTitulo');
+    if (guiaTitulo) guiaTitulo.textContent = config.perfil_guia;
     
     // === INSTRUCCIONES (paso 1) ===
-    document.getElementById('instruccion1Titulo').textContent = `📞 Llama al ${config.emergencia_texto}`;
+    const instruccion1Titulo = document.getElementById('instruccion1Titulo');
+    if (instruccion1Titulo) instruccion1Titulo.textContent = `📞 Llama al ${config.emergencia_texto}`;
     
     // === FOOTER ===
-    document.getElementById('footerAviso').textContent = '⚠️ AVISO LEGAL IMPORTANTE ⚠️';
-    document.getElementById('footerNumero').textContent = config.emergencia_texto;
-    document.getElementById('footerNumero2').textContent = config.emergencia_texto;
-    document.getElementById('footerContacto').innerHTML = `📞 En caso de emergencia, llame inmediatamente al <strong>${config.emergencia_texto}</strong>.`;
-    document.getElementById('footerEmail').textContent = `✉️ Contacto: ${config.email_contacto}`;
+    const footerAviso = document.getElementById('footerAviso');
+    const footerNumero = document.getElementById('footerNumero');
+    const footerNumero2 = document.getElementById('footerNumero2');
+    const footerContacto = document.getElementById('footerContacto');
+    const footerEmail = document.getElementById('footerEmail');
+    
+    if (footerAviso) footerAviso.textContent = '⚠️ AVISO LEGAL IMPORTANTE ⚠️';
+    if (footerNumero) footerNumero.textContent = config.emergencia_texto;
+    if (footerNumero2) footerNumero2.textContent = config.emergencia_texto;
+    if (footerContacto) footerContacto.innerHTML = `📞 En caso de emergencia, llame inmediatamente al <strong>${config.emergencia_texto}</strong>.`;
+    if (footerEmail) footerEmail.textContent = `✉️ Contacto: ${config.email_contacto}`;
     
     // === TÍTULO DE LA PÁGINA ===
     const tituloPagina = config.id === 'br' 
         ? `MyLifeQR — Perfil Médico de Emergência` 
         : `MyLifeQR — Perfil Médico de Emergencia`;
-    document.title = tituloPagina;
-    document.getElementById('pageTitle').textContent = tituloPagina;
+    const pageTitle = document.getElementById('pageTitle');
+    if (pageTitle) {
+        document.title = tituloPagina;
+        pageTitle.textContent = tituloPagina;
+    }
     
     console.log(`✅ Configuración aplicada a perfil.html para ${config.nombre}`);
 }
 
 // === SELECTOR DE PAÍS MINI EN PERFIL ===
 function inicializarSelectorPaisPerfil() {
+    console.log('🔄 Inicializando selector de país en perfil...');
+    
     const botones = document.querySelectorAll('.pais-btn-mini');
-    const paisActual = localStorage.getItem('mylifeqr_pais') || 'mx';
+    console.log(`🔍 Encontrados ${botones.length} botones de país en perfil`);
+    
+    if (typeof PAISES === 'undefined') {
+        console.error('❌ PAISES no está definido. Revisa config-paises.js');
+        return;
+    }
+    
+    let paisActual = localStorage.getItem('mylifeqr_pais');
+    if (!paisActual || !PAISES[paisActual]) {
+        paisActual = 'mx';
+        localStorage.setItem('mylifeqr_pais', paisActual);
+    }
+    console.log(`📍 País actual en perfil: ${paisActual}`);
     
     botones.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.pais === paisActual);
+        const pais = btn.getAttribute('data-pais');
+        if (pais === paisActual) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
     });
     
     botones.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const pais = this.dataset.pais;
-            console.log(`🌍 Cambiando a país: ${pais}`);
-            if (pais && PAISES[pais]) {
-                localStorage.setItem('mylifeqr_pais', pais);
-                window.location.reload();
-            } else {
-                console.warn(`⚠️ País no válido: ${pais}`);
-            }
-        });
+        btn.removeEventListener('click', cambiarPaisPerfil);
+        btn.addEventListener('click', cambiarPaisPerfil);
     });
+    
+    console.log('✅ Selector de país en perfil inicializado correctamente');
+}
+
+function cambiarPaisPerfil(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const btn = e.currentTarget;
+    const pais = btn.getAttribute('data-pais');
+    console.log(`🌍 Click en país (perfil): ${pais}`);
+    
+    if (pais && PAISES[pais]) {
+        localStorage.setItem('mylifeqr_pais', pais);
+        console.log(`✅ País guardado (perfil): ${pais}`);
+        window.location.reload();
+    } else {
+        console.warn(`⚠️ País no válido (perfil): ${pais}`);
+        alert('⚠️ País no disponible. Selecciona otro.');
+    }
 }
 
 // Ejecutar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM de perfil cargado, inicializando...');
+    
     setTimeout(() => {
-        aplicarConfiguracionPaisPerfil();
+        if (typeof CONFIG !== 'undefined') {
+            aplicarConfiguracionPaisPerfil();
+        } else {
+            console.error('❌ CONFIG no cargado en perfil. Esperando...');
+            setTimeout(() => {
+                if (typeof CONFIG !== 'undefined') {
+                    aplicarConfiguracionPaisPerfil();
+                }
+            }, 500);
+        }
+        
         inicializarSelectorPaisPerfil();
-    }, 150);
+    }, 300);
+});
+
+window.addEventListener('load', function() {
+    console.log('🔄 Window load event - verificando selector en perfil...');
+    setTimeout(inicializarSelectorPaisPerfil, 100);
 });
 </script>
 
