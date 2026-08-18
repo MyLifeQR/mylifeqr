@@ -80,35 +80,51 @@
         .logo img { height: 64px; width: auto; transition: transform 0.3s; }
         .logo img:hover { transform: scale(1.05); }
         
-        /* ===== SELECTOR DE PAÍS ===== */
+        /* ===== SELECTOR DE PAÍS CON LABEL ===== */
+        .pais-selector-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0f0f0;
+            padding: 4px 12px 4px 16px;
+            border-radius: 40px;
+        }
+        .pais-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            white-space: nowrap;
+        }
         .pais-selector {
             display: flex;
-            gap: 4px;
-            background: #f0f0f0;
-            padding: 4px;
-            border-radius: 40px;
+            gap: 2px;
         }
         .pais-btn {
             background: transparent;
             border: none;
-            padding: 6px 10px;
-            border-radius: 30px;
+            padding: 4px 6px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             transition: all 0.3s;
             line-height: 1;
+            opacity: 0.6;
         }
         .pais-btn:hover {
-            transform: scale(1.1);
+            opacity: 1;
+            transform: scale(1.15);
             background: rgba(232,21,42,0.1);
         }
         .pais-btn.active {
+            opacity: 1;
             background: #E8152A;
-            transform: scale(1.05);
+            transform: scale(1.1);
             box-shadow: 0 2px 8px rgba(232,21,42,0.3);
+            border-radius: 20px;
+            padding: 4px 8px;
         }
         .pais-btn.active:hover {
-            transform: scale(1.08);
+            transform: scale(1.15);
         }
         
         .nav-links { display: flex; gap: 32px; align-items: center; }
@@ -566,10 +582,19 @@
             .creator-contact { flex-direction: column; align-items: center; gap: 12px; }
             .language-selector { margin-left: 0; }
             .header { flex-direction: column; }
-            .pais-selector {
+            .pais-selector-wrapper {
                 order: 3;
                 width: 100%;
                 justify-content: center;
+                flex-wrap: wrap;
+                padding: 4px 8px;
+            }
+            .pais-label {
+                font-size: 10px;
+            }
+            .pais-btn {
+                font-size: 14px;
+                padding: 3px 5px;
             }
         }
     </style>
@@ -587,13 +612,19 @@
             <div class="header">
                 <div class="logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.src='https://placehold.co/200x64/E8152A/white?text=MyLifeQR'"></div>
                 
-                <!-- ===== SELECTOR DE PAÍS MANUAL ===== -->
-                <div class="pais-selector">
-                    <button class="pais-btn active" data-pais="mx" title="México">🇲🇽</button>
-                    <button class="pais-btn" data-pais="br" title="Brasil">🇧🇷</button>
-                    <button class="pais-btn" data-pais="co" title="Colombia">🇨🇴</button>
-                    <button class="pais-btn" data-pais="cl" title="Chile">🇨🇱</button>
-                    <button class="pais-btn" data-pais="pe" title="Perú">🇵🇪</button>
+                <!-- ===== SELECTOR DE PAÍS CON LABEL ===== -->
+                <div class="pais-selector-wrapper">
+                    <span class="pais-label">🌍 Elige tu país:</span>
+                    <div class="pais-selector">
+                        <button class="pais-btn active" data-pais="mx" title="México">🇲🇽</button>
+                        <button class="pais-btn" data-pais="br" title="Brasil">🇧🇷</button>
+                        <button class="pais-btn" data-pais="co" title="Colombia">🇨🇴</button>
+                        <button class="pais-btn" data-pais="cl" title="Chile">🇨🇱</button>
+                        <button class="pais-btn" data-pais="pe" title="Perú">🇵🇪</button>
+                        <button class="pais-btn" data-pais="ar" title="Argentina">🇦🇷</button>
+                        <button class="pais-btn" data-pais="uy" title="Uruguay">🇺🇾</button>
+                        <button class="pais-btn" data-pais="ec" title="Ecuador">🇪🇨</button>
+                    </div>
                 </div>
                 
                 <div class="language-selector">
@@ -2491,11 +2522,15 @@ function inicializarSelectorPais() {
     });
     
     botones.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
             const pais = this.dataset.pais;
+            console.log(`🌍 Cambiando a país: ${pais}`);
             if (pais && PAISES[pais]) {
                 localStorage.setItem('mylifeqr_pais', pais);
                 window.location.reload();
+            } else {
+                console.warn(`⚠️ País no válido: ${pais}`);
             }
         });
     });

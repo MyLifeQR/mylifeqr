@@ -689,6 +689,7 @@
             .pais-selector-mini {
                 padding: 2px 4px;
                 gap: 1px;
+                margin: 0 2px;
             }
             .pais-btn-mini {
                 font-size: 12px;
@@ -762,6 +763,9 @@
             <button class="pais-btn-mini" data-pais="co" title="Colombia">🇨🇴</button>
             <button class="pais-btn-mini" data-pais="cl" title="Chile">🇨🇱</button>
             <button class="pais-btn-mini" data-pais="pe" title="Perú">🇵🇪</button>
+            <button class="pais-btn-mini" data-pais="ar" title="Argentina">🇦🇷</button>
+            <button class="pais-btn-mini" data-pais="uy" title="Uruguay">🇺🇾</button>
+            <button class="pais-btn-mini" data-pais="ec" title="Ecuador">🇪🇨</button>
         </div>
         
         <span style="margin-left:auto;">MyLifeQR</span>
@@ -1472,11 +1476,15 @@ function inicializarSelectorPaisPerfil() {
     });
     
     botones.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
             const pais = this.dataset.pais;
+            console.log(`🌍 Cambiando a país: ${pais}`);
             if (pais && PAISES[pais]) {
                 localStorage.setItem('mylifeqr_pais', pais);
                 window.location.reload();
+            } else {
+                console.warn(`⚠️ País no válido: ${pais}`);
             }
         });
     });
