@@ -80,81 +80,6 @@
         .logo img { height: 64px; width: auto; transition: transform 0.3s; }
         .logo img:hover { transform: scale(1.05); }
         
-        /* ===== SELECTOR DE PAÍS CON BANDERAS ===== */
-        .pais-selector-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #f0f0f0;
-            padding: 4px 12px 4px 16px;
-            border-radius: 40px;
-            border: 1px solid #e0e0e0;
-            transition: all 0.3s;
-        }
-        .pais-selector-wrapper:hover {
-            border-color: #E8152A;
-            box-shadow: 0 0 0 2px rgba(232,21,42,0.1);
-        }
-        .pais-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #666;
-            white-space: nowrap;
-        }
-        .pais-selector {
-            display: flex;
-            gap: 2px;
-        }
-        .pais-btn {
-            background: transparent;
-            border: none;
-            padding: 4px 6px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-            line-height: 1;
-            opacity: 0.5;
-            position: relative;
-        }
-        .pais-btn:hover {
-            opacity: 1;
-            transform: scale(1.2);
-            background: rgba(232,21,42,0.08);
-        }
-        .pais-btn.active {
-            opacity: 1;
-            background: #E8152A;
-            transform: scale(1.1);
-            box-shadow: 0 2px 8px rgba(232,21,42,0.3);
-            border-radius: 20px;
-            padding: 4px 8px;
-        }
-        .pais-btn.active:hover {
-            transform: scale(1.15);
-        }
-        /* Tooltip con el nombre del país */
-        .pais-btn::after {
-            content: attr(title);
-            position: absolute;
-            bottom: -28px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a1a;
-            color: white;
-            font-size: 9px;
-            padding: 2px 8px;
-            border-radius: 6px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            font-weight: 500;
-        }
-        .pais-btn:hover::after {
-            opacity: 1;
-        }
-        
         .nav-links { display: flex; gap: 32px; align-items: center; }
         .nav-link { background: none; border: none; font-size: 16px; font-weight: 500; color: #4a4a4a; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; position: relative; }
         .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #E8152A; transition: width 0.3s; }
@@ -409,6 +334,54 @@
         
         .contact-group { background: #fafafa; padding: 16px; border-radius: 16px; margin-bottom: 20px; }
         
+        /* ===== SELECTOR DE PAÍS EN DASHBOARD ===== */
+        .pais-selector-dashboard {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            padding: 10px 12px;
+            background: #f8f8f8;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+            justify-content: center;
+        }
+        .pais-selector-dashboard:focus-within {
+            border-color: #E8152A;
+            box-shadow: 0 0 0 3px rgba(232,21,42,0.1);
+        }
+        .pais-btn-dash {
+            background: transparent;
+            border: 2px solid transparent;
+            font-size: 26px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            opacity: 0.5;
+            line-height: 1;
+        }
+        .pais-btn-dash:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            background: rgba(232,21,42,0.05);
+        }
+        .pais-btn-dash.active {
+            opacity: 1;
+            border-color: #E8152A;
+            background: rgba(232,21,42,0.08);
+            transform: scale(1.05);
+        }
+        .emergencia-preview {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+        .emergencia-preview strong {
+            color: #E8152A;
+        }
+        
         .creator-section {
             background: linear-gradient(135deg, #f8f8f8 0%, #fff 100%);
             border-radius: 32px;
@@ -610,23 +583,6 @@
             .creator-contact { flex-direction: column; align-items: center; gap: 12px; }
             .language-selector { margin-left: 0; }
             .header { flex-direction: column; }
-            .pais-selector-wrapper {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-                padding: 4px 8px;
-            }
-            .pais-label {
-                font-size: 10px;
-            }
-            .pais-btn {
-                font-size: 14px;
-                padding: 3px 5px;
-            }
-            .pais-btn::after {
-                display: none;
-            }
         }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKR6WB9JJM"></script>
@@ -642,23 +598,6 @@
         <div class="container">
             <div class="header">
                 <div class="logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.src='https://placehold.co/200x64/E8152A/white?text=MyLifeQR'"></div>
-                
-                <!-- ===== SELECTOR DE PAÍS CON BANDERAS ===== -->
-                <div class="pais-selector-wrapper" id="paisSelectorWrapper">
-                    <span class="pais-label">🌍 País</span>
-                    <div class="pais-selector" id="paisSelector">
-                        <button class="pais-btn" data-pais="mx" title="México">🇲🇽</button>
-                        <button class="pais-btn" data-pais="br" title="Brasil">🇧🇷</button>
-                        <button class="pais-btn" data-pais="co" title="Colombia">🇨🇴</button>
-                        <button class="pais-btn" data-pais="cl" title="Chile">🇨🇱</button>
-                        <button class="pais-btn" data-pais="pe" title="Perú">🇵🇪</button>
-                        <button class="pais-btn" data-pais="ar" title="Argentina">🇦🇷</button>
-                        <button class="pais-btn" data-pais="uy" title="Uruguay">🇺🇾</button>
-                        <button class="pais-btn" data-pais="ec" title="Ecuador">🇪🇨</button>
-                        <button class="pais-btn" data-pais="ve" title="Venezuela">🇻🇪</button>
-                    </div>
-                </div>
-                
                 <div class="language-selector">
                     <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
                     <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
@@ -835,243 +774,352 @@
             <div class="user-menu">
                 <span class="user-email" id="userEmail"></span>
                 <button class="btn-logout" id="logoutBtn">🚪 Cerrar sesión</button>
-                
             </div>
         </div>
         <div class="container">
             <button id="emergencyBtn" class="emergency-btn" id="emergencyBtnDashboard">🚨 ¡EMERGENCIA! 🚨</button>
-            <div class="tabs"><button class="tab-btn active" id="tabFormBtn" data-i18n="dashboardPersonal">📝 Mis datos</button><button class="tab-btn" id="tabStickerBtn" data-i18n="dashboardSticker">🔲 Mi sticker</button></div>
+            <div class="tabs">
+                <button class="tab-btn active" id="tabFormBtn" data-i18n="dashboardPersonal">📝 Mis datos</button>
+                <button class="tab-btn" id="tabStickerBtn" data-i18n="dashboardSticker">🔲 Mi sticker</button>
+            </div>
             <div class="two-columns">
-                <div><div id="tabForm" class="tab-pane active"><div class="form-card"><h2 style="font-family: 'Bebas Neue'; font-size: 28px; color: #E8152A;" data-i18n="personalTitle">📝 Datos personales</h2>
-                    
-                    <div class="natives-buttons">
-                        <button class="native-btn" id="scanQrBtn">📷 Escanear QR</button>
-                        <button class="native-btn" id="shareProfileBtn">📤 Compartir perfil</button>
-                    </div>
-                    
-                    <div class="photo-upload">
-                        <img id="fotoPreview" class="photo-preview" src="" alt="Tu foto" style="display: none;">
-                        <div style="margin-top: 8px;">
-                            <label for="fotoInput" style="background: #f0f0f0; padding: 8px 16px; border-radius: 30px; cursor: pointer; display: inline-block; font-size: 12px;" data-i18n="subir_foto">📸 Subir foto</label>
-                            <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/jpg" style="display: none;">
-                        </div>
-                    </div>
-                    <div class="form-group"><label data-i18n="nameLabel">Nombre completo</label><input type="text" id="nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
-                    <div class="row-2">
-                        <div class="form-group"><label data-i18n="ageLabel">Edad</label><input type="number" id="edad" data-i18n-placeholder="edad_placeholder" placeholder="Edad"></div>
-                        <div class="form-group"><label data-i18n="bloodLabel">Tipo de sangre</label>
-                            <select id="sangre">
-                                <option value="" data-i18n="sangre_selecciona">Selecciona</option>
-                                <option value="A+" data-i18n="sangre_a_pos">A+</option><option value="A-" data-i18n="sangre_a_neg">A-</option>
-                                <option value="B+" data-i18n="sangre_b_pos">B+</option><option value="B-" data-i18n="sangre_b_neg">B-</option>
-                                <option value="AB+" data-i18n="sangre_ab_pos">AB+</option><option value="AB-" data-i18n="sangre_ab_neg">AB-</option>
-                                <option value="O+" data-i18n="sangre_o_pos">O+</option><option value="O-" data-i18n="sangre_o_neg">O-</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group"><label data-i18n="donorLabel">Donador de órganos</label>
-                        <select id="donador">
-                            <option value="" data-i18n="donador_selecciona">Selecciona</option>
-                            <option value="Sí" data-i18n="donador_si">✅ Sí, soy donador</option>
-                            <option value="No" data-i18n="donador_no">❌ No, no soy donador</option>
-                        </select>
-                    </div>
-                    
-                    <div class="section-subtitle-form" data-i18n="medicalTitle">🏥 Datos médicos</div>
-                    <div class="form-group"><label data-i18n="allergiesLabel">Alergias</label><input type="text" id="alergias" data-i18n-placeholder="alergias_placeholder" placeholder="Alergias (ej: penicilina, mariscos)"></div>
-                    <div class="form-group"><label data-i18n="conditionsLabel">Condiciones médicas</label><input type="text" id="condiciones" data-i18n-placeholder="condiciones_placeholder" placeholder="Condiciones médicas (ej: diabetes, hipertensión)"></div>
-                    <div class="form-group"><label data-i18n="medicationsLabel">Medicamentos actuales</label><input type="text" id="medicamentos" data-i18n-placeholder="medicamentos_placeholder" placeholder="Medicamentos (ej: metformina, losartán)"></div>
-                    
-                    <div class="section-subtitle-form" data-i18n="emergencyTitle">📞 Contactos de emergencia</div>
-                    <div style="background: #f0f0f0; padding: 12px; border-radius: 12px; margin-bottom: 16px;">
-                        <p style="font-size: 12px; color: #666; margin: 0;" data-i18n="emergencyNote">
-                            💡 <strong>Nota:</strong> Los contactos con <strong>correo electrónico</strong> y la opción <strong>"Activar notificación"</strong> activada recibirán una alerta automática por correo cuando se escanee tu código QR en una emergencia.
-                        </p>
-                    </div>
-                    
-                    <!-- Contacto 1 -->
-                    <div class="contact-group">
-                        <div class="row-2">
-                            <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto1_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
-                            <div class="form-group"><label data-i18n="contactRelation">Relación</label>
-                                <select id="contacto1_relacion" class="relacion-select">
-                                    <option value="" data-i18n="donador_selecciona">Selecciona</option>
-                                    <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
-                                    <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
-                                    <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
-                                    <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
-                                    <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
-                                    <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
-                                    <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
-                                    <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
-                                </select>
+                <div>
+                    <div id="tabForm" class="tab-pane active">
+                        <div class="form-card">
+                            <h2 style="font-family: 'Bebas Neue'; font-size: 28px; color: #E8152A;" data-i18n="personalTitle">📝 Datos personales</h2>
+                            
+                            <div class="natives-buttons">
+                                <button class="native-btn" id="scanQrBtn">📷 Escanear QR</button>
+                                <button class="native-btn" id="shareProfileBtn">📤 Compartir perfil</button>
                             </div>
-                        </div>
-                        <div class="row-2">
-                            <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto1_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
-                            <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto1_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
-                            <input type="checkbox" id="contacto1_notificar" style="width: 18px;">
-                            <label for="contacto1_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia (recibirá correo si se escanea tu QR)</label>
-                            <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto1_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Contacto 2 -->
-                    <div class="contact-group">
-                        <div class="row-2">
-                            <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto2_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
-                            <div class="form-group"><label data-i18n="contactRelation">Relación</label>
-                                <select id="contacto2_relacion" class="relacion-select">
-                                    <option value="" data-i18n="donador_selecciona">Selecciona</option>
-                                    <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
-                                    <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
-                                    <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
-                                    <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
-                                    <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
-                                    <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
-                                    <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
-                                    <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
-                                </select>
+                            
+                            <div class="photo-upload">
+                                <img id="fotoPreview" class="photo-preview" src="" alt="Tu foto" style="display: none;">
+                                <div style="margin-top: 8px;">
+                                    <label for="fotoInput" style="background: #f0f0f0; padding: 8px 16px; border-radius: 30px; cursor: pointer; display: inline-block; font-size: 12px;" data-i18n="subir_foto">📸 Subir foto</label>
+                                    <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/jpg" style="display: none;">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row-2">
-                            <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto2_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
-                            <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto2_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
-                            <input type="checkbox" id="contacto2_notificar" style="width: 18px;">
-                            <label for="contacto2_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
-                            <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto2_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Contacto 3 -->
-                    <div class="contact-group">
-                        <div class="row-2">
-                            <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto3_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
-                            <div class="form-group"><label data-i18n="contactRelation">Relación</label>
-                                <select id="contacto3_relacion" class="relacion-select">
-                                    <option value="" data-i18n="donador_selecciona">Selecciona</option>
-                                    <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
-                                    <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
-                                    <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
-                                    <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
-                                    <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
-                                    <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
-                                    <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
-                                    <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
-                                </select>
+                            
+                            <div class="form-group">
+                                <label data-i18n="nameLabel">Nombre completo</label>
+                                <input type="text" id="nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo">
                             </div>
-                        </div>
-                        <div class="row-2">
-                            <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto3_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
-                            <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto3_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
-                            <input type="checkbox" id="contacto3_notificar" style="width: 18px;">
-                            <label for="contacto3_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
-                            <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto3_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
-                        </div>
-                    </div>
-                    
-                    <div id="contactosExtra" style="display: none;">
-                        <!-- Contacto 4 -->
-                        <div class="contact-group">
+                            
+                            <!-- ===== NUEVO: SELECTOR DE PAÍS EN EL DASHBOARD ===== -->
+                            <div class="form-group">
+                                <label>🌍 País / Número de emergencia</label>
+                                <div class="pais-selector-dashboard" id="paisSelectorDashboard">
+                                    <button class="pais-btn-dash" data-pais="mx" title="México">🇲🇽</button>
+                                    <button class="pais-btn-dash" data-pais="br" title="Brasil">🇧🇷</button>
+                                    <button class="pais-btn-dash" data-pais="co" title="Colombia">🇨🇴</button>
+                                    <button class="pais-btn-dash" data-pais="cl" title="Chile">🇨🇱</button>
+                                    <button class="pais-btn-dash" data-pais="pe" title="Perú">🇵🇪</button>
+                                    <button class="pais-btn-dash" data-pais="ar" title="Argentina">🇦🇷</button>
+                                    <button class="pais-btn-dash" data-pais="uy" title="Uruguay">🇺🇾</button>
+                                    <button class="pais-btn-dash" data-pais="ec" title="Ecuador">🇪🇨</button>
+                                    <button class="pais-btn-dash" data-pais="ve" title="Venezuela">🇻🇪</button>
+                                </div>
+                                <div class="emergencia-preview">
+                                    📞 Emergencia: <strong id="emergenciaPreviewDash">911</strong>
+                                </div>
+                            </div>
+                            
                             <div class="row-2">
-                                <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto4_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
-                                <div class="form-group"><label data-i18n="contactRelation">Relación</label>
-                                    <select id="contacto4_relacion" class="relacion-select">
-                                        <option value="" data-i18n="donador_selecciona">Selecciona</option>
-                                        <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
-                                        <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
-                                        <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
-                                        <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
-                                        <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
-                                        <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
-                                        <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
-                                        <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
+                                <div class="form-group">
+                                    <label data-i18n="ageLabel">Edad</label>
+                                    <input type="number" id="edad" data-i18n-placeholder="edad_placeholder" placeholder="Edad">
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="bloodLabel">Tipo de sangre</label>
+                                    <select id="sangre">
+                                        <option value="" data-i18n="sangre_selecciona">Selecciona</option>
+                                        <option value="A+" data-i18n="sangre_a_pos">A+</option><option value="A-" data-i18n="sangre_a_neg">A-</option>
+                                        <option value="B+" data-i18n="sangre_b_pos">B+</option><option value="B-" data-i18n="sangre_b_neg">B-</option>
+                                        <option value="AB+" data-i18n="sangre_ab_pos">AB+</option><option value="AB-" data-i18n="sangre_ab_neg">AB-</option>
+                                        <option value="O+" data-i18n="sangre_o_pos">O+</option><option value="O-" data-i18n="sangre_o_neg">O-</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="row-2">
-                                <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto4_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
-                                <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto4_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
+                            
+                            <div class="form-group">
+                                <label data-i18n="donorLabel">Donador de órganos</label>
+                                <select id="donador">
+                                    <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                    <option value="Sí" data-i18n="donador_si">✅ Sí, soy donador</option>
+                                    <option value="No" data-i18n="donador_no">❌ No, no soy donador</option>
+                                </select>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
-                                <input type="checkbox" id="contacto4_notificar" style="width: 18px;">
-                                <label for="contacto4_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
-                                <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto4_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
+                            
+                            <div class="section-subtitle-form" data-i18n="medicalTitle">🏥 Datos médicos</div>
+                            
+                            <div class="form-group">
+                                <label data-i18n="allergiesLabel">Alergias</label>
+                                <input type="text" id="alergias" data-i18n-placeholder="alergias_placeholder" placeholder="Alergias (ej: penicilina, mariscos)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label data-i18n="conditionsLabel">Condiciones médicas</label>
+                                <input type="text" id="condiciones" data-i18n-placeholder="condiciones_placeholder" placeholder="Condiciones médicas (ej: diabetes, hipertensión)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label data-i18n="medicationsLabel">Medicamentos actuales</label>
+                                <input type="text" id="medicamentos" data-i18n-placeholder="medicamentos_placeholder" placeholder="Medicamentos (ej: metformina, losartán)">
+                            </div>
+                            
+                            <div class="section-subtitle-form" data-i18n="emergencyTitle">📞 Contactos de emergencia</div>
+                            
+                            <div style="background: #f0f0f0; padding: 12px; border-radius: 12px; margin-bottom: 16px;">
+                                <p style="font-size: 12px; color: #666; margin: 0;" data-i18n="emergencyNote">
+                                    💡 <strong>Nota:</strong> Los contactos con <strong>correo electrónico</strong> y la opción <strong>"Activar notificación"</strong> activada recibirán una alerta automática por correo cuando se escanee tu código QR en una emergencia.
+                                </p>
+                            </div>
+                            
+                            <!-- Contacto 1 -->
+                            <div class="contact-group">
+                                <div class="row-2">
+                                    <div class="form-group">
+                                        <label data-i18n="contactName">Nombre completo</label>
+                                        <input type="text" id="contacto1_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="contactRelation">Relación</label>
+                                        <select id="contacto1_relacion" class="relacion-select">
+                                            <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                            <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                            <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                            <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                            <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                            <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                            <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                            <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                            <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row-2">
+                                    <div class="form-group">
+                                        <label data-i18n="contactPhone">📞 Teléfono</label>
+                                        <input type="tel" id="contacto1_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="contactEmail">✉️ Correo electrónico</label>
+                                        <input type="email" id="contacto1_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+                                    <input type="checkbox" id="contacto1_notificar" style="width: 18px;">
+                                    <label for="contacto1_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia (recibirá correo si se escanea tu QR)</label>
+                                    <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto1_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Contacto 2 -->
+                            <div class="contact-group">
+                                <div class="row-2">
+                                    <div class="form-group">
+                                        <label data-i18n="contactName">Nombre completo</label>
+                                        <input type="text" id="contacto2_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="contactRelation">Relación</label>
+                                        <select id="contacto2_relacion" class="relacion-select">
+                                            <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                            <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                            <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                            <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                            <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                            <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                            <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                            <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                            <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row-2">
+                                    <div class="form-group">
+                                        <label data-i18n="contactPhone">📞 Teléfono</label>
+                                        <input type="tel" id="contacto2_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="contactEmail">✉️ Correo electrónico</label>
+                                        <input type="email" id="contacto2_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+                                    <input type="checkbox" id="contacto2_notificar" style="width: 18px;">
+                                    <label for="contacto2_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                                    <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto2_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Contacto 3 -->
+                            <div class="contact-group">
+                                <div class="row-2">
+                                    <div class="form-group">
+                                        <label data-i18n="contactName">Nombre completo</label>
+                                        <input type="text" id="contacto3_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="contactRelation">Relación</label>
+                                        <select id="contacto3_relacion" class="relacion-select">
+                                            <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                            <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                            <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                            <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                            <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                            <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                            <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                            <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                            <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row-2">
+                                    <div class="form-group">
+                                        <label data-i18n="contactPhone">📞 Teléfono</label>
+                                        <input type="tel" id="contacto3_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="contactEmail">✉️ Correo electrónico</label>
+                                        <input type="email" id="contacto3_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+                                    <input type="checkbox" id="contacto3_notificar" style="width: 18px;">
+                                    <label for="contacto3_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                                    <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto3_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
+                                </div>
+                            </div>
+                            
+                            <div id="contactosExtra" style="display: none;">
+                                <!-- Contacto 4 -->
+                                <div class="contact-group">
+                                    <div class="row-2">
+                                        <div class="form-group">
+                                            <label data-i18n="contactName">Nombre completo</label>
+                                            <input type="text" id="contacto4_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo">
+                                        </div>
+                                        <div class="form-group">
+                                            <label data-i18n="contactRelation">Relación</label>
+                                            <select id="contacto4_relacion" class="relacion-select">
+                                                <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                                <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                                <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                                <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                                <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                                <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                                <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                                <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                                <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="form-group">
+                                            <label data-i18n="contactPhone">📞 Teléfono</label>
+                                            <input type="tel" id="contacto4_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678">
+                                        </div>
+                                        <div class="form-group">
+                                            <label data-i18n="contactEmail">✉️ Correo electrónico</label>
+                                            <input type="email" id="contacto4_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+                                        <input type="checkbox" id="contacto4_notificar" style="width: 18px;">
+                                        <label for="contacto4_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                                        <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto4_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Contacto 5 -->
+                                <div class="contact-group">
+                                    <div class="row-2">
+                                        <div class="form-group">
+                                            <label data-i18n="contactName">Nombre completo</label>
+                                            <input type="text" id="contacto5_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo">
+                                        </div>
+                                        <div class="form-group">
+                                            <label data-i18n="contactRelation">Relación</label>
+                                            <select id="contacto5_relacion" class="relacion-select">
+                                                <option value="" data-i18n="donador_selecciona">Selecciona</option>
+                                                <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
+                                                <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
+                                                <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
+                                                <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
+                                                <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
+                                                <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
+                                                <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
+                                                <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="form-group">
+                                            <label data-i18n="contactPhone">📞 Teléfono</label>
+                                            <input type="tel" id="contacto5_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678">
+                                        </div>
+                                        <div class="form-group">
+                                            <label data-i18n="contactEmail">✉️ Correo electrónico</label>
+                                            <input type="email" id="contacto5_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+                                        <input type="checkbox" id="contacto5_notificar" style="width: 18px;">
+                                        <label for="contacto5_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
+                                        <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto5_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn-add-contact" id="btnAgregarContacto" data-i18n="addContactBtn">+ Agregar otro contacto (máx. 5)</button>
+                            
+                            <div class="section-subtitle-form" data-i18n="additionalTitle">📋 Información Adicional</div>
+                            
+                            <div class="form-group">
+                                <label data-i18n="hospitalLabel">Seguro / Hospital preferido</label>
+                                <input type="text" id="hospital" data-i18n-placeholder="hospital_placeholder" placeholder="Seguro u hospital">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label data-i18n="notesLabel">Notas adicionales</label>
+                                <textarea id="notas" data-i18n-placeholder="notas_placeholder" placeholder="Información adicional para emergencias" rows="3"></textarea>
+                            </div>
+                            
+                            <button class="btn-primary" id="saveProfileBtn" style="width: 100%;" data-i18n="saveBtn">💾 Guardar mis datos</button>
+                            <button class="btn-danger" id="deleteAccountBtn" data-i18n="deleteAccountBtn">🗑️ Eliminar mi cuenta (borrar todos mis datos)</button>
+                            
+                            <div id="saveMessage" class="success-msg" style="text-align: center; margin-top: 12px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="sticker-preview">
+                        <h2 style="font-family: 'Bebas Neue'; font-size: 22px; color: #E8152A;" data-i18n="stickerPreviewTitle">🔲 Tu sticker personalizado</h2>
+                        
+                        <div class="sticker-selectors">
+                            <div class="selector-group">
+                                <span class="selector-label" data-i18n="formatLabel">Formato:</span>
+                                <div class="format-option active" data-format="horizontal" data-i18n="formatHorizontal">📏 Horizontal (6×3cm)</div>
+                                <div class="format-option" data-format="cuadrado" data-i18n="formatCuadrado">⬛ Cuadrado (3×3cm)</div>
+                            </div>
+                            <div class="selector-group" id="colorSelectorGroup">
+                                <span class="selector-label" data-i18n="colorLabel">Color:</span>
+                                <div class="color-option negro active" data-color="negro" data-i18n="colorNegro">⚫ Fondo Negro</div>
+                                <div class="color-option rojo" data-color="rojo" data-i18n="colorRojo">🔴 Fondo Rojo</div>
                             </div>
                         </div>
                         
-                        <!-- Contacto 5 -->
-                        <div class="contact-group">
-                            <div class="row-2">
-                                <div class="form-group"><label data-i18n="contactName">Nombre completo</label><input type="text" id="contacto5_nombre" data-i18n-placeholder="nombre_placeholder" placeholder="Nombre completo"></div>
-                                <div class="form-group"><label data-i18n="contactRelation">Relación</label>
-                                    <select id="contacto5_relacion" class="relacion-select">
-                                        <option value="" data-i18n="donador_selecciona">Selecciona</option>
-                                        <option value="Padre" data-i18n="relacion_padre">👨 Padre</option>
-                                        <option value="Madre" data-i18n="relacion_madre">👩 Madre</option>
-                                        <option value="Hermano" data-i18n="relacion_hermano">👦 Hermano(a)</option>
-                                        <option value="Hijo" data-i18n="relacion_hijo">👶 Hijo(a)</option>
-                                        <option value="Pareja" data-i18n="relacion_pareja">💑 Pareja</option>
-                                        <option value="Esposo/a" data-i18n="relacion_esposo">💍 Esposo/a</option>
-                                        <option value="Amigo" data-i18n="relacion_amigo">👥 Amigo(a)</option>
-                                        <option value="Otro" data-i18n="relacion_otro">📌 Otro</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row-2">
-                                <div class="form-group"><label data-i18n="contactPhone">📞 Teléfono</label><input type="tel" id="contacto5_tel" data-i18n-placeholder="telefono_placeholder" placeholder="5512345678"></div>
-                                <div class="form-group"><label data-i18n="contactEmail">✉️ Correo electrónico</label><input type="email" id="contacto5_email" data-i18n-placeholder="email_placeholder" placeholder="ejemplo@correo.com"></div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
-                                <input type="checkbox" id="contacto5_notificar" style="width: 18px;">
-                                <label for="contacto5_notificar" style="font-size: 12px; text-transform: none; color: #E8152A; font-weight: normal;" data-i18n="contactNotify">🔔 Activar notificación de emergencia</label>
-                                <button class="native-btn" onclick="llamarContacto(document.getElementById('contacto5_tel').value)" style="margin-left: auto; padding: 5px 12px; font-size: 12px;">📞 Llamar</button>
-                            </div>
+                        <div id="stickerContainer" class="sticker-container horizontal">
+                            <img id="stickerBgImg" class="sticker-bg" src="TemplateNegroMyLifeQR.png" alt="Template" onerror="this.style.display='none'">
+                            <div id="qrOverlay" class="sticker-qr-overlay"></div>
                         </div>
+                        <button class="btn-download" id="downloadPngBtn" data-i18n="downloadPNG">📥 Descargar PNG</button>
+                        <button class="btn-download" id="downloadPdfBtn" data-i18n="downloadPDF">📄 Descargar PDF</button>
+                        <p style="font-size: 11px; color: #888; margin-top: 12px;" data-i18n="qrInfo">QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color</p>
                     </div>
-                    
-                    <button type="button" class="btn-add-contact" id="btnAgregarContacto" data-i18n="addContactBtn">+ Agregar otro contacto (máx. 5)</button>
-                    
-                    <div class="section-subtitle-form" data-i18n="additionalTitle">📋 Información Adicional</div>
-                    <div class="form-group"><label data-i18n="hospitalLabel">Seguro / Hospital preferido</label><input type="text" id="hospital" data-i18n-placeholder="hospital_placeholder" placeholder="Seguro u hospital"></div>
-                    <div class="form-group"><label data-i18n="notesLabel">Notas adicionales</label><textarea id="notas" data-i18n-placeholder="notas_placeholder" placeholder="Información adicional para emergencias" rows="3"></textarea></div>
-                    
-                    <button class="btn-primary" id="saveProfileBtn" style="width: 100%;" data-i18n="saveBtn">💾 Guardar mis datos</button>
-                    
-                    <button class="btn-danger" id="deleteAccountBtn" data-i18n="deleteAccountBtn">🗑️ Eliminar mi cuenta (borrar todos mis datos)</button>
-                    
-                    <div id="saveMessage" class="success-msg" style="text-align: center; margin-top: 12px;"></div>
-                </div></div></div>
-                <div><div class="sticker-preview">
-                    <h2 style="font-family: 'Bebas Neue'; font-size: 22px; color: #E8152A;" data-i18n="stickerPreviewTitle">🔲 Tu sticker personalizado</h2>
-                    
-                    <div class="sticker-selectors">
-                        <div class="selector-group">
-                            <span class="selector-label" data-i18n="formatLabel">Formato:</span>
-                            <div class="format-option active" data-format="horizontal" data-i18n="formatHorizontal">📏 Horizontal (6×3cm)</div>
-                            <div class="format-option" data-format="cuadrado" data-i18n="formatCuadrado">⬛ Cuadrado (3×3cm)</div>
-                        </div>
-                        <div class="selector-group" id="colorSelectorGroup">
-                            <span class="selector-label" data-i18n="colorLabel">Color:</span>
-                            <div class="color-option negro active" data-color="negro" data-i18n="colorNegro">⚫ Fondo Negro</div>
-                            <div class="color-option rojo" data-color="rojo" data-i18n="colorRojo">🔴 Fondo Rojo</div>
-                        </div>
-                    </div>
-                    
-                    <div id="stickerContainer" class="sticker-container horizontal">
-                        <img id="stickerBgImg" class="sticker-bg" src="TemplateNegroMyLifeQR.png" alt="Template" onerror="this.style.display='none'">
-                        <div id="qrOverlay" class="sticker-qr-overlay"></div>
-                    </div>
-                    <button class="btn-download" id="downloadPngBtn" data-i18n="downloadPNG">📥 Descargar PNG</button>
-                    <button class="btn-download" id="downloadPdfBtn" data-i18n="downloadPDF">📄 Descargar PDF</button>
-                    <p style="font-size: 11px; color: #888; margin-top: 12px;" data-i18n="qrInfo">QR de 7cm (horizontal) o 2.7cm (cuadrado) | Elige formato y color</p>
-                </div></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1142,7 +1190,8 @@
         let currentColor = "negro";
         let currentLang = "es";
         let qrUpdateTimeout;
-        
+        let paisSeleccionado = "mx"; // Variable global para el país seleccionado
+
         // ==================== TRADUCCIONES COMPLETAS ====================
         
         // ESPAÑOL (es)
@@ -2139,6 +2188,80 @@
         
         document.getElementById('deleteAccountBtn')?.addEventListener('click', window.eliminarCuenta);
         
+        // ===== NUEVO: FUNCIONES PARA EL SELECTOR DE PAÍS EN DASHBOARD =====
+        function inicializarSelectorPaisDashboard() {
+            console.log('🔄 Inicializando selector de país en dashboard...');
+            
+            const botones = document.querySelectorAll('.pais-btn-dash');
+            const preview = document.getElementById('emergenciaPreviewDash');
+            
+            if (typeof PAISES === 'undefined') {
+                console.error('❌ PAISES no está definido');
+                return;
+            }
+            
+            // Obtener país guardado o default
+            let paisActual = localStorage.getItem('mylifeqr_pais') || 'mx';
+            if (!PAISES[paisActual]) {
+                paisActual = 'mx';
+            }
+            paisSeleccionado = paisActual;
+            
+            // Actualizar botones
+            botones.forEach(btn => {
+                const pais = btn.getAttribute('data-pais');
+                if (pais === paisActual) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Actualizar vista previa
+            if (preview && PAISES[paisActual]) {
+                preview.textContent = PAISES[paisActual].emergencia_texto;
+            }
+            
+            // Eventos click
+            botones.forEach(btn => {
+                btn.removeEventListener('click', cambiarPaisDashboard);
+                btn.addEventListener('click', cambiarPaisDashboard);
+            });
+            
+            console.log('✅ Selector de país en dashboard inicializado');
+        }
+        
+        function cambiarPaisDashboard(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const btn = e.currentTarget;
+            const pais = btn.getAttribute('data-pais');
+            console.log(`🌍 Click en país (dashboard): ${pais}`);
+            
+            if (pais && PAISES[pais]) {
+                paisSeleccionado = pais;
+                localStorage.setItem('mylifeqr_pais', pais);
+                
+                // Actualizar UI
+                const botones = document.querySelectorAll('.pais-btn-dash');
+                botones.forEach(b => {
+                    if (b.getAttribute('data-pais') === pais) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+                
+                const preview = document.getElementById('emergenciaPreviewDash');
+                if (preview) {
+                    preview.textContent = PAISES[pais].emergencia_texto;
+                }
+                
+                console.log(`✅ País seleccionado: ${pais} - Emergencia: ${PAISES[pais].emergencia_texto}`);
+            }
+        }
+        
         async function handleRegister() {
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
@@ -2165,7 +2288,9 @@
                     fecha_aceptacion_terminos: new Date().toISOString(),
                     fecha_aceptacion_privacidad: new Date().toISOString(),
                     ip_registro: ip,
-                    fecha_creacion: new Date().toISOString()
+                    fecha_creacion: new Date().toISOString(),
+                    // ===== NUEVO CAMPO =====
+                    pais: "mx"  // Valor por defecto: México
                 });
                 
                 const statsRef = doc(db, "public", "stats");
@@ -2211,6 +2336,25 @@
                 document.getElementById('alergias').value = data.alergias || '';
                 document.getElementById('condiciones').value = data.condiciones || '';
                 document.getElementById('medicamentos').value = data.medicamentos || '';
+                
+                // ===== NUEVO: Cargar país guardado =====
+                const paisGuardado = data.pais || 'mx';
+                paisSeleccionado = paisGuardado;
+                localStorage.setItem('mylifeqr_pais', paisGuardado);
+                
+                // Actualizar selector y preview
+                const botones = document.querySelectorAll('.pais-btn-dash');
+                botones.forEach(btn => {
+                    if (btn.getAttribute('data-pais') === paisGuardado) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                const preview = document.getElementById('emergenciaPreviewDash');
+                if (preview && PAISES[paisGuardado]) {
+                    preview.textContent = PAISES[paisGuardado].emergencia_texto;
+                }
                 
                 for (let i = 1; i <= 5; i++) {
                     document.getElementById(`contacto${i}_nombre`).value = data[`contacto${i}_nombre`] || '';
@@ -2284,7 +2428,9 @@
                 contacto5_email: document.getElementById('contacto5_email').value,
                 contacto5_notificar: document.getElementById('contacto5_notificar').checked,
                 hospital: document.getElementById('hospital').value, notas: document.getElementById('notas').value,
-                foto: fotoBase64, fecha_actualizacion: new Date().toISOString()
+                foto: fotoBase64, fecha_actualizacion: new Date().toISOString(),
+                // ===== NUEVO: Guardar país seleccionado =====
+                pais: paisSeleccionado
             };
             await setDoc(doc(db, "perfiles", currentUser.uid), perfil, { merge: true });
             saveMessage.innerText = t?.exito_guardado || '✅ Datos guardados correctamente';
@@ -2409,6 +2555,8 @@
                 await cargarPerfil(user.uid);
                 await cargarFoto(user.uid);
                 actualizarQR();
+                // Inicializar selector de país en dashboard
+                setTimeout(inicializarSelectorPaisDashboard, 200);
             } else {
                 currentUser = null;
                 landingScreen.style.display = 'block';
@@ -2431,239 +2579,6 @@
                 .catch(err => console.log('❌ Error:', err));
         }
     </script>
-
-<!-- ================================================================ -->
-<!-- APLICAR CONFIGURACIÓN DE PAÍS EN INDEX.HTML                       -->
-<!-- ================================================================ -->
-
-<script>
-function aplicarConfiguracionPaisIndex() {
-    // Verificar que CONFIG existe
-    if (typeof CONFIG === 'undefined') {
-        console.error('❌ CONFIG no está definido. Verifica que config-paises.js esté cargado.');
-        return;
-    }
-    
-    const config = CONFIG;
-    console.log(`🌍 Aplicando configuración a index.html para: ${config.nombre} (${config.id})`);
-    
-    // === TÍTULO DE LA PÁGINA ===
-    const tituloPagina = config.id === 'br' 
-        ? 'MyLifeQR Brasil — Identificação médica de emergência para motociclistas'
-        : config.id === 'co'
-        ? 'MyLifeQR Colombia — Identificación médica de emergencia para motociclistas'
-        : config.id === 'cl'
-        ? 'MyLifeQR Chile — Identificación médica de emergencia para motociclistas'
-        : config.id === 'pe'
-        ? 'MyLifeQR Perú — Identificación médica de emergencia para motociclistas'
-        : config.id === 'ar'
-        ? 'MyLifeQR Argentina — Identificación médica de emergencia para motociclistas'
-        : config.id === 'uy'
-        ? 'MyLifeQR Uruguay — Identificación médica de emergencia para motociclistas'
-        : config.id === 'ec'
-        ? 'MyLifeQR Ecuador — Identificación médica de emergencia para motociclistas'
-        : config.id === 've'
-        ? 'MyLifeQR Venezuela — Identificación médica de emergencia para motociclistas'
-        : 'MyLifeQR — Identificación médica de emergencia para motociclistas';
-    
-    const pageTitle = document.getElementById('pageTitle');
-    if (pageTitle) {
-        document.title = tituloPagina;
-        pageTitle.textContent = tituloPagina;
-    }
-    
-    // === META DESCRIPTION ===
-    const metaDescription = document.getElementById('metaDescription');
-    if (metaDescription) {
-        const metaDesc = config.id === 'br'
-            ? 'MyLifeQR Brasil é um adesivo com QR para seu capacete que permite aos paramédicos acessar seu tipo sanguíneo, alergias e contatos de emergência instantaneamente. Gratuito e protegido pela LGPD.'
-            : 'MyLifeQR es un sticker con QR para tu casco que permite a paramédicos acceder a tu tipo de sangre, alergias y contactos de emergencia al instante. Gratuito y protegido por la ' + config.ley + '.';
-        metaDescription.setAttribute('content', metaDesc);
-    }
-    
-    // === OG TITLE ===
-    const ogTitle = document.getElementById('ogTitle');
-    if (ogTitle) {
-        const ogTitleContent = config.id === 'br'
-            ? 'MyLifeQR Brasil — Seu anjo da guarda no asfalto'
-            : 'MyLifeQR — Tu ángel guardián en el asfalto';
-        ogTitle.setAttribute('content', ogTitleContent);
-    }
-    
-    // === OG DESCRIPTION ===
-    const ogDescription = document.getElementById('ogDescription');
-    if (ogDescription) {
-        const ogDesc = config.id === 'br'
-            ? 'Adesivo QR para seu capacete que fala por você em emergências. Tipo sanguíneo, alergias, contatos instantaneamente.'
-            : 'Sticker QR para tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos al instante.';
-        ogDescription.setAttribute('content', ogDesc);
-    }
-    
-    // === TWITTER TITLE ===
-    const twitterTitle = document.getElementById('twitterTitle');
-    if (twitterTitle) {
-        const twitterTitleContent = config.id === 'br'
-            ? 'MyLifeQR Brasil — Identificação médica para motociclistas'
-            : 'MyLifeQR — Identificación médica para motociclistas';
-        twitterTitle.setAttribute('content', twitterTitleContent);
-    }
-    
-    // === TWITTER DESCRIPTION ===
-    const twitterDescription = document.getElementById('twitterDescription');
-    if (twitterDescription) {
-        const twitterDesc = config.id === 'br'
-            ? 'Proteja sua vida com um adesivo QR no seu capacete. Gratuito.'
-            : 'Protege tu vida con un sticker QR en tu casco. Gratuito.';
-        twitterDescription.setAttribute('content', twitterDesc);
-    }
-    
-    // === EMAIL TIP ===
-    const emailTipText = document.getElementById('emailTipText');
-    const emailTipContacto = document.getElementById('emailTipContacto');
-    if (emailTipText && emailTipContacto) {
-        const emailTipTexto = config.id === 'br'
-            ? `📧 Seus contatos não estão recebendo os alertas? Peça para adicionarem ${config.email_contacto} à lista de contatos e marcarem o e-mail como "Não é spam".`
-            : `📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen ${config.email_contacto} a su libreta de direcciones y marquen el correo como "No es spam".`;
-        emailTipText.innerHTML = emailTipTexto;
-        emailTipContacto.textContent = config.email_contacto;
-    }
-    
-    // === WHATSAPP LINK ===
-    const whatsappLink = document.getElementById('whatsappLink');
-    if (whatsappLink) {
-        whatsappLink.href = `https://wa.me/${config.whatsapp}`;
-        whatsappLink.textContent = `📱 WhatsApp: ${config.whatsapp}`;
-    }
-    
-    // === CONTACT EMAIL LINK ===
-    const contactEmailLink = document.getElementById('contactEmailLink');
-    if (contactEmailLink) {
-        contactEmailLink.href = `mailto:${config.email_contacto}`;
-        contactEmailLink.textContent = `✉️ ${config.email_contacto}`;
-    }
-    
-    // === LEGAL EMERGENCY TEXT ===
-    const legalEmergencyText = document.getElementById('legalEmergencyText');
-    if (legalEmergencyText) {
-        const legalEmergencia = config.id === 'br'
-            ? `📞 Em caso de emergência, ligue para ${config.emergencia_texto} imediatamente.`
-            : `📞 En caso de emergencia, llame al ${config.emergencia_texto} inmediatamente.`;
-        legalEmergencyText.innerHTML = legalEmergencia;
-    }
-    
-    // === AVISO DE PRIVACIDAD LINK ===
-    const avisoLinks = document.querySelectorAll('[data-i18n="avisoLink"]');
-    if (avisoLinks.length > 0) {
-        const avisoText = config.id === 'br'
-            ? `🔐 Aviso de Privacidade (${config.ley})`
-            : `🔐 Aviso de Privacidad (${config.ley})`;
-        avisoLinks.forEach(el => {
-            el.textContent = avisoText;
-        });
-    }
-    
-    // === DONATION LINK (Única cuenta global) ===
-    const DONATION_URL = 'https://link.mercadopago.com.mx/mylifeqr';
-    const donateLink = document.querySelector('.btn-donate');
-    if (donateLink) {
-        donateLink.href = DONATION_URL;
-    }
-    
-    // === BOTÓN DE EMERGENCIA EN DASHBOARD ===
-    const emergencyBtn = document.getElementById('emergencyBtnDashboard');
-    if (emergencyBtn) {
-        emergencyBtn.textContent = `🚨 ¡${config.id === 'br' ? 'EMERGÊNCIA' : 'EMERGENCIA'}! 🚨`;
-        const newEmergencyBtn = emergencyBtn.cloneNode(true);
-        emergencyBtn.parentNode.replaceChild(newEmergencyBtn, emergencyBtn);
-        newEmergencyBtn.addEventListener('click', () => {
-            if (confirm(`🚨 ${config.id === 'br' ? 'Você está em uma emergência? Ligue para' : '¿Estás en una emergencia? Llama al'} ${config.emergencia_texto} ${config.id === 'br' ? 'imediatamente.' : 'inmediatamente.'}`)) {
-                window.location.href = `tel:${config.emergencia}`;
-            }
-        });
-    }
-    
-    console.log(`✅ Configuración aplicada a index.html para ${config.nombre}`);
-}
-
-// === SELECTOR DE PAÍS MANUAL ===
-function inicializarSelectorPais() {
-    console.log('🔄 Inicializando selector de país...');
-    
-    const botones = document.querySelectorAll('.pais-btn');
-    console.log(`🔍 Encontrados ${botones.length} botones de país`);
-    
-    if (typeof PAISES === 'undefined') {
-        console.error('❌ PAISES no está definido. Revisa config-paises.js');
-        return;
-    }
-    
-    let paisActual = localStorage.getItem('mylifeqr_pais');
-    if (!paisActual || !PAISES[paisActual]) {
-        paisActual = 'mx';
-        localStorage.setItem('mylifeqr_pais', paisActual);
-    }
-    console.log(`📍 País actual: ${paisActual}`);
-    
-    botones.forEach(btn => {
-        const pais = btn.getAttribute('data-pais');
-        if (pais === paisActual) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-    
-    botones.forEach(btn => {
-        btn.removeEventListener('click', cambiarPais);
-        btn.addEventListener('click', cambiarPais);
-    });
-    
-    console.log('✅ Selector de país inicializado correctamente');
-}
-
-function cambiarPais(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const btn = e.currentTarget;
-    const pais = btn.getAttribute('data-pais');
-    console.log(`🌍 Click en país: ${pais}`);
-    
-    if (pais && PAISES[pais]) {
-        localStorage.setItem('mylifeqr_pais', pais);
-        console.log(`✅ País guardado: ${pais}`);
-        window.location.reload();
-    } else {
-        console.warn(`⚠️ País no válido: ${pais}`);
-        alert('⚠️ País no disponible. Selecciona otro.');
-    }
-}
-
-// Ejecutar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM cargado, inicializando...');
-    
-    setTimeout(() => {
-        if (typeof CONFIG !== 'undefined') {
-            aplicarConfiguracionPaisIndex();
-        } else {
-            console.error('❌ CONFIG no cargado. Esperando...');
-            setTimeout(() => {
-                if (typeof CONFIG !== 'undefined') {
-                    aplicarConfiguracionPaisIndex();
-                }
-            }, 500);
-        }
-        
-        inicializarSelectorPais();
-    }, 300);
-});
-
-window.addEventListener('load', function() {
-    console.log('🔄 Window load event - verificando selector...');
-    setTimeout(inicializarSelectorPais, 100);
-});
-</script>
 
 </body>
 </html>

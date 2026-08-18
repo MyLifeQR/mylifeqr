@@ -170,57 +170,6 @@
             font-size: 14px;
         }
         
-        /* ===== SELECTOR DE PAÍS MINI CON BANDERAS ===== */
-        .pais-selector-mini {
-            display: flex;
-            gap: 2px;
-            background: rgba(255,255,255,0.15);
-            padding: 3px 6px;
-            border-radius: 30px;
-            margin: 0 8px;
-        }
-        .pais-btn-mini {
-            background: transparent;
-            border: none;
-            padding: 3px 6px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            line-height: 1;
-            opacity: 0.5;
-            position: relative;
-        }
-        .pais-btn-mini:hover {
-            opacity: 1;
-            transform: scale(1.2);
-        }
-        .pais-btn-mini.active {
-            opacity: 1;
-            background: rgba(255,255,255,0.25);
-            transform: scale(1.1);
-        }
-        .pais-btn-mini::after {
-            content: attr(title);
-            position: absolute;
-            bottom: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a1a;
-            color: white;
-            font-size: 8px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            font-weight: 500;
-        }
-        .pais-btn-mini:hover::after {
-            opacity: 1;
-        }
-        
         /* Banner de casco */
         .helmet-warning {
             background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
@@ -707,18 +656,6 @@
                 font-size: 18px;
                 padding: 14px;
             }
-            .pais-selector-mini {
-                padding: 2px 4px;
-                gap: 1px;
-                margin: 0 2px;
-            }
-            .pais-btn-mini {
-                font-size: 12px;
-                padding: 2px 4px;
-            }
-            .pais-btn-mini::after {
-                display: none;
-            }
         }
     </style>
     
@@ -779,20 +716,6 @@
     <!-- Banner superior -->
     <div class="emergency-banner">
         <span>🚨 <span id="bannerTitulo">PERFIL DE EMERGENCIA</span></span>
-        
-        <!-- ===== SELECTOR DE PAÍS MINI CON BANDERAS ===== -->
-        <div class="pais-selector-mini">
-            <button class="pais-btn-mini" data-pais="mx" title="México">🇲🇽</button>
-            <button class="pais-btn-mini" data-pais="br" title="Brasil">🇧🇷</button>
-            <button class="pais-btn-mini" data-pais="co" title="Colombia">🇨🇴</button>
-            <button class="pais-btn-mini" data-pais="cl" title="Chile">🇨🇱</button>
-            <button class="pais-btn-mini" data-pais="pe" title="Perú">🇵🇪</button>
-            <button class="pais-btn-mini" data-pais="ar" title="Argentina">🇦🇷</button>
-            <button class="pais-btn-mini" data-pais="uy" title="Uruguay">🇺🇾</button>
-            <button class="pais-btn-mini" data-pais="ec" title="Ecuador">🇪🇨</button>
-            <button class="pais-btn-mini" data-pais="ve" title="Venezuela">🇻🇪</button>
-        </div>
-        
         <span style="margin-left:auto;">MyLifeQR</span>
     </div>
     
@@ -974,6 +897,7 @@
     let currentUserLocation = null;
     let currentPerfilData = null;
     let lastNotificationTime = 0;
+    let perfilPais = "mx"; // País guardado en el perfil
     
     // Configuración EmailJS
     const EMAILJS_CONFIG = {
@@ -1013,11 +937,15 @@
     async function enviarCorreoEmergencia(email, nombreContacto, perfil, folio, ubicacion) {
         if (!email) return { success: false, error: "No email provided" };
         
+        // Usar el país del perfil para el idioma del correo
+        const config = PAISES[perfilPais] || PAISES.mx;
+        const locale = perfilPais === 'br' ? 'pt-BR' : 'es-MX';
+        
         const templateParams = {
             email: email,
             to_name: nombreContacto,
             nombre: perfil.nombre || 'Usuario',
-            fecha: new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' }),
+            fecha: new Date().toLocaleString(locale, { timeZone: config.id === 'br' ? 'America/Sao_Paulo' : 'America/Mexico_City' }),
             folio: folio,
             latitud: ubicacion?.lat || 'No disponible',
             longitud: ubicacion?.lng || 'No disponible',
@@ -1075,8 +1003,17 @@
         currentPerfilData = docSnap.data();
         const perfil = currentPerfilData;
         
+        // Obtener el país guardado en el perfil, o usar México por defecto
+        perfilPais = perfil.pais || 'mx';
+        if (!PAISES[perfilPais]) {
+            perfilPais = 'mx';
+        }
+        const config = PAISES[perfilPais];
+        
         const folio = 'MLQR-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-        const fechaHora = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' });
+        const locale = perfilPais === 'br' ? 'pt-BR' : 'es-MX';
+        const timeZone = config.id === 'br' ? 'America/Sao_Paulo' : 'America/Mexico_City';
+        const fechaHora = new Date().toLocaleString(locale, { timeZone: timeZone });
         
         const notif = document.getElementById('scanNotification');
         document.getElementById('scanDateTime').innerHTML = `📅 ${fechaHora}`;
@@ -1103,6 +1040,7 @@
                 await addDoc(collection(db, "eventos_escaneo"), {
                     perfil_id: profileId,
                     perfil_nombre: perfil.nombre || 'Usuario',
+                    perfil_pais: perfilPais,
                     folio: folio,
                     fecha: new Date().toISOString(),
                     ubicacion: currentUserLocation,
@@ -1157,7 +1095,7 @@
         const modal = document.getElementById('modalLegal');
         const title = document.getElementById('modalLegalTitle');
         const body = document.getElementById('modalLegalBody');
-        const config = CONFIG;
+        const config = PAISES[perfilPais] || PAISES.mx;
         
         if (config.id === 'br') {
             title.innerText = '📜 Termos e Condições';
@@ -1237,7 +1175,7 @@
         const modal = document.getElementById('modalLegal');
         const title = document.getElementById('modalLegalTitle');
         const body = document.getElementById('modalLegalBody');
-        const config = CONFIG;
+        const config = PAISES[perfilPais] || PAISES.mx;
         
         if (config.id === 'br') {
             title.innerText = '🔒 Política de Privacidade';
@@ -1321,6 +1259,97 @@
         if (e.target === this) window.closeModalLegal();
     });
     
+    // ===== NUEVO: Función para aplicar configuración del perfil según país guardado =====
+    function aplicarConfiguracionPerfil(perfil) {
+        const config = PAISES[perfilPais] || PAISES.mx;
+        
+        // === GATE ===
+        const gateTitle = document.getElementById('gateTitle');
+        const gateSubtitle = document.getElementById('gateSubtitle');
+        const gateText = document.getElementById('gateText');
+        const gateAceptar = document.getElementById('gateAceptar');
+        const gateBoton = document.getElementById('gateBoton');
+        
+        if (gateTitle) gateTitle.textContent = config.gate_titulo;
+        if (gateSubtitle) gateSubtitle.textContent = config.gate_subtitulo;
+        if (gateText) {
+            gateText.innerHTML = `
+                La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la ${config.ley_nombre} (<strong>${config.ley}</strong>).
+                <br><br>
+                Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación ${config.nombre} vigente.
+                <br><br>
+                Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
+            `;
+        }
+        if (gateAceptar) gateAceptar.textContent = config.gate_aceptar;
+        if (gateBoton) gateBoton.textContent = config.gate_boton;
+        
+        // === BANNER ===
+        const bannerTitulo = document.getElementById('bannerTitulo');
+        if (bannerTitulo) bannerTitulo.textContent = config.perfil_titulo;
+        
+        // === CASCO ===
+        const helmetTitle = document.getElementById('helmetTitle');
+        const helmetDesc = document.getElementById('helmetDesc');
+        if (helmetTitle) helmetTitle.textContent = config.perfil_casco;
+        if (helmetDesc) helmetDesc.textContent = config.perfil_casco_desc;
+        
+        // === CARGANDO ===
+        const cargandoTexto = document.getElementById('cargandoTexto');
+        if (cargandoTexto) cargandoTexto.textContent = config.perfil_cargando;
+        
+        // === UBICACIÓN ===
+        const ubicacionTitulo = document.getElementById('ubicacionTitulo');
+        const ubicacionStatus = document.getElementById('ubicacionStatus');
+        if (ubicacionTitulo) ubicacionTitulo.textContent = config.perfil_ubicacion_titulo;
+        if (ubicacionStatus) ubicacionStatus.textContent = config.perfil_ubicacion;
+        
+        // === BOTÓN DE EMERGENCIA ===
+        const link = document.getElementById('emergenciaLink');
+        const container = document.getElementById('emergenciaContainer');
+        const texto = document.getElementById('emergenciaTexto');
+        
+        if (link) {
+            link.href = `tel:${config.emergencia}`;
+            link.className = `btn-${config.emergencia}`;
+        }
+        if (container) container.className = `btn-${config.emergencia}-container`;
+        if (texto) texto.textContent = config.perfil_911;
+        
+        // === GUÍA ===
+        const guiaTitulo = document.getElementById('guiaTitulo');
+        if (guiaTitulo) guiaTitulo.textContent = config.perfil_guia;
+        
+        // === INSTRUCCIONES (paso 1) ===
+        const instruccion1Titulo = document.getElementById('instruccion1Titulo');
+        if (instruccion1Titulo) instruccion1Titulo.textContent = `📞 Llama al ${config.emergencia_texto}`;
+        
+        // === FOOTER ===
+        const footerAviso = document.getElementById('footerAviso');
+        const footerNumero = document.getElementById('footerNumero');
+        const footerNumero2 = document.getElementById('footerNumero2');
+        const footerContacto = document.getElementById('footerContacto');
+        const footerEmail = document.getElementById('footerEmail');
+        
+        if (footerAviso) footerAviso.textContent = '⚠️ AVISO LEGAL IMPORTANTE ⚠️';
+        if (footerNumero) footerNumero.textContent = config.emergencia_texto;
+        if (footerNumero2) footerNumero2.textContent = config.emergencia_texto;
+        if (footerContacto) footerContacto.innerHTML = `📞 En caso de emergencia, llame inmediatamente al <strong>${config.emergencia_texto}</strong>.`;
+        if (footerEmail) footerEmail.textContent = `✉️ Contacto: ${config.email_contacto}`;
+        
+        // === TÍTULO DE LA PÁGINA ===
+        const tituloPagina = config.id === 'br' 
+            ? `MyLifeQR — Perfil Médico de Emergência` 
+            : `MyLifeQR — Perfil Médico de Emergencia`;
+        const pageTitle = document.getElementById('pageTitle');
+        if (pageTitle) {
+            document.title = tituloPagina;
+            pageTitle.textContent = tituloPagina;
+        }
+        
+        console.log(`✅ Configuración aplicada para: ${config.nombre} (${config.id})`);
+    }
+    
     async function cargarPerfil() {
         const urlParams = new URLSearchParams(window.location.search);
         const profileId = urlParams.get('id');
@@ -1341,7 +1370,16 @@
         }
         
         const perfil = docSnap.data();
-        const config = CONFIG;
+        
+        // ===== NUEVO: Obtener país del perfil =====
+        perfilPais = perfil.pais || 'mx';
+        if (!PAISES[perfilPais]) {
+            perfilPais = 'mx';
+        }
+        const config = PAISES[perfilPais];
+        
+        // Aplicar configuración del país
+        aplicarConfiguracionPerfil(perfil);
         
         document.getElementById('perfilNombre').innerText = perfil.nombre || 'Usuario';
         document.getElementById('perfilEdad').innerText = perfil.edad ? `${perfil.edad} años` : 'Edad no registrada';
@@ -1411,191 +1449,11 @@
         if (contactosDiv.innerHTML === '') {
             contactosDiv.innerHTML = '<div class="info-card"><div class="info-value">No hay contactos registrados</div></div>';
         }
+        
+        console.log(`✅ Perfil cargado con país: ${config.nombre} (${config.id})`);
     }
     
     cargarPerfil();
-</script>
-
-<!-- ================================================================ -->
-<!-- APLICAR CONFIGURACIÓN DE PAÍS EN PERFIL.HTML                      -->
-<!-- ================================================================ -->
-
-<script>
-function aplicarConfiguracionPaisPerfil() {
-    // Verificar que CONFIG existe
-    if (typeof CONFIG === 'undefined') {
-        console.error('❌ CONFIG no está definido. Verifica que config-paises.js esté cargado.');
-        return;
-    }
-    
-    const config = CONFIG;
-    console.log(`🌍 Aplicando configuración a perfil.html para: ${config.nombre} (${config.id})`);
-    
-    // === GATE ===
-    const gateTitle = document.getElementById('gateTitle');
-    const gateSubtitle = document.getElementById('gateSubtitle');
-    const gateText = document.getElementById('gateText');
-    const gateAceptar = document.getElementById('gateAceptar');
-    const gateBoton = document.getElementById('gateBoton');
-    
-    if (gateTitle) gateTitle.textContent = config.gate_titulo;
-    if (gateSubtitle) gateSubtitle.textContent = config.gate_subtitulo;
-    if (gateText) {
-        gateText.innerHTML = `
-            La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la ${config.ley_nombre} (<strong>${config.ley}</strong>).
-            <br><br>
-            Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación ${config.nombre} vigente.
-            <br><br>
-            Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
-        `;
-    }
-    if (gateAceptar) gateAceptar.textContent = config.gate_aceptar;
-    if (gateBoton) gateBoton.textContent = config.gate_boton;
-    
-    // === BANNER ===
-    const bannerTitulo = document.getElementById('bannerTitulo');
-    if (bannerTitulo) bannerTitulo.textContent = config.perfil_titulo;
-    
-    // === CASCO ===
-    const helmetTitle = document.getElementById('helmetTitle');
-    const helmetDesc = document.getElementById('helmetDesc');
-    if (helmetTitle) helmetTitle.textContent = config.perfil_casco;
-    if (helmetDesc) helmetDesc.textContent = config.perfil_casco_desc;
-    
-    // === CARGANDO ===
-    const cargandoTexto = document.getElementById('cargandoTexto');
-    if (cargandoTexto) cargandoTexto.textContent = config.perfil_cargando;
-    
-    // === UBICACIÓN ===
-    const ubicacionTitulo = document.getElementById('ubicacionTitulo');
-    const ubicacionStatus = document.getElementById('ubicacionStatus');
-    if (ubicacionTitulo) ubicacionTitulo.textContent = config.perfil_ubicacion_titulo;
-    if (ubicacionStatus) ubicacionStatus.textContent = config.perfil_ubicacion;
-    
-    // === BOTÓN DE EMERGENCIA ===
-    const link = document.getElementById('emergenciaLink');
-    const container = document.getElementById('emergenciaContainer');
-    const texto = document.getElementById('emergenciaTexto');
-    
-    if (link) {
-        link.href = `tel:${config.emergencia}`;
-        link.className = `btn-${config.emergencia}`;
-    }
-    if (container) container.className = `btn-${config.emergencia}-container`;
-    if (texto) texto.textContent = config.perfil_911;
-    
-    // === GUÍA ===
-    const guiaTitulo = document.getElementById('guiaTitulo');
-    if (guiaTitulo) guiaTitulo.textContent = config.perfil_guia;
-    
-    // === INSTRUCCIONES (paso 1) ===
-    const instruccion1Titulo = document.getElementById('instruccion1Titulo');
-    if (instruccion1Titulo) instruccion1Titulo.textContent = `📞 Llama al ${config.emergencia_texto}`;
-    
-    // === FOOTER ===
-    const footerAviso = document.getElementById('footerAviso');
-    const footerNumero = document.getElementById('footerNumero');
-    const footerNumero2 = document.getElementById('footerNumero2');
-    const footerContacto = document.getElementById('footerContacto');
-    const footerEmail = document.getElementById('footerEmail');
-    
-    if (footerAviso) footerAviso.textContent = '⚠️ AVISO LEGAL IMPORTANTE ⚠️';
-    if (footerNumero) footerNumero.textContent = config.emergencia_texto;
-    if (footerNumero2) footerNumero2.textContent = config.emergencia_texto;
-    if (footerContacto) footerContacto.innerHTML = `📞 En caso de emergencia, llame inmediatamente al <strong>${config.emergencia_texto}</strong>.`;
-    if (footerEmail) footerEmail.textContent = `✉️ Contacto: ${config.email_contacto}`;
-    
-    // === TÍTULO DE LA PÁGINA ===
-    const tituloPagina = config.id === 'br' 
-        ? `MyLifeQR — Perfil Médico de Emergência` 
-        : `MyLifeQR — Perfil Médico de Emergencia`;
-    const pageTitle = document.getElementById('pageTitle');
-    if (pageTitle) {
-        document.title = tituloPagina;
-        pageTitle.textContent = tituloPagina;
-    }
-    
-    console.log(`✅ Configuración aplicada a perfil.html para ${config.nombre}`);
-}
-
-// === SELECTOR DE PAÍS MINI EN PERFIL ===
-function inicializarSelectorPaisPerfil() {
-    console.log('🔄 Inicializando selector de país en perfil...');
-    
-    const botones = document.querySelectorAll('.pais-btn-mini');
-    console.log(`🔍 Encontrados ${botones.length} botones de país en perfil`);
-    
-    if (typeof PAISES === 'undefined') {
-        console.error('❌ PAISES no está definido. Revisa config-paises.js');
-        return;
-    }
-    
-    let paisActual = localStorage.getItem('mylifeqr_pais');
-    if (!paisActual || !PAISES[paisActual]) {
-        paisActual = 'mx';
-        localStorage.setItem('mylifeqr_pais', paisActual);
-    }
-    console.log(`📍 País actual en perfil: ${paisActual}`);
-    
-    botones.forEach(btn => {
-        const pais = btn.getAttribute('data-pais');
-        if (pais === paisActual) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-    
-    botones.forEach(btn => {
-        btn.removeEventListener('click', cambiarPaisPerfil);
-        btn.addEventListener('click', cambiarPaisPerfil);
-    });
-    
-    console.log('✅ Selector de país en perfil inicializado correctamente');
-}
-
-function cambiarPaisPerfil(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const btn = e.currentTarget;
-    const pais = btn.getAttribute('data-pais');
-    console.log(`🌍 Click en país (perfil): ${pais}`);
-    
-    if (pais && PAISES[pais]) {
-        localStorage.setItem('mylifeqr_pais', pais);
-        console.log(`✅ País guardado (perfil): ${pais}`);
-        window.location.reload();
-    } else {
-        console.warn(`⚠️ País no válido (perfil): ${pais}`);
-        alert('⚠️ País no disponible. Selecciona otro.');
-    }
-}
-
-// Ejecutar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM de perfil cargado, inicializando...');
-    
-    setTimeout(() => {
-        if (typeof CONFIG !== 'undefined') {
-            aplicarConfiguracionPaisPerfil();
-        } else {
-            console.error('❌ CONFIG no cargado en perfil. Esperando...');
-            setTimeout(() => {
-                if (typeof CONFIG !== 'undefined') {
-                    aplicarConfiguracionPaisPerfil();
-                }
-            }, 500);
-        }
-        
-        inicializarSelectorPaisPerfil();
-    }, 300);
-});
-
-window.addEventListener('load', function() {
-    console.log('🔄 Window load event - verificando selector en perfil...');
-    setTimeout(inicializarSelectorPaisPerfil, 100);
-});
 </script>
 
 </body>
