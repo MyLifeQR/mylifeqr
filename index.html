@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>MyLifeQR — Identificación médica de emergencia para motociclistas</title>
+    <title id="pageTitle">MyLifeQR — Identificación médica de emergencia para motociclistas</title>
     
-    <meta name="description" content="MyLifeQR es un sticker con QR para tu casco que permite a paramédicos acceder a tu tipo de sangre, alergias y contactos de emergencia al instante. Gratuito y protegido por la LFPDPPP.">
+    <!-- ===== CONFIGURACIÓN DE PAÍSES ===== -->
+    <script src="config-paises.js"></script>
+    
+    <meta name="description" id="metaDescription" content="MyLifeQR es un sticker con QR para tu casco que permite a paramédicos acceder a tu tipo de sangre, alergias y contactos de emergencia al instante. Gratuito y protegido por la LFPDPPP.">
     <meta name="keywords" content="identificación médica, QR emergencia, motociclista seguro, sticker casco, datos médicos emergencia, MyLifeQR">
     <meta name="author" content="MyLifeQR">
     <meta name="robots" content="index, follow">
     <meta name="language" content="Spanish">
     <meta name="revisit-after" content="7 days">
     
-    <meta property="og:title" content="MyLifeQR — Tu ángel guardián en el asfalto">
-    <meta property="og:description" content="Sticker QR para tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos al instante.">
+    <meta property="og:title" id="ogTitle" content="MyLifeQR — Tu ángel guardián en el asfalto">
+    <meta property="og:description" id="ogDescription" content="Sticker QR para tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos al instante.">
     <meta property="og:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -21,8 +24,8 @@
     <meta property="og:type" content="website">
     
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MyLifeQR — Identificación médica para motociclistas">
-    <meta name="twitter:description" content="Protege tu vida con un sticker QR en tu casco. Gratuito.">
+    <meta name="twitter:title" id="twitterTitle" content="MyLifeQR — Identificación médica para motociclistas">
+    <meta name="twitter:description" id="twitterDescription" content="Protege tu vida con un sticker QR en tu casco. Gratuito.">
     <meta name="twitter:image" content="https://MyLifeQR.github.io/mylifeqr/MyLifeQRLogo.png">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -76,6 +79,37 @@
         .header { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 20px; }
         .logo img { height: 64px; width: auto; transition: transform 0.3s; }
         .logo img:hover { transform: scale(1.05); }
+        
+        /* ===== SELECTOR DE PAÍS ===== */
+        .pais-selector {
+            display: flex;
+            gap: 4px;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 40px;
+        }
+        .pais-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            line-height: 1;
+        }
+        .pais-btn:hover {
+            transform: scale(1.1);
+            background: rgba(232,21,42,0.1);
+        }
+        .pais-btn.active {
+            background: #E8152A;
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(232,21,42,0.3);
+        }
+        .pais-btn.active:hover {
+            transform: scale(1.08);
+        }
         
         .nav-links { display: flex; gap: 32px; align-items: center; }
         .nav-link { background: none; border: none; font-size: 16px; font-weight: 500; color: #4a4a4a; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; position: relative; }
@@ -532,6 +566,11 @@
             .creator-contact { flex-direction: column; align-items: center; gap: 12px; }
             .language-selector { margin-left: 0; }
             .header { flex-direction: column; }
+            .pais-selector {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKR6WB9JJM"></script>
@@ -547,6 +586,16 @@
         <div class="container">
             <div class="header">
                 <div class="logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.src='https://placehold.co/200x64/E8152A/white?text=MyLifeQR'"></div>
+                
+                <!-- ===== SELECTOR DE PAÍS MANUAL ===== -->
+                <div class="pais-selector">
+                    <button class="pais-btn active" data-pais="mx" title="México">🇲🇽</button>
+                    <button class="pais-btn" data-pais="br" title="Brasil">🇧🇷</button>
+                    <button class="pais-btn" data-pais="co" title="Colombia">🇨🇴</button>
+                    <button class="pais-btn" data-pais="cl" title="Chile">🇨🇱</button>
+                    <button class="pais-btn" data-pais="pe" title="Perú">🇵🇪</button>
+                </div>
+                
                 <div class="language-selector">
                     <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
                     <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
@@ -605,7 +654,7 @@
                 </div>
             </div>
             <div class="email-tip">
-                <p data-i18n="emailTip">📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen mylifeqrsticker@gmail.com a su libreta de direcciones y marquen el correo como "No es spam".</p>
+                <p data-i18n="emailTip" id="emailTipText">📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen <span id="emailTipContacto">mylifeqrsticker@gmail.com</span> a su libreta de direcciones y marquen el correo como "No es spam".</p>
             </div>
             
             <div class="features">
@@ -624,8 +673,8 @@
                 <div class="creator-name">Marcos Esparza</div>
                 <div class="creator-bio">Sé lo que se siente ver a un compañero caer y no poder ayudar porque no sabes ni quién es, a qué es alérgico, si tiene algún padecimiento, o quién poder avisar.<br><br>MyLifeQR nació de esa impotencia. Es mi granito de arena: gratuito, sincero y hecho por un motociclista para otros motociclistas. Porque estoy convencido de que la seguridad no debería costar y en la carretera todos merecemos que alguien cuide de nosotros.</div>
                 <div class="creator-contact">
-                    <a href="https://wa.me/525652502785" target="_blank">📱 WhatsApp: +52 5652502785</a>
-                    <a href="mailto:mylifeqrsticker@gmail.com">✉️ mylifeqrsticker@gmail.com</a>
+                    <a href="https://wa.me/525652502785" target="_blank" id="whatsappLink">📱 WhatsApp: +52 5652502785</a>
+                    <a href="mailto:mylifeqrsticker@gmail.com" id="contactEmailLink">✉️ mylifeqrsticker@gmail.com</a>
                 </div>
             </div>
             
@@ -705,7 +754,7 @@
                 <p class="legal-footer-text">
                     <strong data-i18n="legalWarning">⚠️ AVISO LEGAL ⚠️</strong><br>
                     <span data-i18n="legalText">MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.</span><br>
-                    <strong data-i18n="legalEmergency">📞 En caso de emergencia, llame al 911 inmediatamente.</strong>
+                    <strong data-i18n="legalEmergency" id="legalEmergencyText">📞 En caso de emergencia, llame al 911 inmediatamente.</strong>
                 </p>
                 <div class="legal-links-footer">
                     <span class="legal-link" onclick="showTerminosRegistro()" data-i18n="termsLink">📜 Términos y Condiciones</span>
@@ -727,7 +776,7 @@
             </div>
         </div>
         <div class="container">
-            <button id="emergencyBtn" class="emergency-btn">🚨 ¡EMERGENCIA! 🚨</button>
+            <button id="emergencyBtn" class="emergency-btn" id="emergencyBtnDashboard">🚨 ¡EMERGENCIA! 🚨</button>
             <div class="tabs"><button class="tab-btn active" id="tabFormBtn" data-i18n="dashboardPersonal">📝 Mis datos</button><button class="tab-btn" id="tabStickerBtn" data-i18n="dashboardSticker">🔲 Mi sticker</button></div>
             <div class="two-columns">
                 <div><div id="tabForm" class="tab-pane active"><div class="form-card"><h2 style="font-family: 'Bebas Neue'; font-size: 28px; color: #E8152A;" data-i18n="personalTitle">📝 Datos personales</h2>
@@ -1711,10 +1760,10 @@
         async function actualizarContador() {
             try {
                 const counterDoc = await getDoc(doc(db, "public", "stats"));
-                let total = 500; // Cambiado de 50 a 500
-if (counterDoc.exists() && counterDoc.data().totalUsuarios) {
-    total = counterDoc.data().totalUsuarios;
-}
+                let total = 500;
+                if (counterDoc.exists() && counterDoc.data().totalUsuarios) {
+                    total = counterDoc.data().totalUsuarios;
+                }
                 document.getElementById('vidasCounter').innerHTML = `❤️ ${total}+ vidas protegidas`;
             } catch (error) { 
                 console.log('Error al obtener contador:', error);
@@ -2319,5 +2368,147 @@ if (counterDoc.exists() && counterDoc.data().totalUsuarios) {
                 .catch(err => console.log('❌ Error:', err));
         }
     </script>
+
+<!-- ================================================================ -->
+<!-- APLICAR CONFIGURACIÓN DE PAÍS EN INDEX.HTML                       -->
+<!-- ================================================================ -->
+
+<script>
+function aplicarConfiguracionPaisIndex() {
+    // Verificar que CONFIG existe
+    if (typeof CONFIG === 'undefined') {
+        console.error('❌ CONFIG no está definido. Verifica que config-paises.js esté cargado.');
+        return;
+    }
+    
+    const config = CONFIG;
+    console.log(`🌍 Aplicando configuración a index.html para: ${config.nombre} (${config.id})`);
+    
+    // === TÍTULO DE LA PÁGINA ===
+    const tituloPagina = config.id === 'br' 
+        ? 'MyLifeQR Brasil — Identificação médica de emergência para motociclistas'
+        : config.id === 'co'
+        ? 'MyLifeQR Colombia — Identificación médica de emergencia para motociclistas'
+        : config.id === 'cl'
+        ? 'MyLifeQR Chile — Identificación médica de emergencia para motociclistas'
+        : config.id === 'pe'
+        ? 'MyLifeQR Perú — Identificación médica de emergencia para motociclistas'
+        : 'MyLifeQR — Identificación médica de emergencia para motociclistas';
+    document.title = tituloPagina;
+    document.getElementById('pageTitle').textContent = tituloPagina;
+    
+    // === META DESCRIPTION ===
+    const metaDesc = config.id === 'br'
+        ? 'MyLifeQR Brasil é um adesivo com QR para seu capacete que permite aos paramédicos acessar seu tipo sanguíneo, alergias e contatos de emergência instantaneamente. Gratuito e protegido pela LGPD.'
+        : 'MyLifeQR es un sticker con QR para tu casco que permite a paramédicos acceder a tu tipo de sangre, alergias y contactos de emergencia al instante. Gratuito y protegido por la ' + config.ley + '.';
+    document.getElementById('metaDescription').setAttribute('content', metaDesc);
+    
+    // === OG TITLE ===
+    const ogTitle = config.id === 'br'
+        ? 'MyLifeQR Brasil — Seu anjo da guarda no asfalto'
+        : 'MyLifeQR — Tu ángel guardián en el asfalto';
+    document.getElementById('ogTitle').setAttribute('content', ogTitle);
+    
+    // === OG DESCRIPTION ===
+    const ogDesc = config.id === 'br'
+        ? 'Adesivo QR para seu capacete que fala por você em emergências. Tipo sanguíneo, alergias, contatos instantaneamente.'
+        : 'Sticker QR para tu casco que habla por ti en emergencias. Tipo de sangre, alergias, contactos al instante.';
+    document.getElementById('ogDescription').setAttribute('content', ogDesc);
+    
+    // === TWITTER TITLE ===
+    const twitterTitle = config.id === 'br'
+        ? 'MyLifeQR Brasil — Identificação médica para motociclistas'
+        : 'MyLifeQR — Identificación médica para motociclistas';
+    document.getElementById('twitterTitle').setAttribute('content', twitterTitle);
+    
+    // === TWITTER DESCRIPTION ===
+    const twitterDesc = config.id === 'br'
+        ? 'Proteja sua vida com um adesivo QR no seu capacete. Gratuito.'
+        : 'Protege tu vida con un sticker QR en tu casco. Gratuito.';
+    document.getElementById('twitterDescription').setAttribute('content', twitterDesc);
+    
+    // === EMAIL TIP ===
+    const emailTipTexto = config.id === 'br'
+        ? `📧 Seus contatos não estão recebendo os alertas? Peça para adicionarem ${config.email_contacto} à lista de contatos e marcarem o e-mail como "Não é spam".`
+        : `📧 ¿Tus contactos no reciben las alertas? Pídeles que agreguen ${config.email_contacto} a su libreta de direcciones y marquen el correo como "No es spam".`;
+    document.getElementById('emailTipText').innerHTML = emailTipTexto;
+    document.getElementById('emailTipContacto').textContent = config.email_contacto;
+    
+    // === WHATSAPP LINK ===
+    document.getElementById('whatsappLink').href = `https://wa.me/${config.whatsapp}`;
+    document.getElementById('whatsappLink').textContent = `📱 WhatsApp: ${config.whatsapp}`;
+    
+    // === CONTACT EMAIL LINK ===
+    document.getElementById('contactEmailLink').href = `mailto:${config.email_contacto}`;
+    document.getElementById('contactEmailLink').textContent = `✉️ ${config.email_contacto}`;
+    
+    // === LEGAL EMERGENCY TEXT ===
+    const legalEmergencia = config.id === 'br'
+        ? `📞 Em caso de emergência, ligue para ${config.emergencia_texto} imediatamente.`
+        : `📞 En caso de emergencia, llame al ${config.emergencia_texto} inmediatamente.`;
+    document.getElementById('legalEmergencyText').innerHTML = legalEmergencia;
+    
+    // === AVISO DE PRIVACIDAD LINK ===
+    const avisoText = config.id === 'br'
+        ? `🔐 Aviso de Privacidade (${config.ley})`
+        : `🔐 Aviso de Privacidad (${config.ley})`;
+    const avisoLinks = document.querySelectorAll('[data-i18n="avisoLink"]');
+    avisoLinks.forEach(el => {
+        el.textContent = avisoText;
+    });
+    
+    // === DONATION LINK (Única cuenta global) ===
+    const DONATION_URL = 'https://link.mercadopago.com.mx/mylifeqr';
+    const donateLink = document.querySelector('.btn-donate');
+    if (donateLink) {
+        donateLink.href = DONATION_URL;
+    }
+    
+    // === BOTÓN DE EMERGENCIA EN DASHBOARD ===
+    const emergencyBtn = document.getElementById('emergencyBtnDashboard');
+    if (emergencyBtn) {
+        emergencyBtn.textContent = `🚨 ¡${config.id === 'br' ? 'EMERGÊNCIA' : 'EMERGENCIA'}! 🚨`;
+        // Eliminar event listeners anteriores para evitar duplicados
+        const newEmergencyBtn = emergencyBtn.cloneNode(true);
+        emergencyBtn.parentNode.replaceChild(newEmergencyBtn, emergencyBtn);
+        newEmergencyBtn.addEventListener('click', () => {
+            if (confirm(`🚨 ${config.id === 'br' ? 'Você está em uma emergência? Ligue para' : '¿Estás en una emergencia? Llama al'} ${config.emergencia_texto} ${config.id === 'br' ? 'imediatamente.' : 'inmediatamente.'}`)) {
+                window.location.href = `tel:${config.emergencia}`;
+            }
+        });
+    }
+    
+    console.log(`✅ Configuración aplicada a index.html para ${config.nombre}`);
+}
+
+// === SELECTOR DE PAÍS MANUAL ===
+function inicializarSelectorPais() {
+    const botones = document.querySelectorAll('.pais-btn');
+    const paisActual = localStorage.getItem('mylifeqr_pais') || 'mx';
+    
+    botones.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.pais === paisActual);
+    });
+    
+    botones.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const pais = this.dataset.pais;
+            if (pais && PAISES[pais]) {
+                localStorage.setItem('mylifeqr_pais', pais);
+                window.location.reload();
+            }
+        });
+    });
+}
+
+// Ejecutar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        aplicarConfiguracionPaisIndex();
+        inicializarSelectorPais();
+    }, 150);
+});
+</script>
+
 </body>
 </html>

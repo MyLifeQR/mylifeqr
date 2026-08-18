@@ -2,7 +2,7 @@
   "name": "MyLifeQR",
   "short_name": "MyLifeQR",
   "description": "Identificación médica de emergencia para motociclistas",
-  "start_url": "/mylifeqr/index.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "theme_color": "#E8152A",
   "background_color": "#FFFFFF",

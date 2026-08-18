@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>MyLifeQR — Perfil Médico de Emergencia</title>
+    <title id="pageTitle">MyLifeQR — Perfil Médico de Emergencia</title>
+    
+    <!-- ===== CONFIGURACIÓN DE PAÍSES ===== -->
+    <script src="config-paises.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
@@ -166,6 +170,36 @@
             font-size: 14px;
         }
         
+        /* ===== SELECTOR DE PAÍS MINI ===== */
+        .pais-selector-mini {
+            display: flex;
+            gap: 2px;
+            background: rgba(255,255,255,0.15);
+            padding: 3px 6px;
+            border-radius: 30px;
+            margin: 0 8px;
+        }
+        .pais-btn-mini {
+            background: transparent;
+            border: none;
+            padding: 3px 6px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            line-height: 1;
+            opacity: 0.6;
+        }
+        .pais-btn-mini:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        .pais-btn-mini.active {
+            opacity: 1;
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+        
         /* Banner de casco */
         .helmet-warning {
             background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
@@ -290,13 +324,17 @@
         .btn-google { background: #E8152A; color: white; }
         .btn-waze { background: #33CCFF; color: white; }
         
-        /* Botón 911 */
-        .btn-911-container {
+        /* Botones de emergencia dinámicos */
+        .btn-911-container,
+        .btn-192-container,
+        .btn-123-container,
+        .btn-131-container,
+        .btn-116-container {
             padding: 0 20px;
             margin-bottom: 20px;
         }
-        
-        .btn-911 {
+
+        .btn-911, .btn-192, .btn-123, .btn-131, .btn-116 {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -313,8 +351,12 @@
             box-shadow: 0 4px 15px rgba(232,21,42,0.3);
             animation: pulse 2s ease-in-out infinite;
         }
-        
-        .btn-911:hover {
+
+        .btn-911:hover,
+        .btn-192:hover,
+        .btn-123:hover,
+        .btn-131:hover,
+        .btn-116:hover {
             transform: scale(1.02);
             box-shadow: 0 8px 25px rgba(232,21,42,0.5);
         }
@@ -640,7 +682,18 @@
         @media (max-width: 480px) {
             .profile-name { font-size: 24px; }
             .vital-value { font-size: 28px; }
-            .btn-911 { font-size: 18px; padding: 14px; }
+            .btn-911, .btn-192, .btn-123, .btn-131, .btn-116 {
+                font-size: 18px;
+                padding: 14px;
+            }
+            .pais-selector-mini {
+                padding: 2px 4px;
+                gap: 1px;
+            }
+            .pais-btn-mini {
+                font-size: 12px;
+                padding: 2px 4px;
+            }
         }
     </style>
     
@@ -658,19 +711,15 @@
 <!-- GATE DE ACCESO -->
 <div id="gate">
     <div class="gate-icon">⚠️</div>
-    <div class="gate-title">Acceso Restringido</div>
-    <div class="gate-subtitle">Aviso de privacidad — LFPDPPP</div>
+    <div class="gate-title" id="gateTitle">Acceso Restringido</div>
+    <div class="gate-subtitle" id="gateSubtitle">Aviso de privacidad — LFPDPPP</div>
     <div class="gate-box">
-        <p class="gate-box-text">
-            La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (<strong>LFPDPPP</strong>).
-            <br><br>
-            Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación mexicana vigente.
-            <br><br>
-            Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
+        <p class="gate-box-text" id="gateText">
+            <!-- Se llena con JavaScript -->
         </p>
     </div>
-    <p style="font-size:11px; color:#888; margin:8px 0 16px;">Al aceptar confirmas que accedes con fines de atención médica de emergencia.</p>
-    <button class="btn-accept" onclick="acceptGate()">✓ Entiendo — Ver perfil de emergencia</button>
+    <p style="font-size:11px; color:#888; margin:8px 0 16px;" id="gateAceptar">Al aceptar confirmas que accedes con fines de atención médica de emergencia.</p>
+    <button class="btn-accept" onclick="acceptGate()" id="gateBoton">✓ Entiendo — Ver perfil de emergencia</button>
 </div>
 
 <!-- PERFIL DE EMERGENCIA -->
@@ -704,15 +753,25 @@
     
     <!-- Banner superior -->
     <div class="emergency-banner">
-        <span>🚨 PERFIL DE EMERGENCIA</span>
+        <span>🚨 <span id="bannerTitulo">PERFIL DE EMERGENCIA</span></span>
+        
+        <!-- ===== SELECTOR DE PAÍS MINI ===== -->
+        <div class="pais-selector-mini">
+            <button class="pais-btn-mini active" data-pais="mx" title="México">🇲🇽</button>
+            <button class="pais-btn-mini" data-pais="br" title="Brasil">🇧🇷</button>
+            <button class="pais-btn-mini" data-pais="co" title="Colombia">🇨🇴</button>
+            <button class="pais-btn-mini" data-pais="cl" title="Chile">🇨🇱</button>
+            <button class="pais-btn-mini" data-pais="pe" title="Perú">🇵🇪</button>
+        </div>
+        
         <span style="margin-left:auto;">MyLifeQR</span>
     </div>
     
     <!-- Advertencia de casco -->
     <div class="helmet-warning">
         <div class="helmet-icon">⚠️</div>
-        <div class="helmet-title">¡NO RETIRAR EL CASCO!</div>
-        <div class="helmet-desc">Posible lesión cervical. Solo personal médico capacitado puede retirarlo.</div>
+        <div class="helmet-title" id="helmetTitle">¡NO RETIRAR EL CASCO!</div>
+        <div class="helmet-desc" id="helmetDesc">Posible lesión cervical. Solo personal médico capacitado puede retirarlo.</div>
     </div>
     
     <!-- Tarjeta de perfil -->
@@ -721,7 +780,7 @@
             <div class="avatar-placeholder" id="avatarPlaceholder">👤</div>
             <img id="avatarImg" style="display:none; width:100%; height:100%; object-fit:cover;">
         </div>
-        <div class="profile-name" id="perfilNombre">Cargando...</div>
+        <div class="profile-name" id="perfilNombre"><span id="cargandoTexto">Cargando...</span></div>
         <div class="profile-age" id="perfilEdad"></div>
     </div>
     
@@ -729,27 +788,27 @@
     <div class="location-card">
         <div class="location-header">
             <span>📍</span>
-            <h3>Ubicación aproximada</h3>
+            <h3 id="ubicacionTitulo">Ubicación aproximada</h3>
         </div>
-        <div class="location-status" id="locationStatus">Obteniendo ubicación...</div>
+        <div class="location-status" id="locationStatus"><span id="ubicacionStatus">Obteniendo ubicación...</span></div>
         <div class="map-buttons" id="mapButtons" style="display: none;">
             <a href="#" id="googleMapsLink" class="btn-map btn-google" target="_blank">🗺️ Google Maps</a>
             <a href="#" id="wazeLink" class="btn-map btn-waze" target="_blank">🧭 Waze</a>
         </div>
     </div>
     
-    <!-- Botón 911 -->
-    <div class="btn-911-container">
-        <a href="tel:911" class="btn-911">
+    <!-- Botón de emergencia (dinámico) -->
+    <div class="btn-911-container" id="emergenciaContainer">
+        <a href="tel:911" id="emergenciaLink" class="btn-911">
             <span style="font-size:28px;">📞</span>
-            <span>LLAMAR AL 911</span>
+            <span id="emergenciaTexto">LLAMAR AL 911</span>
         </a>
     </div>
     
     <!-- Instrucciones para no paramédicos -->
     <div class="accordion">
         <div class="accordion-header" onclick="toggleAccordion()">
-            🚑 GUÍA PARA QUIENES NO SON PARAMÉDICOS
+            <span id="guiaTitulo">🚑 GUÍA PARA QUIENES NO SON PARAMÉDICOS</span>
             <span>▼</span>
         </div>
         <div class="accordion-content" id="accordionContent">
@@ -757,8 +816,8 @@
                 <div class="instruction-step">
                     <div class="step-number">1</div>
                     <div class="step-content">
-                        <div class="step-title">📞 Llama al 911</div>
-                        <div class="step-desc">Informa la ubicación exacta. No muevas al motociclista.</div>
+                        <div class="step-title" id="instruccion1Titulo">📞 Llama al 911</div>
+                        <div class="step-desc" id="instruccion1Desc">Informa la ubicación exacta. No muevas al motociclista.</div>
                     </div>
                 </div>
                 <div class="instruction-step">
@@ -839,12 +898,12 @@
     <!-- Footer -->
     <div class="footer">
         <div class="footer-logo"><img src="MyLifeQRLogo.png" alt="MyLifeQR" onerror="this.style.display='none'"></div>
-        <p class="disclaimer-text">
-            <strong>⚠️ AVISO LEGAL IMPORTANTE ⚠️</strong><br><br>
-            MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.<br><br>
-            En caso de emergencia, la prioridad siempre debe ser llamar al 911 y seguir las indicaciones del personal médico.<br><br>
-            <strong>📞 En caso de emergencia, llame inmediatamente al 911.</strong><br><br>
-            <strong>✉️ Contacto: mylifeqrsticker@gmail.com</strong>
+        <p class="disclaimer-text" id="footerTexto">
+            <strong id="footerAviso">⚠️ AVISO LEGAL IMPORTANTE ⚠️</strong><br><br>
+            <span id="footerDesc">MyLifeQR es un <strong>sistema de identificación médica</strong> de apoyo. No es un servicio médico, de emergencia ni sustituye la atención profesional.</span><br><br>
+            <span id="footerEmergencia">En caso de emergencia, la prioridad siempre debe ser llamar al <strong id="footerNumero">911</strong> y seguir las indicaciones del personal médico.</span><br><br>
+            <strong id="footerContacto">📞 En caso de emergencia, llame inmediatamente al <span id="footerNumero2">911</span>.</strong><br><br>
+            <strong id="footerEmail">✉️ Contacto: mylifeqrsticker@gmail.com</strong>
         </p>
         <div style="margin-top: 16px;">
             <span class="legal-link" onclick="showTerminos()">📜 Términos y Condiciones</span>
@@ -885,7 +944,7 @@
     let scanRegistered = false;
     let currentUserLocation = null;
     let currentPerfilData = null;
-    let lastNotificationTime = 0; // Control anti-spam: última vez que se enviaron correos para este perfil
+    let lastNotificationTime = 0;
     
     // Configuración EmailJS
     const EMAILJS_CONFIG = {
@@ -918,7 +977,6 @@
             gate.style.display = 'none';
             profile.style.display = 'block';
             setTimeout(() => profile.classList.add('visible'), 10);
-            // IMPORTANTE: El escaneo y envío de correos SOLO se ejecuta después de aceptar el gate
             registrarEscaneo();
         }, 350);
     };
@@ -968,13 +1026,12 @@
             return;
         }
         
-        // CONTROL ANTI-SPAM: Verificar si ya se enviaron correos para este perfil recientemente (5 minutos)
         const lastKey = `last_notification_${profileId}`;
         const lastNotif = localStorage.getItem(lastKey);
         const now = Date.now();
-        if (lastNotif && (now - parseInt(lastNotif)) < 300000) { // 5 minutos = 300,000 ms
+        if (lastNotif && (now - parseInt(lastNotif)) < 300000) {
             console.log("⚠️ Ya se envió una notificación para este perfil en los últimos 5 minutos. Omitiendo para evitar SPAM.");
-            scanRegistered = true; // Marcamos como registrado para no intentar de nuevo
+            scanRegistered = true;
             return;
         }
         
@@ -997,7 +1054,6 @@
         document.getElementById('scanFolio').innerHTML = `Folio: ${folio}`;
         notif.style.display = 'block';
         
-        // Guardar en localStorage que ya se envió notificación
         localStorage.setItem(lastKey, now.toString());
         
         if (navigator.geolocation) {
@@ -1015,7 +1071,6 @@
                 document.getElementById('googleMapsLink').href = mapsUrl;
                 document.getElementById('wazeLink').href = wazeUrl;
                 
-                // Registrar evento en Firestore
                 await addDoc(collection(db, "eventos_escaneo"), {
                     perfil_id: profileId,
                     perfil_nombre: perfil.nombre || 'Usuario',
@@ -1025,7 +1080,6 @@
                     dispositivo: navigator.userAgent
                 });
                 
-                // Enviar correos SOLO a contactos que tienen notificación activada
                 const contactosParaEnviar = [];
                 for (let i = 1; i <= 5; i++) {
                     const email = perfil[`contacto${i}_email`];
@@ -1047,7 +1101,6 @@
             }, (error) => {
                 console.error("❌ Error de geolocalización:", error);
                 document.getElementById('locationStatus').innerHTML = '📍 No se pudo obtener la ubicación. Activa los servicios de ubicación.';
-                // Aún así marcamos como registrado para no reintentar
                 scanRegistered = true;
             });
         } else {
@@ -1075,19 +1128,79 @@
         const modal = document.getElementById('modalLegal');
         const title = document.getElementById('modalLegalTitle');
         const body = document.getElementById('modalLegalBody');
-        title.innerText = '📜 Términos y Condiciones';
-        body.innerHTML = `
-            <h4>1. Aceptación de los Términos</h4>
-            <p>Al utilizar MyLifeQR, aceptas estos Términos y Condiciones.</p>
-            <h4>2. Descripción del Servicio</h4>
-            <p>MyLifeQR es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p>
-            <h4>3. Responsabilidad del Usuario</h4>
-            <p>Eres el único responsable de la veracidad y actualización de tus datos.</p>
-            <h4>4. Ley Aplicable</h4>
-            <p>Estos términos se rigen por las leyes de los Estados Unidos Mexicanos.</p>
-            <h4>5. Contacto</h4>
-            <p>✉️ mylifeqrsticker@gmail.com</p>
-        `;
+        const config = CONFIG;
+        
+        if (config.id === 'br') {
+            title.innerText = '📜 Termos e Condições';
+            body.innerHTML = `
+                <h4>1. Aceitação dos Termos</h4>
+                <p>Ao utilizar o MyLifeQR Brasil, você aceita estes Termos e Condições.</p>
+                <h4>2. Descrição do Serviço</h4>
+                <p>MyLifeQR Brasil é um sistema de identificação médica. Não é um serviço médico nem de emergência.</p>
+                <h4>3. Responsabilidade do Usuário</h4>
+                <p>Você é o único responsável pela veracidade e atualização dos seus dados.</p>
+                <h4>4. Lei Aplicável</h4>
+                <p>Estes termos são regidos pelas leis da República Federativa do Brasil.</p>
+                <h4>5. Contato</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else if (config.id === 'co') {
+            title.innerText = '📜 Términos y Condiciones';
+            body.innerHTML = `
+                <h4>1. Aceptación de los Términos</h4>
+                <p>Al utilizar MyLifeQR Colombia, aceptas estos Términos y Condiciones.</p>
+                <h4>2. Descripción del Servicio</h4>
+                <p>MyLifeQR Colombia es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p>
+                <h4>3. Responsabilidad del Usuario</h4>
+                <p>Eres el único responsable de la veracidad y actualización de tus datos.</p>
+                <h4>4. Ley Aplicable</h4>
+                <p>Estos términos se rigen por las leyes de la República de Colombia.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else if (config.id === 'cl') {
+            title.innerText = '📜 Términos y Condiciones';
+            body.innerHTML = `
+                <h4>1. Aceptación de los Términos</h4>
+                <p>Al utilizar MyLifeQR Chile, aceptas estos Términos y Condiciones.</p>
+                <h4>2. Descripción del Servicio</h4>
+                <p>MyLifeQR Chile es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p>
+                <h4>3. Responsabilidad del Usuario</h4>
+                <p>Eres el único responsable de la veracidad y actualización de tus datos.</p>
+                <h4>4. Ley Aplicable</h4>
+                <p>Estos términos se rigen por las leyes de la República de Chile.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else if (config.id === 'pe') {
+            title.innerText = '📜 Términos y Condiciones';
+            body.innerHTML = `
+                <h4>1. Aceptación de los Términos</h4>
+                <p>Al utilizar MyLifeQR Perú, aceptas estos Términos y Condiciones.</p>
+                <h4>2. Descripción del Servicio</h4>
+                <p>MyLifeQR Perú es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p>
+                <h4>3. Responsabilidad del Usuario</h4>
+                <p>Eres el único responsable de la veracidad y actualización de tus datos.</p>
+                <h4>4. Ley Aplicable</h4>
+                <p>Estos términos se rigen por las leyes de la República del Perú.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else {
+            title.innerText = '📜 Términos y Condiciones';
+            body.innerHTML = `
+                <h4>1. Aceptación de los Términos</h4>
+                <p>Al utilizar MyLifeQR, aceptas estos Términos y Condiciones.</p>
+                <h4>2. Descripción del Servicio</h4>
+                <p>MyLifeQR es un sistema de identificación médica. No es un servicio médico ni de emergencia.</p>
+                <h4>3. Responsabilidad del Usuario</h4>
+                <p>Eres el único responsable de la veracidad y actualización de tus datos.</p>
+                <h4>4. Ley Aplicable</h4>
+                <p>Estos términos se rigen por las leyes de los Estados Unidos Mexicanos.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        }
         modal.style.display = 'flex';
     };
     
@@ -1095,19 +1208,79 @@
         const modal = document.getElementById('modalLegal');
         const title = document.getElementById('modalLegalTitle');
         const body = document.getElementById('modalLegalBody');
-        title.innerText = '🔒 Política de Privacidad';
-        body.innerHTML = `
-            <h4>1. Datos que Recopilamos</h4>
-            <p>Recopilamos nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia y foto (opcional).</p>
-            <h4>2. Uso de la Información</h4>
-            <p>La información se usa exclusivamente para tu perfil médico de emergencia.</p>
-            <h4>3. Protección de Datos</h4>
-            <p>Tus datos están protegidos por la LFPDPPP. El acceso queda registrado.</p>
-            <h4>4. Derechos ARCO</h4>
-            <p>Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos.</p>
-            <h4>5. Contacto</h4>
-            <p>✉️ mylifeqrsticker@gmail.com</p>
-        `;
+        const config = CONFIG;
+        
+        if (config.id === 'br') {
+            title.innerText = '🔒 Política de Privacidade';
+            body.innerHTML = `
+                <h4>1. Dados que Coletamos</h4>
+                <p>Coletamos nome, idade, tipo sanguíneo, alergias, condições médicas, medicamentos, contatos de emergência e foto (opcional).</p>
+                <h4>2. Uso das Informações</h4>
+                <p>As informações são usadas exclusivamente para seu perfil médico de emergência.</p>
+                <h4>3. Proteção de Dados</h4>
+                <p>Seus dados estão protegidos pela LGPD. O acesso é registrado.</p>
+                <h4>4. Direitos do Titular</h4>
+                <p>Você tem direito de acessar, corrigir, excluir ou se opor ao uso dos seus dados.</p>
+                <h4>5. Contato</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else if (config.id === 'co') {
+            title.innerText = '🔒 Política de Privacidad';
+            body.innerHTML = `
+                <h4>1. Datos que Recopilamos</h4>
+                <p>Recopilamos nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia y foto (opcional).</p>
+                <h4>2. Uso de la Información</h4>
+                <p>La información se usa exclusivamente para tu perfil médico de emergencia.</p>
+                <h4>3. Protección de Datos</h4>
+                <p>Tus datos están protegidos por la Ley de Habeas Data. El acceso queda registrado.</p>
+                <h4>4. Derechos del Titular</h4>
+                <p>Tienes derecho a acceder, actualizar, rectificar, suprimir u oponerte al uso de tus datos.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else if (config.id === 'cl') {
+            title.innerText = '🔒 Política de Privacidad';
+            body.innerHTML = `
+                <h4>1. Datos que Recopilamos</h4>
+                <p>Recopilamos nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia y foto (opcional).</p>
+                <h4>2. Uso de la Información</h4>
+                <p>La información se usa exclusivamente para tu perfil médico de emergencia.</p>
+                <h4>3. Protección de Datos</h4>
+                <p>Tus datos están protegidos por la Ley N°19.628. El acceso queda registrado.</p>
+                <h4>4. Derechos del Titular</h4>
+                <p>Tienes derecho a acceder, rectificar, cancelar u oponerte al uso de tus datos.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else if (config.id === 'pe') {
+            title.innerText = '🔒 Política de Privacidad';
+            body.innerHTML = `
+                <h4>1. Datos que Recopilamos</h4>
+                <p>Recopilamos nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia y foto (opcional).</p>
+                <h4>2. Uso de la Información</h4>
+                <p>La información se usa exclusivamente para tu perfil médico de emergencia.</p>
+                <h4>3. Protección de Datos</h4>
+                <p>Tus datos están protegidos por la Ley N°29733. El acceso queda registrado.</p>
+                <h4>4. Derechos del Titular</h4>
+                <p>Tienes derecho a acceder, rectificar, cancelar u oponerte al uso de tus datos.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        } else {
+            title.innerText = '🔒 Política de Privacidad';
+            body.innerHTML = `
+                <h4>1. Datos que Recopilamos</h4>
+                <p>Recopilamos nombre, edad, tipo de sangre, alergias, condiciones médicas, medicamentos, contactos de emergencia y foto (opcional).</p>
+                <h4>2. Uso de la Información</h4>
+                <p>La información se usa exclusivamente para tu perfil médico de emergencia.</p>
+                <h4>3. Protección de Datos</h4>
+                <p>Tus datos están protegidos por la LFPDPPP. El acceso queda registrado.</p>
+                <h4>4. Derechos ARCO</h4>
+                <p>Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos.</p>
+                <h4>5. Contacto</h4>
+                <p>✉️ ${config.email_contacto}</p>
+            `;
+        }
         modal.style.display = 'flex';
     };
     
@@ -1139,6 +1312,7 @@
         }
         
         const perfil = docSnap.data();
+        const config = CONFIG;
         
         document.getElementById('perfilNombre').innerText = perfil.nombre || 'Usuario';
         document.getElementById('perfilEdad').innerText = perfil.edad ? `${perfil.edad} años` : 'Edad no registrada';
@@ -1199,7 +1373,7 @@
                             <div class="contact-name">${contacto.nombre}${relacionMostrar}</div>
                             <div class="contact-relation">Contacto ${contacto.num}</div>
                         </div>
-                        <a href="tel:+52${contacto.telefono}" class="btn-call">📞 Llamar</a>
+                        <a href="tel:${config.prefijo_tel}${contacto.telefono}" class="btn-call">📞 Llamar</a>
                     </div>
                 `;
             }
@@ -1212,5 +1386,110 @@
     
     cargarPerfil();
 </script>
+
+<!-- ================================================================ -->
+<!-- APLICAR CONFIGURACIÓN DE PAÍS EN PERFIL.HTML                      -->
+<!-- ================================================================ -->
+
+<script>
+function aplicarConfiguracionPaisPerfil() {
+    // Verificar que CONFIG existe
+    if (typeof CONFIG === 'undefined') {
+        console.error('❌ CONFIG no está definido. Verifica que config-paises.js esté cargado.');
+        return;
+    }
+    
+    const config = CONFIG;
+    console.log(`🌍 Aplicando configuración a perfil.html para: ${config.nombre} (${config.id})`);
+    
+    // === GATE ===
+    document.getElementById('gateTitle').textContent = config.gate_titulo;
+    document.getElementById('gateSubtitle').textContent = config.gate_subtitulo;
+    document.getElementById('gateText').innerHTML = `
+        La información contenida en este perfil es <strong>confidencial y está protegida</strong> por la ${config.ley_nombre} (<strong>${config.ley}</strong>).
+        <br><br>
+        Este acceso queda <strong>registrado con fecha, hora, ubicación aproximada y dispositivo</strong>. El uso indebido será perseguido y sancionado conforme a la legislación ${config.nombre} vigente.
+        <br><br>
+        Este perfil debe consultarse <strong>exclusivamente en situaciones de emergencia médica</strong>.
+    `;
+    document.getElementById('gateAceptar').textContent = config.gate_aceptar;
+    document.getElementById('gateBoton').textContent = config.gate_boton;
+    
+    // === BANNER ===
+    document.getElementById('bannerTitulo').textContent = config.perfil_titulo;
+    
+    // === CASCO ===
+    document.getElementById('helmetTitle').textContent = config.perfil_casco;
+    document.getElementById('helmetDesc').textContent = config.perfil_casco_desc;
+    
+    // === CARGANDO ===
+    document.getElementById('cargandoTexto').textContent = config.perfil_cargando;
+    
+    // === UBICACIÓN ===
+    document.getElementById('ubicacionTitulo').textContent = config.perfil_ubicacion_titulo;
+    document.getElementById('ubicacionStatus').textContent = config.perfil_ubicacion;
+    
+    // === BOTÓN DE EMERGENCIA ===
+    const link = document.getElementById('emergenciaLink');
+    const container = document.getElementById('emergenciaContainer');
+    const texto = document.getElementById('emergenciaTexto');
+    
+    link.href = `tel:${config.emergencia}`;
+    link.className = `btn-${config.emergencia}`;
+    container.className = `btn-${config.emergencia}-container`;
+    texto.textContent = config.perfil_911;
+    
+    // === GUÍA ===
+    document.getElementById('guiaTitulo').textContent = config.perfil_guia;
+    
+    // === INSTRUCCIONES (paso 1) ===
+    document.getElementById('instruccion1Titulo').textContent = `📞 Llama al ${config.emergencia_texto}`;
+    
+    // === FOOTER ===
+    document.getElementById('footerAviso').textContent = '⚠️ AVISO LEGAL IMPORTANTE ⚠️';
+    document.getElementById('footerNumero').textContent = config.emergencia_texto;
+    document.getElementById('footerNumero2').textContent = config.emergencia_texto;
+    document.getElementById('footerContacto').innerHTML = `📞 En caso de emergencia, llame inmediatamente al <strong>${config.emergencia_texto}</strong>.`;
+    document.getElementById('footerEmail').textContent = `✉️ Contacto: ${config.email_contacto}`;
+    
+    // === TÍTULO DE LA PÁGINA ===
+    const tituloPagina = config.id === 'br' 
+        ? `MyLifeQR — Perfil Médico de Emergência` 
+        : `MyLifeQR — Perfil Médico de Emergencia`;
+    document.title = tituloPagina;
+    document.getElementById('pageTitle').textContent = tituloPagina;
+    
+    console.log(`✅ Configuración aplicada a perfil.html para ${config.nombre}`);
+}
+
+// === SELECTOR DE PAÍS MINI EN PERFIL ===
+function inicializarSelectorPaisPerfil() {
+    const botones = document.querySelectorAll('.pais-btn-mini');
+    const paisActual = localStorage.getItem('mylifeqr_pais') || 'mx';
+    
+    botones.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.pais === paisActual);
+    });
+    
+    botones.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const pais = this.dataset.pais;
+            if (pais && PAISES[pais]) {
+                localStorage.setItem('mylifeqr_pais', pais);
+                window.location.reload();
+            }
+        });
+    });
+}
+
+// Ejecutar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        aplicarConfiguracionPaisPerfil();
+        inicializarSelectorPaisPerfil();
+    }, 150);
+});
+</script>
+
 </body>
 </html>
